@@ -1,0 +1,11 @@
+#VS Code folder
+/.vscode
+
+# Build folder
+/build
+
+# Node Modules foldes
+/node_modules
+
+# Local Environment files
+.env
