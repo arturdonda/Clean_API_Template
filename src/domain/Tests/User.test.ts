@@ -98,7 +98,7 @@ describe('Confirmation Code', () => {
 					email: 'john.doe@hotmail.com',
 					password: 'Abcde#123',
 				})
-		).toThrow('Código de Confirmação inválido: prefixo inválido.');
+		).toThrow("Campo 'Código de Confirmação' inválido: prefixo inválido.");
 	});
 
 	test('Invalid length', () => {
@@ -110,7 +110,7 @@ describe('Confirmation Code', () => {
 					email: 'john.doe@hotmail.com',
 					password: 'Abcde#123',
 				})
-		).toThrow('Código de Confirmação inválido: deve ter mais de 2 caracteres.');
+		).toThrow("Campo 'Código de Confirmação' inválido: deve ter mais de 2 caracteres.");
 	});
 });
 
@@ -124,7 +124,7 @@ describe('E-mail', () => {
 					email: 'john.doehotmail.com',
 					password: 'Abcde#123',
 				})
-		).toThrow('E-mail inválido: formato inválido.');
+		).toThrow("Campo 'E-mail' inválido: formato inválido.");
 	});
 
 	test('With double @', () => {
@@ -136,7 +136,7 @@ describe('E-mail', () => {
 					email: 'john.doe@@hotmail.com',
 					password: 'Abcde#123',
 				})
-		).toThrow('E-mail inválido: formato inválido.');
+		).toThrow("Campo 'E-mail' inválido: formato inválido.");
 	});
 
 	test('Without .com', () => {
@@ -148,7 +148,7 @@ describe('E-mail', () => {
 					email: 'john.doe@hotmailcom',
 					password: 'Abcde#123',
 				})
-		).toThrow('E-mail inválido: formato inválido.');
+		).toThrow("Campo 'E-mail' inválido: formato inválido.");
 	});
 
 	test('With tailing .', () => {
@@ -160,7 +160,7 @@ describe('E-mail', () => {
 					email: 'john.doe@hotmail.com.',
 					password: 'Abcde#123',
 				})
-		).toThrow('E-mail inválido: formato inválido.');
+		).toThrow("Campo 'E-mail' inválido: formato inválido.");
 	});
 });
 
@@ -174,7 +174,7 @@ describe('Password', () => {
 					email: 'john.doe@hotmail.com',
 					password: 'abcde',
 				})
-		).toThrow('Senha inválido: deve conter pelo menos 8 caracteres.');
+		).toThrow("Campo 'Senha' inválido: deve conter pelo menos 8 caracteres.");
 	});
 
 	test('Without lowercase letters', () => {
@@ -186,7 +186,7 @@ describe('Password', () => {
 					email: 'john.doe@hotmail.com',
 					password: 'ABCDE#123',
 				})
-		).toThrow('Senha inválido: deve conter pelo menos 1 caractere minúsculo (a-z).');
+		).toThrow("Campo 'Senha' inválido: deve conter pelo menos 1 caractere minúsculo (a-z).");
 	});
 
 	test('Without uppercase letters', () => {
@@ -198,7 +198,7 @@ describe('Password', () => {
 					email: 'john.doe@hotmail.com',
 					password: 'abcde#123',
 				})
-		).toThrow('Senha inválido: deve conter pelo menos 1 caractere maiúsculo (A-Z).');
+		).toThrow("Campo 'Senha' inválido: deve conter pelo menos 1 caractere maiúsculo (A-Z).");
 	});
 
 	test('Without numbers', () => {
@@ -210,7 +210,7 @@ describe('Password', () => {
 					email: 'john.doe@hotmail.com',
 					password: 'Abcde#fgh',
 				})
-		).toThrow('Senha inválido: deve conter pelo menos 1 dígito (0-9).');
+		).toThrow("Campo 'Senha' inválido: deve conter pelo menos 1 dígito (0-9).");
 	});
 
 	test('Without special characters', () => {
@@ -222,7 +222,7 @@ describe('Password', () => {
 					email: 'john.doe@hotmail.com',
 					password: 'Abcdef123',
 				})
-		).toThrow('Senha inválido: deve conter pelo menos 1 caractere especial (!@#$%^&*()_-+={[}]\\|:;\'",<.>/?`~ ).');
+		).toThrow("Campo 'Senha' inválido: deve conter pelo menos 1 caractere especial (!@#$%^&*()_-+={[}]\\|:;'\",<.>/?`~ ).");
 	});
 });
 
@@ -241,7 +241,7 @@ describe('Address', () => {
 					password: 'Abcde#123',
 					address: 'Not',
 				})
-		).toThrow('Endereço inválido: deve conter pelo menos 5 caracteres.');
+		).toThrow("Campo 'Endereço' inválido: deve conter pelo menos 5 caracteres.");
 	});
 
 	test('Setter - invalid lenght', () => {
@@ -254,7 +254,7 @@ describe('Address', () => {
 
 		expect(() => {
 			user.address = 'Not';
-		}).toThrow('Endereço inválido: deve conter pelo menos 5 caracteres.');
+		}).toThrow("Campo 'Endereço' inválido: deve conter pelo menos 5 caracteres.");
 	});
 });
 
@@ -269,7 +269,7 @@ describe('Birthday', () => {
 					password: 'Abcde#123',
 					birthday: new Date(1899, 0, 1),
 				})
-		).toThrow('Data de nascimento inválido: deve ser posterior a 01/01/1900.');
+		).toThrow("Campo 'Data de nascimento' inválido: deve ser posterior a 01/01/1900.");
 	});
 
 	test('Setter - future date', () => {
@@ -282,7 +282,7 @@ describe('Birthday', () => {
 
 		expect(() => {
 			user.birthday = new Date(2100, 0, 1);
-		}).toThrow('Data de nascimento inválido: não pode ser no futuro.');
+		}).toThrow("Campo 'Data de nascimento' inválido: não pode ser no futuro.");
 	});
 });
 
@@ -297,7 +297,7 @@ describe('CPF', () => {
 					password: 'Abcde#123',
 					cpf: '930.436.410-8x',
 				})
-		).toThrow('CPF inválido: deve conter 11 dígitos.');
+		).toThrow("Campo 'CPF' inválido: deve conter 11 dígitos.");
 	});
 
 	test('Setter - invalid digits', () => {
@@ -310,7 +310,7 @@ describe('CPF', () => {
 
 		expect(() => {
 			user.cpf = '93043641087';
-		}).toThrow('CPF inválido: dígitos verificadores incorretos.');
+		}).toThrow("Campo 'CPF' inválido: dígitos verificadores incorretos.");
 	});
 });
 
@@ -325,7 +325,7 @@ describe('Name', () => {
 					password: 'Abcde#123',
 					name: 'JD',
 				})
-		).toThrow('Nome inválido: deve conter pelo menos 3 caracteres.');
+		).toThrow("Campo 'Nome' inválido: deve conter pelo menos 3 caracteres.");
 	});
 
 	test('Setter - invalid lenght', () => {
@@ -338,7 +338,7 @@ describe('Name', () => {
 
 		expect(() => {
 			user.name = 'JD';
-		}).toThrow('Nome inválido: deve conter pelo menos 3 caracteres.');
+		}).toThrow("Campo 'Nome' inválido: deve conter pelo menos 3 caracteres.");
 	});
 });
 
@@ -353,7 +353,7 @@ describe('Phone', () => {
 					password: 'Abcde#123',
 					phone: '34567890',
 				})
-		).toThrow('Telefone inválido: deve conter 10 ou 11 dígitos.');
+		).toThrow("Campo 'Telefone' inválido: deve conter 10 ou 11 dígitos.");
 	});
 
 	test('Setter - invalid lenght', () => {
@@ -366,7 +366,7 @@ describe('Phone', () => {
 
 		expect(() => {
 			user.phone = '93456-7890';
-		}).toThrow('Telefone inválido: deve conter 10 ou 11 dígitos.');
+		}).toThrow("Campo 'Telefone' inválido: deve conter 10 ou 11 dígitos.");
 	});
 });
 
@@ -381,7 +381,7 @@ describe('RG', () => {
 					password: 'Abcde#123',
 					rg: '30502505@',
 				})
-		).toThrow('RG inválido: formato inválido.');
+		).toThrow("Campo 'RG' inválido: formato inválido.");
 	});
 
 	test('Setter - invalid lenght', () => {
@@ -394,7 +394,7 @@ describe('RG', () => {
 
 		expect(() => {
 			user.rg = '3050';
-		}).toThrow('RG inválido: formato inválido.');
+		}).toThrow("Campo 'RG' inválido: formato inválido.");
 	});
 });
 
