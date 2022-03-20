@@ -2,6 +2,7 @@ import { ACCOUNT_STATUS, GENDER } from '../constants';
 import { InvalidParamError } from '../Errors/InvalidParamError';
 
 export class User {
+	private _id: string;
 	private _address: string | null;
 	private _birthday: Date | null;
 	private _confirmationCode: string;
@@ -16,6 +17,7 @@ export class User {
 	private _status: ACCOUNT_STATUS;
 
 	constructor({
+		id,
 		address,
 		birthday,
 		confirmationCode,
@@ -27,6 +29,7 @@ export class User {
 		phone,
 		rg,
 	}: {
+		id: string;
 		address?: string;
 		birthday?: Date;
 		confirmationCode: string;
@@ -38,6 +41,7 @@ export class User {
 		phone?: string;
 		rg?: string;
 	}) {
+		this._id = User.validadeId(id);
 		this._address = address ? User.validateAddress(address) : null;
 		this._birthday = birthday ? User.validateBirthday(birthday) : null;
 		this._confirmationCode = User.validateConfirmationCode(confirmationCode);
@@ -53,6 +57,11 @@ export class User {
 	}
 
 	//#region Getters
+
+	get id() {
+		return this._id;
+	}
+
 	get address() {
 		return this._address;
 	}
@@ -113,10 +122,6 @@ export class User {
 		this._birthday = birthday ? User.validateBirthday(birthday) : null;
 	}
 
-	set confirmationCode(confirmationCode) {
-		this._confirmationCode = User.validateConfirmationCode(confirmationCode);
-	}
-
 	set cpf(cpf) {
 		this._cpf = cpf ? User.validateCpf(cpf) : null;
 	}
@@ -152,6 +157,11 @@ export class User {
 	//#endregion Setters
 
 	//#region Static Validations
+
+	static validadeId = (id: string) => {
+		if (id.trim().length === 0) throw new InvalidParamError('Id', 'não pode ser vazio.');
+		return id;
+	};
 
 	static validateAddress = (address: string) => {
 		if (address.length < 5) throw new InvalidParamError('Endereço', 'deve conter pelo menos 5 caracteres.');
