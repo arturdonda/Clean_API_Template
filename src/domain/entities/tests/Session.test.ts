@@ -15,12 +15,12 @@ const geolocation = new Geolocation({
 describe('Create new Session', () => {
 	test('All valid parameters', () => {
 		const session = new Session({
-			refreshToken: '74b954c3ab0a465a9661fa563cd36553',
+			token: '74b954c3ab0a465a9661fa563cd36553',
 			expiredAt: new Date(new Date().getTime() + 86400 * 1000),
 			createdBy: geolocation,
 		});
 
-		expect(session.refreshToken).toBe('74b954c3ab0a465a9661fa563cd36553');
+		expect(session.token).toBe('74b954c3ab0a465a9661fa563cd36553');
 		expect(session.expiredAt.valueOf() / 1000).toBeCloseTo(new Date(new Date().getTime() + 86400 * 1000).valueOf() / 1000, 0);
 		expect(session.createdAt.valueOf() / 1000).toBeCloseTo(new Date().valueOf() / 1000, 0);
 		expect(session.revokedAt).toBeNull();
@@ -28,22 +28,22 @@ describe('Create new Session', () => {
 		expect(session.revokedBy).toBeNull();
 	});
 
-	test('Invalid Refresh Token', () => {
+	test('Invalid Session Token', () => {
 		expect(
 			() =>
 				new Session({
-					refreshToken: ' ',
+					token: ' ',
 					expiredAt: new Date(new Date().getTime() + 86400 * 1000),
 					createdBy: geolocation,
 				})
-		).toThrow("Campo 'Refresh Token' inválido: não pode ser vazio.");
+		).toThrow("Campo 'Session Token' inválido: não pode ser vazio.");
 	});
 
 	test('Invalid Expiration Date', () => {
 		expect(
 			() =>
 				new Session({
-					refreshToken: '74b954c3ab0a465a9661fa563cd36553',
+					token: '74b954c3ab0a465a9661fa563cd36553',
 					expiredAt: new Date(new Date().getTime() - 86400 * 1000),
 					createdBy: geolocation,
 				})
@@ -54,7 +54,7 @@ describe('Create new Session', () => {
 describe('Revoke Session', () => {
 	test('Revoke Session', () => {
 		const session = new Session({
-			refreshToken: '74b954c3ab0a465a9661fa563cd36553',
+			token: '74b954c3ab0a465a9661fa563cd36553',
 			expiredAt: new Date(new Date().getTime() + 86400 * 1000),
 			createdBy: geolocation,
 		});

@@ -415,9 +415,9 @@ describe('RG', () => {
 //#region Methods
 
 describe('Session Methods', () => {
-	const createSession = (refreshToken: string) =>
+	const createSession = (token: string) =>
 		new Session({
-			refreshToken: refreshToken,
+			token: token,
 			expiredAt: new Date(new Date().getTime() + 86400 * 1000),
 			createdBy: new Geolocation({
 				ip: '0.0.0.0',
@@ -453,11 +453,7 @@ describe('Session Methods', () => {
 		expect(user.sessions).toHaveLength(3);
 
 		expect(user.sessions).toEqual(
-			expect.arrayContaining([
-				expect.objectContaining({ refreshToken: '1' }),
-				expect.objectContaining({ refreshToken: '2' }),
-				expect.objectContaining({ refreshToken: '3' }),
-			])
+			expect.arrayContaining([expect.objectContaining({ token: '1' }), expect.objectContaining({ token: '2' }), expect.objectContaining({ token: '3' })])
 		);
 	});
 
@@ -479,7 +475,7 @@ describe('Session Methods', () => {
 		user.removeSession('2');
 
 		expect(user.sessions).toHaveLength(2);
-		expect(user.sessions).toEqual(expect.arrayContaining([expect.objectContaining({ refreshToken: '1' }), expect.objectContaining({ refreshToken: '3' })]));
+		expect(user.sessions).toEqual(expect.arrayContaining([expect.objectContaining({ token: '1' }), expect.objectContaining({ token: '3' })]));
 	});
 });
 

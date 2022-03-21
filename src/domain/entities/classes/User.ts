@@ -169,8 +169,8 @@ export class User {
 		this._sessions.push(session);
 	}
 
-	removeSession(refreshToken: string) {
-		this._sessions = this._sessions.filter(session => session.refreshToken !== refreshToken);
+	removeSession(sessionToken: string) {
+		this._sessions = this._sessions.filter(session => session.token !== sessionToken);
 	}
 
 	//#endregion Methods

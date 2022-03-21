@@ -2,15 +2,15 @@ import { Geolocation } from '@/domain/entities/classes';
 import { InvalidParamError } from '@/domain/entities/errors';
 
 export class Session {
-	private _refreshToken: string;
+	private _token: string;
 	private _expiredAt: Date;
 	private _createdAt: Date;
 	private _revokedAt: Date | null;
 	private _createdBy: Geolocation;
 	private _revokedBy: Geolocation | null;
 
-	constructor({ refreshToken, expiredAt, createdBy }: { refreshToken: string; expiredAt: Date; createdBy: Geolocation }) {
-		this._refreshToken = Session.validateRefreshToken(refreshToken);
+	constructor({ token, expiredAt, createdBy }: { token: string; expiredAt: Date; createdBy: Geolocation }) {
+		this._token = Session.validateToken(token);
 		this._expiredAt = Session.validateExpiredAt(expiredAt);
 		this._createdAt = new Date();
 		this._revokedAt = null;
@@ -20,8 +20,8 @@ export class Session {
 
 	//#region Getters
 
-	get refreshToken() {
-		return this._refreshToken;
+	get token() {
+		return this._token;
 	}
 
 	get expiredAt() {
@@ -65,10 +65,10 @@ export class Session {
 
 	//#region Static Validations
 
-	static validateRefreshToken(refreshToken: string) {
-		if (refreshToken.trim().length === 0) throw new InvalidParamError('Refresh Token', 'não pode ser vazio.');
+	static validateToken(token: string) {
+		if (token.trim().length === 0) throw new InvalidParamError('Session Token', 'não pode ser vazio.');
 
-		return refreshToken;
+		return token;
 	}
 
 	static validateExpiredAt(expiredAt: Date) {
