@@ -1,6 +1,6 @@
 // import { ACCOUNT_STATUS, GENDER } from '@/domain/Constants';
-import { InvalidParamError } from '@/domain/Errors';
-import { Session } from '@/domain/Classes';
+import { InvalidParamError } from '@/domain/entities/errors';
+import { Session } from '@/domain/entities/classes';
 
 export class User {
 	private _id: string;

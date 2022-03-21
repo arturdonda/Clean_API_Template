@@ -6,7 +6,8 @@
 	"author": "Artur Donda",
 	"license": "ISC",
 	"scripts": {
-		"test": "jest"
+		"test": "jest",
+		"test-clear-cache": "jest --clearCache"
 	},
 	"dependencies": {
 		"dotenv": "^16.0.0"
