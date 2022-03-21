@@ -5,6 +5,7 @@ describe('All valid parameters', () => {
 		const user = new User({
 			id: '123',
 			confirmationCode: 'CCb192e8488dcc4d79bd58215179b9d9b3',
+			name: 'John Doe',
 			email: 'john.doe@hotmail.com',
 			password: 'Abcde#123',
 		});
@@ -17,7 +18,7 @@ describe('All valid parameters', () => {
 		expect(user.createDate.valueOf() / 1000).toBeCloseTo(new Date().valueOf() / 1000, 0);
 		expect(user.email).toBe('john.doe@hotmail.com');
 		expect(user.gender).toBeNull();
-		expect(user.name).toBeNull();
+		expect(user.name).toBe('John Doe');
 		expect(user.password).toBe('Abcde#123');
 		expect(user.phone).toBeNull();
 		expect(user.rg).toBeNull();
@@ -60,6 +61,7 @@ describe('All valid parameters', () => {
 		const user = new User({
 			id: '123',
 			confirmationCode: 'CCb192e8488dcc4d79bd58215179b9d9b3',
+			name: 'John Doe',
 			email: 'john.doe@hotmail.com',
 			password: 'Abcde#123',
 		});
@@ -68,7 +70,6 @@ describe('All valid parameters', () => {
 		user.birthday = new Date(2000, 0, 1);
 		user.cpf = '930.436.410-86';
 		user.gender = 'F';
-		user.name = 'John Doe';
 		user.phone = '(12) 93456-7890';
 		user.rg = '30.502.505-3';
 
@@ -98,6 +99,7 @@ describe('Confirmation Code', () => {
 				new User({
 					id: '123',
 					confirmationCode: 'b192e8488dcc4d79bd58215179b9d9b3',
+					name: 'John Doe',
 					email: 'john.doe@hotmail.com',
 					password: 'Abcde#123',
 				})
@@ -110,10 +112,26 @@ describe('Confirmation Code', () => {
 				new User({
 					id: '123',
 					confirmationCode: 'CC',
+					name: 'John Doe',
 					email: 'john.doe@hotmail.com',
 					password: 'Abcde#123',
 				})
 		).toThrow("Campo 'Código de Confirmação' inválido: deve ter mais de 2 caracteres.");
+	});
+});
+
+describe('Name', () => {
+	test('Invalid lenght', () => {
+		expect(
+			() =>
+				new User({
+					id: '123',
+					confirmationCode: 'CCb192e8488dcc4d79bd58215179b9d9b3',
+					name: 'JD',
+					email: 'john.doe@hotmail.com',
+					password: 'Abcde#123',
+				})
+		).toThrow("Campo 'Nome' inválido: deve conter pelo menos 3 caracteres.");
 	});
 });
 
@@ -124,6 +142,7 @@ describe('E-mail', () => {
 				new User({
 					id: '123',
 					confirmationCode: 'CCb192e8488dcc4d79bd58215179b9d9b3',
+					name: 'John Doe',
 					email: 'john.doehotmail.com',
 					password: 'Abcde#123',
 				})
@@ -136,6 +155,7 @@ describe('E-mail', () => {
 				new User({
 					id: '123',
 					confirmationCode: 'CCb192e8488dcc4d79bd58215179b9d9b3',
+					name: 'John Doe',
 					email: 'john.doe@@hotmail.com',
 					password: 'Abcde#123',
 				})
@@ -148,6 +168,7 @@ describe('E-mail', () => {
 				new User({
 					id: '123',
 					confirmationCode: 'CCb192e8488dcc4d79bd58215179b9d9b3',
+					name: 'John Doe',
 					email: 'john.doe@hotmailcom',
 					password: 'Abcde#123',
 				})
@@ -160,6 +181,7 @@ describe('E-mail', () => {
 				new User({
 					id: '123',
 					confirmationCode: 'CCb192e8488dcc4d79bd58215179b9d9b3',
+					name: 'John Doe',
 					email: 'john.doe@hotmail.com.',
 					password: 'Abcde#123',
 				})
@@ -174,6 +196,7 @@ describe('Password', () => {
 				new User({
 					id: '123',
 					confirmationCode: 'CCb192e8488dcc4d79bd58215179b9d9b3',
+					name: 'John Doe',
 					email: 'john.doe@hotmail.com',
 					password: 'abcde',
 				})
@@ -186,6 +209,7 @@ describe('Password', () => {
 				new User({
 					id: '123',
 					confirmationCode: 'CCb192e8488dcc4d79bd58215179b9d9b3',
+					name: 'John Doe',
 					email: 'john.doe@hotmail.com',
 					password: 'ABCDE#123',
 				})
@@ -198,6 +222,7 @@ describe('Password', () => {
 				new User({
 					id: '123',
 					confirmationCode: 'CCb192e8488dcc4d79bd58215179b9d9b3',
+					name: 'John Doe',
 					email: 'john.doe@hotmail.com',
 					password: 'abcde#123',
 				})
@@ -210,6 +235,7 @@ describe('Password', () => {
 				new User({
 					id: '123',
 					confirmationCode: 'CCb192e8488dcc4d79bd58215179b9d9b3',
+					name: 'John Doe',
 					email: 'john.doe@hotmail.com',
 					password: 'Abcde#fgh',
 				})
@@ -222,6 +248,7 @@ describe('Password', () => {
 				new User({
 					id: '123',
 					confirmationCode: 'CCb192e8488dcc4d79bd58215179b9d9b3',
+					name: 'John Doe',
 					email: 'john.doe@hotmail.com',
 					password: 'Abcdef123',
 				})
@@ -240,6 +267,7 @@ describe('Address', () => {
 				new User({
 					id: '123',
 					confirmationCode: 'CCb192e8488dcc4d79bd58215179b9d9b3',
+					name: 'John Doe',
 					email: 'john.doe@hotmail.com',
 					password: 'Abcde#123',
 					address: 'Not',
@@ -251,6 +279,7 @@ describe('Address', () => {
 		const user = new User({
 			id: '123',
 			confirmationCode: 'CCb192e8488dcc4d79bd58215179b9d9b3',
+			name: 'John Doe',
 			email: 'john.doe@hotmail.com',
 			password: 'Abcde#123',
 		});
@@ -268,6 +297,7 @@ describe('Birthday', () => {
 				new User({
 					id: '123',
 					confirmationCode: 'CCb192e8488dcc4d79bd58215179b9d9b3',
+					name: 'John Doe',
 					email: 'john.doe@hotmail.com',
 					password: 'Abcde#123',
 					birthday: new Date(1899, 0, 1),
@@ -279,6 +309,7 @@ describe('Birthday', () => {
 		const user = new User({
 			id: '123',
 			confirmationCode: 'CCb192e8488dcc4d79bd58215179b9d9b3',
+			name: 'John Doe',
 			email: 'john.doe@hotmail.com',
 			password: 'Abcde#123',
 		});
@@ -296,6 +327,7 @@ describe('CPF', () => {
 				new User({
 					id: '123',
 					confirmationCode: 'CCb192e8488dcc4d79bd58215179b9d9b3',
+					name: 'John Doe',
 					email: 'john.doe@hotmail.com',
 					password: 'Abcde#123',
 					cpf: '930.436.410-8x',
@@ -307,6 +339,7 @@ describe('CPF', () => {
 		const user = new User({
 			id: '123',
 			confirmationCode: 'CCb192e8488dcc4d79bd58215179b9d9b3',
+			name: 'John Doe',
 			email: 'john.doe@hotmail.com',
 			password: 'Abcde#123',
 		});
@@ -317,34 +350,6 @@ describe('CPF', () => {
 	});
 });
 
-describe('Name', () => {
-	test('Constructor - invalid lenght', () => {
-		expect(
-			() =>
-				new User({
-					id: '123',
-					confirmationCode: 'CCb192e8488dcc4d79bd58215179b9d9b3',
-					email: 'john.doe@hotmail.com',
-					password: 'Abcde#123',
-					name: 'JD',
-				})
-		).toThrow("Campo 'Nome' inválido: deve conter pelo menos 3 caracteres.");
-	});
-
-	test('Setter - invalid lenght', () => {
-		const user = new User({
-			id: '123',
-			confirmationCode: 'CCb192e8488dcc4d79bd58215179b9d9b3',
-			email: 'john.doe@hotmail.com',
-			password: 'Abcde#123',
-		});
-
-		expect(() => {
-			user.name = 'JD';
-		}).toThrow("Campo 'Nome' inválido: deve conter pelo menos 3 caracteres.");
-	});
-});
-
 describe('Phone', () => {
 	test('Constructor - invalid lenght', () => {
 		expect(
@@ -352,6 +357,7 @@ describe('Phone', () => {
 				new User({
 					id: '123',
 					confirmationCode: 'CCb192e8488dcc4d79bd58215179b9d9b3',
+					name: 'John Doe',
 					email: 'john.doe@hotmail.com',
 					password: 'Abcde#123',
 					phone: '34567890',
@@ -363,6 +369,7 @@ describe('Phone', () => {
 		const user = new User({
 			id: '123',
 			confirmationCode: 'CCb192e8488dcc4d79bd58215179b9d9b3',
+			name: 'John Doe',
 			email: 'john.doe@hotmail.com',
 			password: 'Abcde#123',
 		});
@@ -380,6 +387,7 @@ describe('RG', () => {
 				new User({
 					id: '123',
 					confirmationCode: 'CCb192e8488dcc4d79bd58215179b9d9b3',
+					name: 'John Doe',
 					email: 'john.doe@hotmail.com',
 					password: 'Abcde#123',
 					rg: '30502505@',
@@ -391,6 +399,7 @@ describe('RG', () => {
 		const user = new User({
 			id: '123',
 			confirmationCode: 'CCb192e8488dcc4d79bd58215179b9d9b3',
+			name: 'John Doe',
 			email: 'john.doe@hotmail.com',
 			password: 'Abcde#123',
 		});
@@ -427,6 +436,7 @@ describe('Session Methods', () => {
 		const user = new User({
 			id: '123',
 			confirmationCode: 'CCb192e8488dcc4d79bd58215179b9d9b3',
+			name: 'John Doe',
 			email: 'john.doe@hotmail.com',
 			password: 'Abcde#123',
 		});
@@ -455,6 +465,7 @@ describe('Session Methods', () => {
 		const user = new User({
 			id: '123',
 			confirmationCode: 'CCb192e8488dcc4d79bd58215179b9d9b3',
+			name: 'John Doe',
 			email: 'john.doe@hotmail.com',
 			password: 'Abcde#123',
 		});

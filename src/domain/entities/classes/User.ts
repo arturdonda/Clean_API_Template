@@ -11,7 +11,7 @@ export class User {
 	private _createDate: Date;
 	private _email: string;
 	private _gender: GENDER | null;
-	private _name: string | null;
+	private _name: string;
 	private _password: string;
 	private _phone: string | null;
 	private _rg: string | null;
@@ -38,7 +38,7 @@ export class User {
 		cpf?: string;
 		email: string;
 		gender?: GENDER;
-		name?: string;
+		name: string;
 		password: string;
 		phone?: string;
 		rg?: string;
@@ -51,7 +51,7 @@ export class User {
 		this._createDate = new Date();
 		this._email = User.validateEmail(email);
 		this._gender = gender ?? null;
-		this._name = name ? User.validateName(name) : null;
+		this._name = User.validateName(name);
 		this._password = User.validatePassword(password);
 		this._phone = phone ? User.validatePhone(phone) : null;
 		this._rg = rg ? User.validateRg(rg) : null;
@@ -142,7 +142,7 @@ export class User {
 	}
 
 	set name(name) {
-		this._name = name ? User.validateName(name) : null;
+		this._name = User.validateName(name);
 	}
 
 	set password(password) {
