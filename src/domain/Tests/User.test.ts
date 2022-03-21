@@ -1,4 +1,4 @@
-import { User } from '@/domain/Classes/User';
+import { User } from '@/domain/Classes';
 
 describe('All valid parameters', () => {
 	test('Constructor - only required fields', () => {

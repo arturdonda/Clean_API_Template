@@ -1,5 +1,5 @@
-import { ACCOUNT_STATUS, GENDER } from '../constants';
-import { InvalidParamError } from '../Errors/InvalidParamError';
+import { ACCOUNT_STATUS, GENDER } from '@/domain/Constants';
+import { InvalidParamError } from '@/domain/Errors';
 
 export class User {
 	private _id: string;
