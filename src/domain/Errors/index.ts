@@ -1,1 +1,1 @@
-export * from '@/domain/Errors/InvalidParamError';
+export * from './InvalidParamError';

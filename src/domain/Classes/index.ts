@@ -1,3 +1,3 @@
-export * from '@/domain/Classes/Geolocation';
-export * from '@/domain/Classes/Session';
-export * from '@/domain/Classes/User';
+export * from './Geolocation';
+export * from './Session';
+export * from './User';
