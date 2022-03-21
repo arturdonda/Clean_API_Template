@@ -1,4 +1,4 @@
-import { ACCOUNT_STATUS, GENDER } from '@/domain/Constants';
+// import { ACCOUNT_STATUS, GENDER } from '@/domain/Constants';
 import { InvalidParamError } from '@/domain/Errors';
 import { Session } from '@/domain/Classes';
 
@@ -15,7 +15,7 @@ export class User {
 	private _password: string;
 	private _phone: string | null;
 	private _rg: string | null;
-	private _status: ACCOUNT_STATUS;
+	private _status: STATUS;
 	private _sessions: Session[];
 
 	constructor({
@@ -260,3 +260,7 @@ export class User {
 
 	//#endregion Static Validations
 }
+
+type STATUS = 'Pending' | 'Active' | 'Inactive';
+
+type GENDER = 'M' | 'F' | 'O';
