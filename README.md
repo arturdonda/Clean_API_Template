@@ -4,7 +4,7 @@
   <!-- <a href="https://github.com/arturdonda/API_Template_CleanArch">
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a> -->
-  <h2 align="center">Clean API Template</h2>
+  <h3 align="center">Clean API Template</h3>
 
   <br />
 
