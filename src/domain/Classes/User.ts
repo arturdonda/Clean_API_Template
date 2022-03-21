@@ -1,5 +1,6 @@
 import { ACCOUNT_STATUS, GENDER } from '@/domain/Constants';
 import { InvalidParamError } from '@/domain/Errors';
+import { Session } from '@/domain/Classes';
 
 export class User {
 	private _id: string;
@@ -15,6 +16,7 @@ export class User {
 	private _phone: string | null;
 	private _rg: string | null;
 	private _status: ACCOUNT_STATUS;
+	private _sessions: Session[];
 
 	constructor({
 		id,
@@ -54,6 +56,7 @@ export class User {
 		this._phone = phone ? User.validatePhone(phone) : null;
 		this._rg = rg ? User.validateRg(rg) : null;
 		this._status = 'Pending';
+		this._sessions = [];
 	}
 
 	//#region Getters
@@ -110,6 +113,10 @@ export class User {
 		return this._status;
 	}
 
+	get sessions() {
+		return this._sessions.filter(session => session.isActive);
+	}
+
 	//#endregion Getters
 
 	//#region Setters
@@ -155,6 +162,18 @@ export class User {
 	}
 
 	//#endregion Setters
+
+	//#region Methods
+
+	addSession(session: Session) {
+		this._sessions.push(session);
+	}
+
+	removeSession(refreshToken: string) {
+		this._sessions = this._sessions.filter(session => session.refreshToken !== refreshToken);
+	}
+
+	//#endregion Methods
 
 	//#region Static Validations
 

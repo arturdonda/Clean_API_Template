@@ -1,4 +1,4 @@
-import { User } from '@/domain/Classes';
+import { User, Session, Geolocation } from '@/domain/Classes';
 
 describe('All valid parameters', () => {
 	test('Constructor - only required fields', () => {
@@ -22,6 +22,7 @@ describe('All valid parameters', () => {
 		expect(user.phone).toBeNull();
 		expect(user.rg).toBeNull();
 		expect(user.status).toBe('Pending');
+		expect(user.sessions).toHaveLength(0);
 	});
 
 	test('Constructor - all fields', () => {
@@ -52,6 +53,7 @@ describe('All valid parameters', () => {
 		expect(user.phone).toBe('1234567890');
 		expect(user.rg).toBe('30502505X');
 		expect(user.status).toBe('Pending');
+		expect(user.sessions).toHaveLength(0);
 	});
 
 	test('Setter - all fields', () => {
@@ -83,6 +85,7 @@ describe('All valid parameters', () => {
 		expect(user.phone).toBe('12934567890');
 		expect(user.rg).toBe('305025053');
 		expect(user.status).toBe('Pending');
+		expect(user.sessions).toHaveLength(0);
 	});
 });
 
@@ -399,3 +402,74 @@ describe('RG', () => {
 });
 
 //#endregion Optional fields
+
+//#region Methods
+
+describe('Session Methods', () => {
+	const createSession = (refreshToken: string) =>
+		new Session({
+			refreshToken: refreshToken,
+			expiredAt: new Date(new Date().getTime() + 86400 * 1000),
+			createdBy: new Geolocation({
+				ip: '0.0.0.0',
+				countryName: 'Brazil',
+				countryCode: 'BR',
+				countryFlag: '🇧🇷',
+				stateName: 'Minas Gerais',
+				stateCode: 'MG',
+				city: 'Uberlândia',
+				latitude: -19.0233,
+				longitude: -48.3348,
+			}),
+		});
+
+	test('Add Session', () => {
+		const user = new User({
+			id: '123',
+			confirmationCode: 'CCb192e8488dcc4d79bd58215179b9d9b3',
+			email: 'john.doe@hotmail.com',
+			password: 'Abcde#123',
+		});
+
+		expect(user.sessions).toHaveLength(0);
+
+		user.addSession(createSession('1'));
+
+		expect(user.sessions).toHaveLength(1);
+
+		user.addSession(createSession('2'));
+		user.addSession(createSession('3'));
+
+		expect(user.sessions).toHaveLength(3);
+
+		expect(user.sessions).toEqual(
+			expect.arrayContaining([
+				expect.objectContaining({ refreshToken: '1' }),
+				expect.objectContaining({ refreshToken: '2' }),
+				expect.objectContaining({ refreshToken: '3' }),
+			])
+		);
+	});
+
+	test('Remove Session', () => {
+		const user = new User({
+			id: '123',
+			confirmationCode: 'CCb192e8488dcc4d79bd58215179b9d9b3',
+			email: 'john.doe@hotmail.com',
+			password: 'Abcde#123',
+		});
+
+		user.addSession(createSession('1'));
+		user.addSession(createSession('2'));
+		user.addSession(createSession('3'));
+
+		expect(user.sessions).toHaveLength(3);
+
+		user.removeSession('2');
+
+		expect(user.sessions).toHaveLength(2);
+		expect(user.sessions).toEqual(expect.arrayContaining([expect.objectContaining({ refreshToken: '1' }), expect.objectContaining({ refreshToken: '3' })]));
+	});
+});
+
+//#endregion Methods
