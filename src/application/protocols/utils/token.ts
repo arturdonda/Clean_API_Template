@@ -1,6 +1,11 @@
 export interface ITokenService {
-	generate: (userId: string) => { token: string } & DefaultTokenProperties;
-	validate: (token: string) => DefaultTokenProperties;
+	generate: (userId: string) => ITokenService.GenerateResult;
+	validate: (token: string) => ITokenService.ValidateResult;
+}
+
+export namespace ITokenService {
+	export type GenerateResult = { token: string } & DefaultTokenProperties;
+	export type ValidateResult = DefaultTokenProperties;
 }
 
 type DefaultTokenProperties = {
