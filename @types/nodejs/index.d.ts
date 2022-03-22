@@ -1,0 +1,25 @@
+declare namespace NodeJS {
+	export interface ProcessEnv {
+		PORT: number;
+		ENV_NAME: string;
+		ISSUER: string;
+
+		MONGODB_CONNECTION_STRING: string;
+
+		REFRESH_TOKEN_SECRET: string;
+		ACCESS_TOKEN_SECRET: string;
+		CONFIRMATION_TOKEN_SECRET: string;
+		RESET_PASSWORD_TOKEN_SECRET: string;
+
+		REFRESH_TOKEN_EXPIRATION_IN_DAYS: number;
+		ACCESS_TOKEN_EXPIRATION_IN_MINUTES: number;
+		RESET_PASSWORD_TOKEN_EXPIRATION_IN_MINUTES: number;
+
+		IPDATA_KEY: string;
+
+		EMAIL_SERVICE_USERNAME: string;
+		EMAIL_SERVICE_PASSWORD: string;
+
+		RESET_PASSWORD_LINK: string;
+	}
+}
