@@ -1,7 +1,7 @@
 import { User } from '@/domain/entities/classes';
 
 export interface ISignIn {
-	signIn: ({ email, password, ipAddress }: ISignIn.Params) => Promise<ISignIn.Result>;
+	exec: ({ email, password, ipAddress }: ISignIn.Params) => Promise<ISignIn.Result>;
 }
 
 export namespace ISignIn {

@@ -1,7 +1,7 @@
 import { Session } from '@/domain/entities/classes';
 
 export interface IGetActiveSessions {
-	getActiveSessions: ({ userId }: IGetActiveSessions.Params) => Promise<IGetActiveSessions.Result>;
+	exec: ({ userId }: IGetActiveSessions.Params) => Promise<IGetActiveSessions.Result>;
 }
 
 export namespace IGetActiveSessions {

@@ -1,7 +1,7 @@
 import { Session } from '@/domain/entities/classes';
 
 export interface ICreateSession {
-	createSession: ({ userId, ipAddress }: ICreateSession.Params) => Promise<ICreateSession.Result>;
+	exec: ({ userId, ipAddress }: ICreateSession.Params) => Promise<ICreateSession.Result>;
 }
 
 export namespace ICreateSession {

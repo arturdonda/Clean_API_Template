@@ -1,7 +1,7 @@
 import { User } from '@/domain/entities/classes';
 
 export interface ISignUp {
-	signUp: ({ name, email, password, confirmationPassword }: ISignUp.Params) => Promise<ISignUp.Result>;
+	exec: ({ name, email, password, confirmationPassword }: ISignUp.Params) => Promise<ISignUp.Result>;
 }
 
 export namespace ISignUp {

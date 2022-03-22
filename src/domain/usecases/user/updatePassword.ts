@@ -1,5 +1,5 @@
 export interface IUpdatePassword {
-	updatePassword: ({ userId, password, confirmationPassword }: IUpdatePassword.Params) => Promise<IUpdatePassword.Result>;
+	exec: ({ userId, password, confirmationPassword }: IUpdatePassword.Params) => Promise<IUpdatePassword.Result>;
 }
 
 export namespace IUpdatePassword {

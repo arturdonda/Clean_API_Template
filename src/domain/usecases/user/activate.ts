@@ -1,5 +1,5 @@
 export interface IActivate {
-	activate: ({ confirmationCode }: IActivate.Params) => Promise<IActivate.Result>;
+	exec: ({ confirmationCode }: IActivate.Params) => Promise<IActivate.Result>;
 }
 
 export namespace IActivate {

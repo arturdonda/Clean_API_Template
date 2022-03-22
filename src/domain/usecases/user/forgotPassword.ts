@@ -1,5 +1,5 @@
 export interface IForgotPassword {
-	forgotPassword: ({ email }: IForgotPassword.Params) => Promise<IForgotPassword.Result>;
+	exec: ({ email }: IForgotPassword.Params) => Promise<IForgotPassword.Result>;
 }
 
 export namespace IForgotPassword {

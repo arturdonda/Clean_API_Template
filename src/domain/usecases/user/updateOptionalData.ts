@@ -1,7 +1,7 @@
 import { User } from '@/domain/entities/classes';
 
 export interface IUpdateOptionalData {
-	updateOptionalData: ({ userId, address, birthday, cpf, gender, phone, rg }: IUpdateOptionalData.Params) => Promise<IUpdateOptionalData.Result>;
+	exec: ({ userId, address, birthday, cpf, gender, phone, rg }: IUpdateOptionalData.Params) => Promise<IUpdateOptionalData.Result>;
 }
 
 export namespace IUpdateOptionalData {
