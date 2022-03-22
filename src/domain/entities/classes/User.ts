@@ -1,6 +1,5 @@
-// import { ACCOUNT_STATUS, GENDER } from '@/domain/Constants';
 import { InvalidParamError } from '@/domain/entities/errors';
-import { Session } from '@/domain/entities/classes';
+import { Geolocation, Session } from '@/domain/entities/classes';
 
 export class User {
 	private _id: string;
@@ -31,7 +30,7 @@ export class User {
 		phone,
 		rg,
 	}: {
-		id: string;
+		id?: string;
 		address?: string;
 		birthday?: Date;
 		confirmationCode: string;
@@ -43,7 +42,7 @@ export class User {
 		phone?: string;
 		rg?: string;
 	}) {
-		this._id = User.validadeId(id);
+		this._id = id ? User.validadeId(id) : '';
 		this._address = address ? User.validateAddress(address) : null;
 		this._birthday = birthday ? User.validateBirthday(birthday) : null;
 		this._confirmationCode = User.validateConfirmationCode(confirmationCode);
@@ -165,12 +164,22 @@ export class User {
 
 	//#region Methods
 
+	getSession(sessionToken: string) {
+		return this._sessions.filter(session => session.token === sessionToken)[0];
+	}
+
 	addSession(session: Session) {
 		this._sessions.push(session);
 	}
 
 	removeSession(sessionToken: string) {
 		this._sessions = this._sessions.filter(session => session.token !== sessionToken);
+	}
+
+	revokeSession(sessionToken: string, revoker: Geolocation) {
+		this._sessions.forEach(session => {
+			if (session.token === sessionToken) session.revoke(revoker);
+		});
 	}
 
 	//#endregion Methods

@@ -415,22 +415,41 @@ describe('RG', () => {
 //#region Methods
 
 describe('Session Methods', () => {
-	const createSession = (token: string) =>
+	const createGeolocation = (ip?: string) =>
+		new Geolocation({
+			ip: ip ?? '0.0.0.0',
+			countryName: 'Brazil',
+			countryCode: 'BR',
+			countryFlag: '🇧🇷',
+			stateName: 'Minas Gerais',
+			stateCode: 'MG',
+			city: 'Uberlândia',
+			latitude: -19.0233,
+			longitude: -48.3348,
+		});
+
+	const createSession = (token: string, ip?: string) =>
 		new Session({
 			token: token,
 			expiredAt: new Date(new Date().getTime() + 86400 * 1000),
-			createdBy: new Geolocation({
-				ip: '0.0.0.0',
-				countryName: 'Brazil',
-				countryCode: 'BR',
-				countryFlag: '🇧🇷',
-				stateName: 'Minas Gerais',
-				stateCode: 'MG',
-				city: 'Uberlândia',
-				latitude: -19.0233,
-				longitude: -48.3348,
-			}),
+			createdBy: createGeolocation(ip),
 		});
+
+	test('Get Session', () => {
+		const user = new User({
+			id: '123',
+			confirmationCode: 'CCb192e8488dcc4d79bd58215179b9d9b3',
+			name: 'John Doe',
+			email: 'john.doe@hotmail.com',
+			password: 'Abcde#123',
+		});
+
+		const session = createSession('1');
+
+		user.addSession(session);
+
+		expect(user.getSession('1')).toStrictEqual(session);
+	});
 
 	test('Add Session', () => {
 		const user = new User({
@@ -476,6 +495,27 @@ describe('Session Methods', () => {
 
 		expect(user.sessions).toHaveLength(2);
 		expect(user.sessions).toEqual(expect.arrayContaining([expect.objectContaining({ token: '1' }), expect.objectContaining({ token: '3' })]));
+	});
+
+	test('Revoke Session', () => {
+		const user = new User({
+			id: '123',
+			confirmationCode: 'CCb192e8488dcc4d79bd58215179b9d9b3',
+			name: 'John Doe',
+			email: 'john.doe@hotmail.com',
+			password: 'Abcde#123',
+		});
+
+		user.addSession(createSession('1'));
+		user.addSession(createSession('2'));
+		user.addSession(createSession('3'));
+
+		const revoker = createGeolocation('0.0.0.1');
+		user.revokeSession('2', revoker);
+
+		const session = user.getSession('2');
+		expect(session.revokedBy).toStrictEqual(revoker);
+		expect((session.revokedAt?.valueOf() ?? 0) / 1000).toBeCloseTo(new Date().valueOf() / 1000, 0);
 	});
 });
 
