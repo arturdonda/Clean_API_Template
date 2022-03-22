@@ -48,7 +48,7 @@ export class MockUserRepository implements IUserRepository {
 	};
 
 	update = (user: User): Promise<IUserRepository.Result> => {
-		if (this._users.filter(u => u.id === user.id)[0]) throw new UserNotFoundError();
+		if (!this._users.filter(u => u.id === user.id)[0]) throw new UserNotFoundError();
 
 		this._users = this._users.map(u => (u.id === user.id ? user : u));
 
