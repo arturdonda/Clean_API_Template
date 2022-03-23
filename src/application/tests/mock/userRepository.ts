@@ -22,7 +22,7 @@ export class MockUserRepository implements IUserRepository {
 	};
 
 	getByEmail = (email: string): Promise<IUserRepository.Result | null> => {
-		const user = this._users.filter(user => user.email === email)[0];
+		const user = this._users.filter(user => user.email.toLowerCase() === email.toLowerCase())[0];
 
 		return new Promise((resolve, reject) => resolve(user));
 	};
