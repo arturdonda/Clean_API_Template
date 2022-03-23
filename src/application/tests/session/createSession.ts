@@ -25,5 +25,7 @@ describe('Create Session', () => {
 				ip: '0.0.0.0',
 			}),
 		});
+
+		tokenSpy.mockRestore();
 	});
 });
