@@ -1,5 +1,5 @@
 import { IUpdatePassword } from '@/domain/usecases/user';
-import { IUserRepository } from '@/application/protocols/repository';
+import { IUserRepository } from '@/application/protocols/repositories';
 import { InvalidPasswordError, UserNotFoundError } from '@/application/protocols/errors';
 import { IHashService } from '@/application/protocols/utils';
 

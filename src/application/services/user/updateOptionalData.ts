@@ -1,6 +1,6 @@
 import { IUpdateOptionalData } from '@/domain/usecases/user';
 import { UserNotFoundError } from '@/application/protocols/errors';
-import { IUserRepository } from '@/application/protocols/repository';
+import { IUserRepository } from '@/application/protocols/repositories';
 
 export class UpdateOptionalData implements IUpdateOptionalData {
 	constructor(private readonly userRepository: IUserRepository) {}

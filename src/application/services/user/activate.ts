@@ -1,5 +1,5 @@
 import { IActivate } from '@/domain/usecases/user';
-import { IUserRepository } from '@/application/protocols/repository/user';
+import { IUserRepository } from '@/application/protocols/repositories/user';
 import { UserNotFoundError } from '@/application/protocols/errors';
 
 export class Activate implements IActivate {

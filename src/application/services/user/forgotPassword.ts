@@ -1,5 +1,5 @@
 import { UserNotFoundError } from '@/application/protocols/errors';
-import { IUserRepository } from '@/application/protocols/repository';
+import { IUserRepository } from '@/application/protocols/repositories';
 import { IEmailService, ITokenService } from '@/application/protocols/utils';
 import { IForgotPassword } from '@/domain/usecases/user';
 

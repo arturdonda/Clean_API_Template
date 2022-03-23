@@ -1,5 +1,5 @@
 import { IRevokeSession } from '@/domain/usecases/session';
-import { IUserRepository } from '@/application/protocols/repository';
+import { IUserRepository } from '@/application/protocols/repositories';
 import { IIpService, ITokenService } from '@/application/protocols/utils';
 import { UserNotFoundError } from '@/application/protocols/errors';
 
