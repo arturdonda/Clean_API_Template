@@ -1,8 +1,8 @@
 import { ISignIn } from '@/domain/usecases/user';
 import { ICreateSession, IRenewAccess } from '@/domain/usecases/session';
 import { IUserRepository } from '@/application/protocols/repository';
-import { InvalidPasswordError, UserNotFoundError } from '@/application/protocols/errors';
 import { IHashService } from '@/application/protocols/utils';
+import { InvalidPasswordError, UserAccountPendingActivation, UserNotFoundError } from '@/application/protocols/errors';
 
 export class SignIn implements ISignIn {
 	constructor(
@@ -16,6 +16,8 @@ export class SignIn implements ISignIn {
 		const user = await this.userRepository.getByEmail(email);
 
 		if (!user) throw new UserNotFoundError();
+
+		if (user.status === 'Pending') throw new UserAccountPendingActivation();
 
 		if (!this.passwordHashService.verify(password, user.password)) throw new InvalidPasswordError();
 
