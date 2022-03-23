@@ -1,12 +1,12 @@
 import { ITokenService } from '@/application/protocols/utils';
 
 export class MockTokenService implements ITokenService {
-	generate = (userId: string): ITokenService.GenerateResult => {
+	generate = (userId: string, expirationDate?: Date): ITokenService.GenerateResult => {
 		const tokenData = {
 			audience: userId,
-			expiredAt: new Date(2050, 0, 1).valueOf(),
+			expiredAt: expirationDate?.valueOf() ?? new Date(2050, 0, 1).valueOf(),
 			issuedAt: new Date().valueOf(),
-			issuer: process.env.ISSUER,
+			issuer: 'mock_token_service',
 		};
 		return { ...tokenData, token: Buffer.from(JSON.stringify(tokenData)).toString('base64') };
 	};

@@ -9,7 +9,7 @@ describe('Sign In', () => {
 	const tokenService = new MockTokenService();
 	const ipService = new MockIpService();
 	const createSessionService = new CreateSession(tokenService, ipService);
-	const renewAccessService = new RenewAccess(tokenService);
+	const renewAccessService = new RenewAccess(tokenService, tokenService);
 	const signInService = new SignIn(userRepository, passwordHashService, createSessionService, renewAccessService);
 
 	test('Account Peding Activation', async () => {
