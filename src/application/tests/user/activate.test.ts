@@ -5,17 +5,20 @@ import { MockUserRepository } from '@/application/tests/mock';
 describe('Activate User', () => {
 	const userRepository = new MockUserRepository();
 	const activateService = new Activate(userRepository);
-	const confirmationCode = 'CCffe5c42644974f1c9102e93f35c77f64';
 
 	test('Valid Confirmation Code', async () => {
-		expect(userRepository.getByConfirmationCode(confirmationCode)).resolves.toHaveProperty('status', 'Pending');
+		const user = await userRepository.getById('1');
 
-		expect(activateService.exec({ confirmationCode })).resolves;
+		if (!user) throw new UserNotFoundError();
 
-		expect(userRepository.getByConfirmationCode(confirmationCode)).resolves.toHaveProperty('status', 'Active');
+		expect(userRepository.getByConfirmationCode(user.confirmationCode)).resolves.toHaveProperty('status', 'Pending');
+
+		expect(activateService.exec({ confirmationCode: user.confirmationCode })).resolves;
+
+		expect(userRepository.getByConfirmationCode(user.confirmationCode)).resolves.toHaveProperty('status', 'Active');
 	});
 
 	test('Invalid Confirmation Code', async () => {
-		expect(activateService.exec({ confirmationCode: 'CC123' })).rejects.toThrow(UserNotFoundError);
+		expect(activateService.exec({ confirmationCode: '123' })).rejects.toThrow(UserNotFoundError);
 	});
 });
