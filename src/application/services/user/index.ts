@@ -4,5 +4,6 @@ export * from './getActiveSessions';
 export * from './getUser';
 export * from './signIn';
 export * from './signUp';
+export * from './updateForgottenPassword';
 export * from './updateOptionalData';
 export * from './updatePassword';
