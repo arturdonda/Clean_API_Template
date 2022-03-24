@@ -20,7 +20,7 @@ describe('Create Session', () => {
 
 		expect(sessionResult).toMatchObject({
 			token: tokenResult.token,
-			expiredAt: new Date(tokenResult.expiredAt),
+			expiredAt: new Date(tokenResult.expiredAt * 1000),
 			createdBy: expect.objectContaining({
 				ip: '0.0.0.0',
 			}),
