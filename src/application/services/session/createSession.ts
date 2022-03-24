@@ -10,7 +10,7 @@ export class CreateSession implements ICreateSession {
 
 		return new Session({
 			token: sessionToken.token,
-			expiredAt: new Date(sessionToken.expiredAt),
+			expiredAt: new Date(sessionToken.expiredAt * 1000),
 			createdBy: await this.ipService.lookup(ipAddress),
 		});
 	};

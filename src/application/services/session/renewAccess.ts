@@ -8,7 +8,7 @@ export class RenewAccess implements IRenewAccess {
 	exec = (sessionToken: string): string => {
 		const sessionTokenObject = this.sessionTokenService.validate(sessionToken);
 
-		if (sessionTokenObject.expiredAt <= new Date().valueOf()) throw new ExpiredTokenError();
+		if (new Date(sessionTokenObject.expiredAt * 1000) <= new Date()) throw new ExpiredTokenError();
 
 		return this.accessTokenService.generate(sessionTokenObject.audience).token;
 	};
