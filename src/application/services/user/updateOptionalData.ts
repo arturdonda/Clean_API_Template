@@ -17,6 +17,6 @@ export class UpdateOptionalData implements IUpdateOptionalData {
 		if (phone) user.phone = phone;
 		if (rg) user.rg = rg;
 
-		return await this.userRepository.update(user);
+		return (await this.userRepository.update(user)) as IUpdateOptionalData.Result;
 	};
 }

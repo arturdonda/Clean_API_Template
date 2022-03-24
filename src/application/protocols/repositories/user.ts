@@ -5,7 +5,7 @@ export interface IUserRepository {
 	getByConfirmationCode: (confirmationCode: string) => Promise<IUserRepository.Result | null>;
 	getByEmail: (email: string) => Promise<IUserRepository.Result | null>;
 	create: (user: User) => Promise<IUserRepository.Result>;
-	update: (user: User) => Promise<IUserRepository.Result>;
+	update: (user: User) => Promise<IUserRepository.Result | null>;
 }
 
 export namespace IUserRepository {
