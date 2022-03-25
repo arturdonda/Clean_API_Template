@@ -22,35 +22,10 @@ export class JwtAdapter implements ITokenService {
 		}) as jwt.JwtPayload;
 
 		return {
-			issuedAt: decoded.iat ?? 0,
-			expiredAt: decoded.exp ?? 0,
+			issuedAt: decoded.iat ? new Date(decoded.iat * 1000) : new Date(),
+			expiredAt: decoded.exp ? new Date(decoded.exp * 1000) : new Date(),
 			audience: (decoded.aud as string) ?? '',
 			issuer: decoded.iss ?? '',
 		};
 	};
 }
-
-// export const sign = ({ secret, userId, expiresIn }: { secret: string; userId: string; expiresIn: string }): ITokenService.GenerateResult => {
-// 	const token = jwt.sign({}, secret, {
-// 		expiresIn: expiresIn,
-// 		issuer: process.env.ISSUER,
-// 		audience: userId,
-// 	});
-
-// 	const decoded = verify({ token, secret });
-
-// 	return { token: token, ...decoded };
-// };
-
-// export const verify = ({ token, secret }: { token: string; secret: string }): ITokenService.ValidateResult => {
-// 	const decoded = jwt.verify(token, secret, {
-// 		issuer: process.env.ISSUER,
-// 	}) as jwt.JwtPayload;
-
-// 	return {
-// 		issuedAt: decoded.iat ?? 0,
-// 		expiredAt: decoded.exp ?? 0,
-// 		audience: (decoded.aud as string) ?? '',
-// 		issuer: decoded.iss ?? '',
-// 	};
-// };

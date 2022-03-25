@@ -9,8 +9,8 @@ export namespace ITokenService {
 }
 
 type DefaultTokenProperties = {
-	issuedAt: number;
-	expiredAt: number;
+	issuedAt: Date;
+	expiredAt: Date;
 	audience: string;
 	issuer: string;
 };
