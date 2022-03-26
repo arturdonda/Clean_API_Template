@@ -18,14 +18,14 @@ export class UpdateOptionalData implements IUpdateOptionalData {
 
 		if (cpf) {
 			const userExists = !!(await this.userRepository.getByCpf(User.validateCpf(cpf)));
-			if (userExists) throw new UserRegisteredError();
+			if (userExists) throw new UserRegisteredError('CPF');
 
 			user.cpf = cpf;
 		}
 
 		if (rg) {
 			const userExists = !!(await this.userRepository.getByRg(User.validateRg(rg)));
-			if (userExists) throw new UserRegisteredError();
+			if (userExists) throw new UserRegisteredError('RG');
 
 			user.rg = rg;
 		}

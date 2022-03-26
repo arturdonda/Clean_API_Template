@@ -45,7 +45,7 @@ describe('Sign Up', () => {
 				password: 'Abcde#123',
 				confirmationPassword: 'Abcde#123',
 			})
-		).rejects.toThrow(UserRegisteredError);
+		).rejects.toThrow('E-mail já cadastrado.');
 	});
 
 	test('Unmatch passwords', async () => {

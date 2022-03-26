@@ -16,7 +16,7 @@ export class SignUp implements ISignUp {
 
 		const userExists = !!(await this.userRepository.getByEmail(User.validateEmail(email)));
 
-		if (userExists) throw new UserRegisteredError();
+		if (userExists) throw new UserRegisteredError('E-mail');
 
 		return await this.userRepository.create(
 			new User({

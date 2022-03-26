@@ -70,7 +70,7 @@ describe('Update optional data', () => {
 				userId: '3',
 				cpf: '930.436.410-86',
 			})
-		).rejects.toThrow(UserRegisteredError);
+		).rejects.toThrow('CPF já cadastrado.');
 	});
 
 	test('Duplicated rg', async () => {
@@ -79,6 +79,6 @@ describe('Update optional data', () => {
 				userId: '3',
 				rg: '30.502.505-3',
 			})
-		).rejects.toThrow(UserRegisteredError);
+		).rejects.toThrow('RG já cadastrado.');
 	});
 });
