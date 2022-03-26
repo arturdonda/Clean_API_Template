@@ -11,10 +11,10 @@
 		"dev": "ts-node src/infra/test.ts"
 	},
 	"_moduleAliases": {
-		"@/application": "src/application",
-		"@/domain": "src/domain",
-		"@/infra": "src/infra",
-		"@/presentation": "src/presentation"
+		"@application": "src/application",
+		"@domain": "src/domain",
+		"@infra": "src/infra",
+		"@presentation": "src/presentation"
 	},
 	"dependencies": {
 		"bcryptjs": "^2.4.3",

@@ -1,6 +1,6 @@
-import { IRenewAccess } from '@/domain/usecases/session';
-import { ITokenService } from '@/application/protocols/utils';
-import { ExpiredTokenError } from '@/application/errors';
+import { IRenewAccess } from '@domain/usecases/session';
+import { ITokenService } from '@application/protocols/utils';
+import { ExpiredTokenError } from '@application/errors';
 
 export class RenewAccess implements IRenewAccess {
 	constructor(private readonly sessionTokenService: ITokenService, private readonly accessTokenService: ITokenService) {}

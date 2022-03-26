@@ -1,5 +1,5 @@
-import { IRevokeSession } from '@/domain/usecases/session';
-import { Controller, HttpRequest, HttpResponse, ok, internalServerError } from '@/presentation/protocols';
+import { IRevokeSession } from '@domain/usecases/session';
+import { Controller, HttpRequest, HttpResponse, ok, internalServerError } from '@presentation/protocols';
 
 export class SignOutController implements Controller {
 	constructor(private readonly revokeSessionService: IRevokeSession) {}

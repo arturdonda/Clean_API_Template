@@ -1,7 +1,7 @@
-import { IUpdatePassword } from '@/domain/usecases/user';
-import { IHashService } from '@/application/protocols/utils';
-import { IUserRepository } from '@/application/protocols/repositories';
-import { InvalidPasswordError, UserNotFoundError } from '@/application/errors';
+import { IUpdatePassword } from '@domain/usecases/user';
+import { IHashService } from '@application/protocols/utils';
+import { IUserRepository } from '@application/protocols/repositories';
+import { InvalidPasswordError, UserNotFoundError } from '@application/errors';
 
 export class UpdatePassword implements IUpdatePassword {
 	constructor(private readonly userRepository: IUserRepository, private readonly passwordHashService: IHashService) {}

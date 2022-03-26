@@ -1,5 +1,5 @@
-import { Geolocation } from '@/domain/entities';
-import { IIpService } from '@/application/protocols/utils';
+import { Geolocation } from '@domain/entities';
+import { IIpService } from '@application/protocols/utils';
 import ipData from 'ipdata';
 
 export class IpService implements IIpService {

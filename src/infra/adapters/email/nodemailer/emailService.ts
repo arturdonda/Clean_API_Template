@@ -1,4 +1,4 @@
-import { IEmailService } from '@/application/protocols/utils';
+import { IEmailService } from '@application/protocols/utils';
 import nodemailer from 'nodemailer';
 
 export class EmailService implements IEmailService {

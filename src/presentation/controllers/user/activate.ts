@@ -1,6 +1,6 @@
-import { IActivate } from '@/domain/usecases/user';
-import { MissingParamError } from '@/presentation/errors';
-import { Controller, HttpRequest, HttpResponse, ok, badRequest, internalServerError } from '@/presentation/protocols';
+import { IActivate } from '@domain/usecases/user';
+import { MissingParamError } from '@presentation/errors';
+import { Controller, HttpRequest, HttpResponse, ok, badRequest, internalServerError } from '@presentation/protocols';
 
 export class ActivateUserController implements Controller {
 	constructor(private readonly activateService: IActivate) {}

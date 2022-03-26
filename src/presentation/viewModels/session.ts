@@ -1,4 +1,4 @@
-import { Session } from '@/domain/entities';
+import { Session } from '@domain/entities';
 import { GeolocationViewModel } from '.';
 
 export class SessionViewModel {

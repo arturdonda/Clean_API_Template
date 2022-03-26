@@ -1,6 +1,6 @@
-import { IGetActiveSessions } from '@/domain/usecases/user';
-import { SessionViewModel } from '@/presentation/viewModels';
-import { Controller, HttpRequest, HttpResponse, ok, internalServerError } from '@/presentation/protocols';
+import { IGetActiveSessions } from '@domain/usecases/user';
+import { SessionViewModel } from '@presentation/viewModels';
+import { Controller, HttpRequest, HttpResponse, ok, internalServerError } from '@presentation/protocols';
 
 export class GetActiveSessionsController implements Controller {
 	constructor(private readonly getActiveSessionsService: IGetActiveSessions) {}

@@ -1,4 +1,4 @@
-import { User } from '@/domain/entities';
+import { User } from '@domain/entities';
 
 export interface IUpdateOptionalData {
 	exec: ({ userId, address, birthday, cpf, gender, phone, rg }: IUpdateOptionalData.Params) => Promise<IUpdateOptionalData.Result>;

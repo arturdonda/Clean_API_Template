@@ -1,5 +1,5 @@
-import { MockIpService, MockTokenService } from '@/application/__tests__/mock';
-import { CreateSession } from '@/application/services/session';
+import { MockIpService, MockTokenService } from '@application/__tests__/mock';
+import { CreateSession } from '@application/services/session';
 
 describe('Create Session', () => {
 	const tokenService = new MockTokenService();

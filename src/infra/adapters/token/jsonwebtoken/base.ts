@@ -1,4 +1,4 @@
-import { ITokenService } from '@/application/protocols/utils';
+import { ITokenService } from '@application/protocols/utils';
 import jwt from 'jsonwebtoken';
 
 export class JwtAdapter implements ITokenService {

@@ -1,6 +1,6 @@
-import { IUpdateForgottenPassword } from '@/domain/usecases/user';
-import { MissingParamError } from '@/presentation/errors';
-import { Controller, HttpRequest, HttpResponse, ok, badRequest, internalServerError } from '@/presentation/protocols';
+import { IUpdateForgottenPassword } from '@domain/usecases/user';
+import { MissingParamError } from '@presentation/errors';
+import { Controller, HttpRequest, HttpResponse, ok, badRequest, internalServerError } from '@presentation/protocols';
 
 export class UpdateForgottenPasswordController implements Controller {
 	constructor(private readonly updateForgottenPasswordService: IUpdateForgottenPassword) {}

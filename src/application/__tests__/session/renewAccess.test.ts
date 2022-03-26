@@ -1,6 +1,6 @@
-import { MockTokenService } from '@/application/__tests__/mock';
-import { RenewAccess } from '@/application/services/session';
-import { ExpiredTokenError } from '@/application/errors';
+import { MockTokenService } from '@application/__tests__/mock';
+import { RenewAccess } from '@application/services/session';
+import { ExpiredTokenError } from '@application/errors';
 
 describe('Renew Access', () => {
 	const tokenService = new MockTokenService();

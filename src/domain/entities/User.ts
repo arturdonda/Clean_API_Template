@@ -1,5 +1,5 @@
-import { Geolocation, Session } from '@/domain/entities';
-import { InvalidParamError } from '@/domain/errors';
+import { Geolocation, Session } from '@domain/entities';
+import { InvalidParamError } from '@domain/errors';
 
 export class User {
 	private _id: string;

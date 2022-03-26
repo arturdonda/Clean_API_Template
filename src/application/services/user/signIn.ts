@@ -1,8 +1,8 @@
-import { ISignIn } from '@/domain/usecases/user';
-import { ICreateSession, IRenewAccess } from '@/domain/usecases/session';
-import { IUserRepository } from '@/application/protocols/repositories';
-import { IHashService } from '@/application/protocols/utils';
-import { InvalidPasswordError, UserAccountPendingActivation, UserNotFoundError } from '@/application/errors';
+import { ISignIn } from '@domain/usecases/user';
+import { ICreateSession, IRenewAccess } from '@domain/usecases/session';
+import { IUserRepository } from '@application/protocols/repositories';
+import { IHashService } from '@application/protocols/utils';
+import { InvalidPasswordError, UserAccountPendingActivation, UserNotFoundError } from '@application/errors';
 
 export class SignIn implements ISignIn {
 	constructor(

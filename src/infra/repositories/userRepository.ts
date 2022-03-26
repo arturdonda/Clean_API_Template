@@ -1,7 +1,7 @@
-import { IUserRepository } from '@/application/protocols/repositories';
-import mongoDB from '@/infra/adapters/db/mongoose';
-import { makeUser } from '@/infra/adapters/db/mongoose/dtos';
-import { DatabaseError } from '@/infra/errors';
+import { IUserRepository } from '@application/protocols/repositories';
+import mongoDB from '@infra/adapters/db/mongoose';
+import { makeUser } from '@infra/adapters/db/mongoose/dtos';
+import { DatabaseError } from '@infra/errors';
 
 export class UserRepository implements IUserRepository {
 	private readonly database = mongoDB;

@@ -1,4 +1,4 @@
-import { IUuidService } from '@/application/protocols/utils';
+import { IUuidService } from '@application/protocols/utils';
 import { randomUUID } from 'crypto';
 
 export class UuidService implements IUuidService {

@@ -1,6 +1,6 @@
-import { Session } from '@/domain/entities';
-import { ICreateSession } from '@/domain/usecases/session';
-import { IIpService, ITokenService } from '@/application/protocols/utils';
+import { Session } from '@domain/entities';
+import { ICreateSession } from '@domain/usecases/session';
+import { IIpService, ITokenService } from '@application/protocols/utils';
 
 export class CreateSession implements ICreateSession {
 	constructor(private readonly sessionTokenService: ITokenService, private readonly ipService: IIpService) {}

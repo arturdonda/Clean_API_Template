@@ -1,4 +1,4 @@
-import { ITokenService } from '@/application/protocols/utils';
+import { ITokenService } from '@application/protocols/utils';
 
 export class MockTokenService implements ITokenService {
 	generate = (userId: string, expirationDate?: Date): ITokenService.GenerateResult => {

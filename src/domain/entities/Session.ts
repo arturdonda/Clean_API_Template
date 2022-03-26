@@ -1,5 +1,5 @@
-import { Geolocation } from '@/domain/entities';
-import { InvalidParamError } from '@/domain/errors';
+import { Geolocation } from '@domain/entities';
+import { InvalidParamError } from '@domain/errors';
 
 export class Session {
 	private _token: string;

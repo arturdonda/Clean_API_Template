@@ -12,7 +12,10 @@
 		"skipLibCheck": true,
 		"typeRoots": ["@types", "./node_modules/@types"],
 		"paths": {
-			"@/*": ["*"]
+			"@domain/*": ["domain/*"],
+			"@application/*": ["application/*"],
+			"@infra/*": ["infra/*"],
+			"@presentation/*": ["presentation/*"]
 		}
 	}
 }

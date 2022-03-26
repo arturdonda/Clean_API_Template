@@ -1,4 +1,4 @@
-import { IHashService } from '@/application/protocols/utils';
+import { IHashService } from '@application/protocols/utils';
 
 export class MockHashService implements IHashService {
 	hash = (password: string): string => {

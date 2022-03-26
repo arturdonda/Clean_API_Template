@@ -1,7 +1,7 @@
-import { User } from '@/domain/entities';
-import { IUpdateOptionalData } from '@/domain/usecases/user';
-import { UserNotFoundError, UserRegisteredError } from '@/application/errors';
-import { IUserRepository } from '@/application/protocols/repositories';
+import { User } from '@domain/entities';
+import { IUpdateOptionalData } from '@domain/usecases/user';
+import { UserNotFoundError, UserRegisteredError } from '@application/errors';
+import { IUserRepository } from '@application/protocols/repositories';
 
 export class UpdateOptionalData implements IUpdateOptionalData {
 	constructor(private readonly userRepository: IUserRepository) {}

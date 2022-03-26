@@ -1,5 +1,5 @@
-import { Geolocation } from '@/domain/entities';
-import { IGeolocation } from '@/infra/adapters/db/mongoose/interfaces';
+import { Geolocation } from '@domain/entities';
+import { IGeolocation } from '@infra/adapters/db/mongoose/interfaces';
 
 export const makeGeolocation = (dbGeolocation: IGeolocation): Geolocation => {
 	return new Geolocation({

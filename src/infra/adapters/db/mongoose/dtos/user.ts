@@ -1,5 +1,5 @@
-import { User } from '@/domain/entities';
-import { IUser } from '@/infra/adapters/db/mongoose/interfaces';
+import { User } from '@domain/entities';
+import { IUser } from '@infra/adapters/db/mongoose/interfaces';
 import { makeSession } from '.';
 
 export const makeUser = (dbUser: IUser): User => {

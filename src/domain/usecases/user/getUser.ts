@@ -1,4 +1,4 @@
-import { User } from '@/domain/entities';
+import { User } from '@domain/entities';
 
 export interface IGetUser {
 	exec: ({ userId }: IGetUser.Params) => Promise<IGetUser.Result>;

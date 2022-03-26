@@ -1,6 +1,6 @@
-import { User } from '@/domain/entities';
-import { IUserRepository } from '@/application/protocols/repositories';
-import { UserNotFoundError } from '@/application/errors';
+import { User } from '@domain/entities';
+import { IUserRepository } from '@application/protocols/repositories';
+import { UserNotFoundError } from '@application/errors';
 
 export class MockUserRepository implements IUserRepository {
 	private _users: User[];

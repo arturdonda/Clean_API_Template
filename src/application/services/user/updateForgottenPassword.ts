@@ -1,5 +1,5 @@
-import { IUpdateForgottenPassword, IUpdatePassword } from '@/domain/usecases/user';
-import { ITokenService } from '@/application/protocols/utils';
+import { IUpdateForgottenPassword, IUpdatePassword } from '@domain/usecases/user';
+import { ITokenService } from '@application/protocols/utils';
 
 export class UpdateForgottenPassword implements IUpdateForgottenPassword {
 	constructor(private readonly resetTokenService: ITokenService, private readonly updatePassword: IUpdatePassword) {}

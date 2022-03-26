@@ -1,7 +1,7 @@
-import { MockHashService, MockIpService, MockTokenService, MockUserRepository } from '@/application/__tests__/mock';
-import { SignIn, UpdatePassword } from '@/application/services/user';
-import { InvalidPasswordError, UserNotFoundError } from '@/application/errors';
-import { CreateSession, RenewAccess } from '@/application/services/session';
+import { MockHashService, MockIpService, MockTokenService, MockUserRepository } from '@application/__tests__/mock';
+import { SignIn, UpdatePassword } from '@application/services/user';
+import { InvalidPasswordError, UserNotFoundError } from '@application/errors';
+import { CreateSession, RenewAccess } from '@application/services/session';
 
 describe('Update Password', () => {
 	const userRepository = new MockUserRepository();

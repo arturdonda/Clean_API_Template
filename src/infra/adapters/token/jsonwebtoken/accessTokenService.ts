@@ -1,4 +1,4 @@
-import { ITokenService } from '@/application/protocols/utils';
+import { ITokenService } from '@application/protocols/utils';
 import { JwtAdapter } from './base';
 
 export class AccessTokenService implements ITokenService {

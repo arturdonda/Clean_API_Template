@@ -1,6 +1,6 @@
-import { IUpdateOptionalData } from '@/domain/usecases/user';
-import { UserViewModel } from '@/presentation/viewModels';
-import { Controller, HttpRequest, HttpResponse, ok, internalServerError } from '@/presentation/protocols';
+import { IUpdateOptionalData } from '@domain/usecases/user';
+import { UserViewModel } from '@presentation/viewModels';
+import { Controller, HttpRequest, HttpResponse, ok, internalServerError } from '@presentation/protocols';
 
 export class UpdateOptionalDataController implements Controller {
 	constructor(private readonly updateOptionalDataService: IUpdateOptionalData) {}

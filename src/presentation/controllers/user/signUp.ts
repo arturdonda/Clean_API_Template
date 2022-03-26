@@ -1,7 +1,7 @@
-import { ISignUp } from '@/domain/usecases/user';
-import { UserViewModel } from '@/presentation/viewModels';
-import { MissingParamError } from '@/presentation/errors';
-import { Controller, HttpRequest, HttpResponse, created, badRequest, internalServerError } from '@/presentation/protocols';
+import { ISignUp } from '@domain/usecases/user';
+import { UserViewModel } from '@presentation/viewModels';
+import { MissingParamError } from '@presentation/errors';
+import { Controller, HttpRequest, HttpResponse, created, badRequest, internalServerError } from '@presentation/protocols';
 
 export class SignUpController implements Controller {
 	constructor(private readonly signUpService: ISignUp) {}

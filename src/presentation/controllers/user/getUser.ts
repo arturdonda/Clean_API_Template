@@ -1,6 +1,6 @@
-import { IGetUser } from '@/domain/usecases/user';
-import { UserViewModel } from '@/presentation/viewModels';
-import { Controller, HttpRequest, HttpResponse, ok, internalServerError } from '@/presentation/protocols';
+import { IGetUser } from '@domain/usecases/user';
+import { UserViewModel } from '@presentation/viewModels';
+import { Controller, HttpRequest, HttpResponse, ok, internalServerError } from '@presentation/protocols';
 
 export class GetUserController implements Controller {
 	constructor(private readonly getUserService: IGetUser) {}

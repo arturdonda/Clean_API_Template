@@ -1,6 +1,6 @@
-import { IRevokeSession } from '@/domain/usecases/session';
-import { MissingParamError } from '@/presentation/errors';
-import { Controller, HttpRequest, HttpResponse, ok, badRequest, internalServerError } from '@/presentation/protocols';
+import { IRevokeSession } from '@domain/usecases/session';
+import { MissingParamError } from '@presentation/errors';
+import { Controller, HttpRequest, HttpResponse, ok, badRequest, internalServerError } from '@presentation/protocols';
 
 export class RevokeSessionController implements Controller {
 	constructor(private readonly revokeSessionService: IRevokeSession) {}

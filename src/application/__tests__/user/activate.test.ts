@@ -1,6 +1,6 @@
-import { Activate } from '@/application/services/user';
-import { UserNotFoundError } from '@/application/errors';
-import { MockUserRepository } from '@/application/__tests__/mock';
+import { Activate } from '@application/services/user';
+import { UserNotFoundError } from '@application/errors';
+import { MockUserRepository } from '@application/__tests__/mock';
 
 describe('Activate User', () => {
 	const userRepository = new MockUserRepository();

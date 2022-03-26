@@ -1,4 +1,4 @@
-import { HttpResponse } from '@/presentation/protocols';
+import { HttpResponse } from '@presentation/protocols';
 
 type Params<T = any> = {
 	message: string;

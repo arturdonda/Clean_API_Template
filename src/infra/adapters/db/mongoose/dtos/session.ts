@@ -1,5 +1,5 @@
-import { Session } from '@/domain/entities';
-import { ISession } from '@/infra/adapters/db/mongoose/interfaces';
+import { Session } from '@domain/entities';
+import { ISession } from '@infra/adapters/db/mongoose/interfaces';
 import { makeGeolocation } from '.';
 
 export const makeSession = (dbSession: ISession): Session => {

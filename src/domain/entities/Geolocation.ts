@@ -1,4 +1,4 @@
-import { InvalidParamError } from '@/domain/errors';
+import { InvalidParamError } from '@domain/errors';
 
 export class Geolocation {
 	private _ip: string;

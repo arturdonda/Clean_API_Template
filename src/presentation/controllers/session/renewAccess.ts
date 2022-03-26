@@ -1,5 +1,5 @@
-import { IRenewAccess } from '@/domain/usecases/session';
-import { Controller, HttpRequest, HttpResponse, ok, internalServerError } from '@/presentation/protocols';
+import { IRenewAccess } from '@domain/usecases/session';
+import { Controller, HttpRequest, HttpResponse, ok, internalServerError } from '@presentation/protocols';
 
 export class RenewAccessController implements Controller {
 	constructor(private readonly renewAccessService: IRenewAccess) {}
