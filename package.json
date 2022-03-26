@@ -8,17 +8,21 @@
 	"scripts": {
 		"test": "jest",
 		"test-clear-cache": "jest --clearCache",
-		"dev": "ts-node src/infra/test.ts"
+		"dev": "nodemon src/main/server.ts",
+		"build": "rimraf ./build && tsc",
+		"start": "node build/src/main/server.js"
 	},
 	"_moduleAliases": {
-		"@application": "src/application",
-		"@domain": "src/domain",
-		"@infra": "src/infra",
-		"@presentation": "src/presentation"
+		"@application": "build/src/application",
+		"@domain": "build/src/domain",
+		"@infra": "build/src/infra",
+		"@presentation": "build/src/presentation",
+		"@main": "build/src/main"
 	},
 	"dependencies": {
 		"bcryptjs": "^2.4.3",
 		"dotenv": "^16.0.0",
+		"express": "^4.17.3",
 		"ipdata": "^2.2.0",
 		"jsonwebtoken": "^8.5.1",
 		"module-alias": "^2.2.2",
@@ -27,6 +31,7 @@
 	},
 	"devDependencies": {
 		"@types/bcryptjs": "^2.4.2",
+		"@types/express": "^4.17.13",
 		"@types/jest": "^27.4.1",
 		"@types/jsonwebtoken": "^8.5.8",
 		"@types/node": "^17.0.21",
