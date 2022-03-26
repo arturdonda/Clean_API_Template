@@ -1,4 +1,4 @@
-import { Geolocation } from '@/domain/entities/classes';
+import { Geolocation } from '@/domain/entities';
 
 export class GeolocationViewModel {
 	ip: string;

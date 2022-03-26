@@ -1,4 +1,4 @@
-import { Session, Geolocation } from '@/domain/entities/classes';
+import { Session, Geolocation } from '@/domain/entities';
 
 const geolocation = new Geolocation({
 	ip: '0.0.0.0',

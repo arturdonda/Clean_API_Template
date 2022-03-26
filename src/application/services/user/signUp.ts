@@ -1,4 +1,4 @@
-import { User } from '@/domain/entities/classes';
+import { User } from '@/domain/entities';
 import { ISignUp } from '@/domain/usecases/user';
 import { IUserRepository } from '@/application/protocols/repositories';
 import { IHashService, IUuidService } from '@/application/protocols/utils';

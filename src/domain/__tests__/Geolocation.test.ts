@@ -1,4 +1,4 @@
-import { Geolocation } from '@/domain/entities/classes';
+import { Geolocation } from '@/domain/entities';
 
 describe('All valid parameters', () => {
 	test('All valid parameters', () => {

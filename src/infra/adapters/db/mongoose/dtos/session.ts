@@ -1,4 +1,4 @@
-import { Session } from '@/domain/entities/classes';
+import { Session } from '@/domain/entities';
 import { ISession } from '@/infra/adapters/db/mongoose/interfaces';
 import { makeGeolocation } from '.';
 

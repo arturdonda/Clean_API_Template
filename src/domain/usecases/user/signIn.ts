@@ -1,4 +1,4 @@
-import { User } from '@/domain/entities/classes';
+import { User } from '@/domain/entities';
 
 export interface ISignIn {
 	exec: ({ email, password, ipAddress }: ISignIn.Params) => Promise<ISignIn.Result>;

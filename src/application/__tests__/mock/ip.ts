@@ -1,5 +1,5 @@
 import { IIpService } from '@/application/protocols/utils';
-import { Geolocation } from '@/domain/entities/classes';
+import { Geolocation } from '@/domain/entities';
 
 export class MockIpService implements IIpService {
 	lookup = (ipAddress: string): Promise<IIpService.Result> => {

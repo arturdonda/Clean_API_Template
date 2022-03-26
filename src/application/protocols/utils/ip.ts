@@ -1,4 +1,4 @@
-import { Geolocation } from '@/domain/entities/classes';
+import { Geolocation } from '@/domain/entities';
 
 export interface IIpService {
 	lookup: (ipAddress: string) => Promise<IIpService.Result>;

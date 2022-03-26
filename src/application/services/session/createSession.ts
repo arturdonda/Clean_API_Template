@@ -1,4 +1,4 @@
-import { Session } from '@/domain/entities/classes';
+import { Session } from '@/domain/entities';
 import { ICreateSession } from '@/domain/usecases/session';
 import { IIpService, ITokenService } from '@/application/protocols/utils';
 

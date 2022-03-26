@@ -1,4 +1,4 @@
-import { Session } from '@/domain/entities/classes';
+import { Session } from '@/domain/entities';
 import { MockUserRepository } from '@/application/__tests__/mock';
 import { GetActiveSessions } from '@/application/services/user';
 import { UserNotFoundError } from '@/application/errors';

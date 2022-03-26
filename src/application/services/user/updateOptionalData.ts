@@ -1,4 +1,4 @@
-import { User } from '@/domain/entities/classes';
+import { User } from '@/domain/entities';
 import { IUpdateOptionalData } from '@/domain/usecases/user';
 import { UserNotFoundError, UserRegisteredError } from '@/application/errors';
 import { IUserRepository } from '@/application/protocols/repositories';

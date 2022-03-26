@@ -1,4 +1,4 @@
-import { User, Session, Geolocation } from '@/domain/entities/classes';
+import { User, Session, Geolocation } from '@/domain/entities';
 
 describe('All valid parameters', () => {
 	test('Constructor - only required fields', () => {

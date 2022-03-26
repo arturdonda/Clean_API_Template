@@ -1,4 +1,4 @@
-import { Session } from '@/domain/entities/classes';
+import { Session } from '@/domain/entities';
 
 export interface ICreateSession {
 	exec: ({ userId, ipAddress }: ICreateSession.Params) => Promise<ICreateSession.Result>;

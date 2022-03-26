@@ -1,4 +1,4 @@
-import { Session } from '@/domain/entities/classes';
+import { Session } from '@/domain/entities';
 
 export interface IGetActiveSessions {
 	exec: ({ userId }: IGetActiveSessions.Params) => Promise<IGetActiveSessions.Result>;

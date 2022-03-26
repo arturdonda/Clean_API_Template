@@ -1,4 +1,4 @@
-import { User as UserEntity } from '@/domain/entities/classes';
+import { User as UserEntity } from '@/domain/entities';
 
 export interface IUserRepository {
 	getById: (userId: string) => Promise<IUserRepository.User | null>;

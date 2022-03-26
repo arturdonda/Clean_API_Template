@@ -1,4 +1,4 @@
-import { Geolocation } from '@/domain/entities/classes';
+import { Geolocation } from '@/domain/entities';
 import { IIpService } from '@/application/protocols/utils';
 import ipData from 'ipdata';
 

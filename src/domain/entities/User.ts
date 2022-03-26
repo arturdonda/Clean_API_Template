@@ -1,4 +1,4 @@
-import { Geolocation, Session } from '@/domain/entities/classes';
+import { Geolocation, Session } from '@/domain/entities';
 import { InvalidParamError } from '@/domain/errors';
 
 export class User {
