@@ -1,6 +1,6 @@
 import { ForgotPassword } from '@/application/services/user';
 import { UserNotFoundError } from '@/application/protocols/errors';
-import { MockEmailService, MockTokenService, MockUserRepository } from '@/application/tests/mock';
+import { MockEmailService, MockTokenService, MockUserRepository } from '@/application/__tests__/mock';
 
 describe('Forgot Password', () => {
 	const userRepository = new MockUserRepository();

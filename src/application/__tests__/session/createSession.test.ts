@@ -1,4 +1,4 @@
-import { MockIpService, MockTokenService } from '@/application/tests/mock';
+import { MockIpService, MockTokenService } from '@/application/__tests__/mock';
 import { CreateSession } from '@/application/services/session';
 
 describe('Create Session', () => {

@@ -1,4 +1,4 @@
-import { MockUserRepository } from '@/application/tests/mock';
+import { MockUserRepository } from '@/application/__tests__/mock';
 import { UpdateOptionalData } from '@/application/services/user';
 import { UserNotFoundError } from '@/application/protocols/errors';
 

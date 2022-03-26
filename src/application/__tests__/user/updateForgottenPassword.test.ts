@@ -1,4 +1,4 @@
-import { MockHashService, MockIpService, MockTokenService, MockUserRepository } from '@/application/tests/mock';
+import { MockHashService, MockIpService, MockTokenService, MockUserRepository } from '@/application/__tests__/mock';
 import { UpdatePassword, UpdateForgottenPassword, SignIn } from '@/application/services/user';
 import { CreateSession, RenewAccess } from '@/application/services/session';
 import { InvalidPasswordError, UserNotFoundError } from '@/application/protocols/errors';

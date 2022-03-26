@@ -1,4 +1,4 @@
-import { MockTokenService } from '@/application/tests/mock';
+import { MockTokenService } from '@/application/__tests__/mock';
 import { RenewAccess } from '@/application/services/session';
 import { ExpiredTokenError } from '@/application/protocols/errors';
 
