@@ -1,7 +1,7 @@
 import { MockHashService, MockIpService, MockTokenService, MockUserRepository, MockUuidService } from '@/application/__tests__/mock';
 import { SignIn, SignUp } from '@/application/services/user';
 import { CreateSession, RenewAccess } from '@/application/services/session';
-import { InvalidPasswordError, UserAccountPendingActivation, UserNotFoundError, UserRegisteredError } from '@/application/protocols/errors';
+import { InvalidPasswordError, UserAccountPendingActivation, UserNotFoundError, UserRegisteredError } from '@/application/errors';
 
 describe('Sign Up', () => {
 	const userRepository = new MockUserRepository();

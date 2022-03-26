@@ -1,5 +1,5 @@
 import { Activate } from '@/application/services/user';
-import { UserNotFoundError } from '@/application/protocols/errors';
+import { UserNotFoundError } from '@/application/errors';
 import { MockUserRepository } from '@/application/__tests__/mock';
 
 describe('Activate User', () => {

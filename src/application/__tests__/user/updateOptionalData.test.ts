@@ -1,6 +1,6 @@
 import { MockUserRepository } from '@/application/__tests__/mock';
 import { UpdateOptionalData } from '@/application/services/user';
-import { UserNotFoundError, UserRegisteredError } from '@/application/protocols/errors';
+import { UserNotFoundError, UserRegisteredError } from '@/application/errors';
 
 describe('Update optional data', () => {
 	const userRepository = new MockUserRepository();

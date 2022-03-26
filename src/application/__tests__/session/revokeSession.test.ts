@@ -1,6 +1,6 @@
 import { MockIpService, MockTokenService, MockUserRepository } from '@/application/__tests__/mock';
 import { CreateSession, RevokeSession } from '@/application/services/session';
-import { UserNotFoundError } from '@/application/protocols/errors';
+import { UserNotFoundError } from '@/application/errors';
 
 describe('Revoke Session', () => {
 	const tokenService = new MockTokenService();

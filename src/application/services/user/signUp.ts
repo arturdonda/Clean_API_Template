@@ -2,7 +2,7 @@ import { User } from '@/domain/entities/classes';
 import { ISignUp } from '@/domain/usecases/user';
 import { IUserRepository } from '@/application/protocols/repositories';
 import { IHashService, IUuidService } from '@/application/protocols/utils';
-import { InvalidPasswordError, UserRegisteredError } from '@/application/protocols/errors';
+import { InvalidPasswordError, UserRegisteredError } from '@/application/errors';
 
 export class SignUp implements ISignUp {
 	constructor(

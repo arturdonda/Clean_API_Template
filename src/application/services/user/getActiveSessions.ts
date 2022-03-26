@@ -1,6 +1,6 @@
 import { IGetActiveSessions } from '@/domain/usecases/user';
 import { IUserRepository } from '@/application/protocols/repositories';
-import { UserNotFoundError } from '@/application/protocols/errors';
+import { UserNotFoundError } from '@/application/errors';
 
 export class GetActiveSessions implements IGetActiveSessions {
 	constructor(private readonly userRepository: IUserRepository) {}

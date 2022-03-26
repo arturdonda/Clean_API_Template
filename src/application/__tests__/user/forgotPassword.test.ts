@@ -1,5 +1,5 @@
 import { ForgotPassword } from '@/application/services/user';
-import { UserNotFoundError } from '@/application/protocols/errors';
+import { UserNotFoundError } from '@/application/errors';
 import { MockEmailService, MockTokenService, MockUserRepository } from '@/application/__tests__/mock';
 
 describe('Forgot Password', () => {

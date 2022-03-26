@@ -1,6 +1,6 @@
 import { IActivate } from '@/domain/usecases/user';
 import { IUserRepository } from '@/application/protocols/repositories/user';
-import { UserNotFoundError } from '@/application/protocols/errors';
+import { UserNotFoundError } from '@/application/errors';
 
 export class Activate implements IActivate {
 	constructor(private readonly userRepository: IUserRepository) {}
