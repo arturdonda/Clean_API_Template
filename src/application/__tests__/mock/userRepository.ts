@@ -9,37 +9,37 @@ export class MockUserRepository implements IUserRepository {
 		this._users = userDatabase;
 	}
 
-	getById = (userId: string): Promise<IUserRepository.Result | null> => {
+	getById = (userId: string): Promise<IUserRepository.User | null> => {
 		const user = this._users.filter(user => user.id === userId)[0];
 
 		return new Promise((resolve, reject) => resolve(user));
 	};
 
-	getByConfirmationCode = (confirmationCode: string): Promise<IUserRepository.Result | null> => {
+	getByConfirmationCode = (confirmationCode: string): Promise<IUserRepository.User | null> => {
 		const user = this._users.filter(user => user.confirmationCode === confirmationCode)[0];
 
 		return new Promise((resolve, reject) => resolve(user));
 	};
 
-	getByEmail = (email: string): Promise<IUserRepository.Result | null> => {
+	getByEmail = (email: string): Promise<IUserRepository.User | null> => {
 		const user = this._users.filter(user => user.email === email)[0];
 
 		return new Promise((resolve, reject) => resolve(user));
 	};
 
-	getByCpf = (cpf: string): Promise<IUserRepository.Result | null> => {
+	getByCpf = (cpf: string): Promise<IUserRepository.User | null> => {
 		const user = this._users.filter(user => user.cpf === cpf)[0];
 
 		return new Promise((resolve, reject) => resolve(user));
 	};
 
-	getByRg = (rg: string): Promise<IUserRepository.Result | null> => {
+	getByRg = (rg: string): Promise<IUserRepository.User | null> => {
 		const user = this._users.filter(user => user.rg === rg)[0];
 
 		return new Promise((resolve, reject) => resolve(user));
 	};
 
-	create = (user: User): Promise<IUserRepository.Result> => {
+	create = (user: IUserRepository.User): Promise<IUserRepository.User> => {
 		const newUser = new User({
 			id: (this._users.length + 1).toString(),
 			confirmationCode: user.confirmationCode,
@@ -59,7 +59,7 @@ export class MockUserRepository implements IUserRepository {
 		return new Promise((resolve, reject) => resolve(newUser));
 	};
 
-	update = (user: User): Promise<IUserRepository.Result> => {
+	update = (user: IUserRepository.User): Promise<IUserRepository.User> => {
 		if (!this._users.filter(u => u.id === user.id)[0]) throw new UserNotFoundError();
 
 		this._users = this._users.map(u => (u.id === user.id ? user : u));
