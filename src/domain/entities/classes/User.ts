@@ -23,6 +23,7 @@ export class User {
 		birthday,
 		confirmationCode,
 		cpf,
+		createDate,
 		email,
 		gender,
 		name,
@@ -35,6 +36,7 @@ export class User {
 		birthday?: Date;
 		confirmationCode: string;
 		cpf?: string;
+		createDate?: Date;
 		email: string;
 		gender?: GENDER;
 		name: string;
@@ -47,7 +49,7 @@ export class User {
 		this._birthday = birthday ? User.validateBirthday(birthday) : null;
 		this._confirmationCode = User.validateConfirmationCode(confirmationCode);
 		this._cpf = cpf ? User.validateCpf(cpf) : null;
-		this._createDate = new Date();
+		this._createDate = createDate ? User.validateCreateDate(createDate) : new Date();
 		this._email = User.validateEmail(email);
 		this._gender = gender ?? null;
 		this._name = User.validateName(name);
@@ -225,7 +227,15 @@ export class User {
 		return cpf;
 	};
 
+	static validateCreateDate = (createDate: Date) => {
+		if (createDate > new Date()) throw new InvalidParamError('Data de criação', 'não pode ser no futuro.');
+
+		return createDate;
+	};
+
 	static validateEmail = (email: string) => {
+		email = email.trim().toLowerCase();
+
 		const emailRegexValidator =
 			/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 

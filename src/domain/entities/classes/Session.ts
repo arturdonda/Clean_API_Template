@@ -9,10 +9,10 @@ export class Session {
 	private _createdBy: Geolocation;
 	private _revokedBy: Geolocation | null;
 
-	constructor({ token, expiredAt, createdBy }: { token: string; expiredAt: Date; createdBy: Geolocation }) {
+	constructor({ token, expiredAt, createdBy, createdAt }: { token: string; expiredAt: Date; createdBy: Geolocation; createdAt?: Date }) {
 		this._token = Session.validateToken(token);
 		this._expiredAt = Session.validateExpiredAt(expiredAt);
-		this._createdAt = new Date();
+		this._createdAt = createdAt ? Session.validateCreatedAt(createdAt) : new Date();
 		this._revokedAt = null;
 		this._createdBy = createdBy;
 		this._revokedBy = null;
@@ -56,14 +56,19 @@ export class Session {
 
 	//#region Methods
 
-	revoke(revokedBy: Geolocation) {
-		this._revokedAt = new Date();
+	revoke(revokedBy: Geolocation, revokedAt?: Date) {
+		this._revokedAt = revokedAt ?? new Date();
 		this._revokedBy = revokedBy;
 	}
 
 	//#endregion Methods
 
 	//#region Static Validations
+	static validateCreatedAt(createdAt: Date) {
+		if (createdAt > new Date()) throw new InvalidParamError('Data de criação', 'não pode ser no futuro.');
+
+		return createdAt;
+	}
 
 	static validateToken(token: string) {
 		if (token.trim().length === 0) throw new InvalidParamError('Session Token', 'não pode ser vazio.');

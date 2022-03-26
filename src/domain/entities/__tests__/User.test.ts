@@ -30,11 +30,12 @@ describe('All valid parameters', () => {
 		const user = new User({
 			id: '123',
 			confirmationCode: 'CCb192e8488dcc4d79bd58215179b9d9b3',
-			email: 'john.doe@hotmail.com',
+			email: 'JOHN.DOE@HOTMAIL.COM',
 			password: 'Abcde#123',
 			address: 'Not Found Street, 404',
 			birthday: new Date(2000, 0, 1),
 			cpf: '93043641086',
+			createDate: new Date(new Date().valueOf() - 86400000),
 			gender: 'F',
 			name: 'John Doe',
 			phone: '1234567890',
@@ -46,7 +47,7 @@ describe('All valid parameters', () => {
 		expect(user.birthday).toStrictEqual(new Date(2000, 0, 1));
 		expect(user.confirmationCode).toBe('CCb192e8488dcc4d79bd58215179b9d9b3');
 		expect(user.cpf).toBe('93043641086');
-		expect(user.createDate.valueOf() / 1000).toBeCloseTo(new Date().valueOf() / 1000, 0);
+		expect(user.createDate.valueOf() / 1000).toBeCloseTo(new Date(new Date().valueOf() - 86400000).valueOf() / 1000, 0);
 		expect(user.email).toBe('john.doe@hotmail.com');
 		expect(user.gender).toBe('F');
 		expect(user.name).toBe('John Doe');
@@ -347,6 +348,22 @@ describe('CPF', () => {
 		expect(() => {
 			user.cpf = '93043641087';
 		}).toThrow("Campo 'CPF' inválido: dígitos verificadores incorretos.");
+	});
+});
+
+describe('Create Date', () => {
+	test('Constructor - future date', () => {
+		expect(
+			() =>
+				new User({
+					id: '123',
+					confirmationCode: 'CCb192e8488dcc4d79bd58215179b9d9b3',
+					name: 'John Doe',
+					email: 'john.doe@hotmail.com',
+					password: 'Abcde#123',
+					createDate: new Date(new Date().valueOf() + 86400000),
+				})
+		).toThrow("Campo 'Data de criação' inválido: não pode ser no futuro.");
 	});
 });
 
