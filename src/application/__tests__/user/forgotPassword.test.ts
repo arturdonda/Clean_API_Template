@@ -32,6 +32,6 @@ describe('Forgot Password', () => {
 	});
 
 	test('Invalid e-mail', async () => {
-		expect(forgotPasswordService.exec({ email: 'john.doe@hotmail.com' })).rejects.toThrow(UserNotFoundError);
+		expect(forgotPasswordService.exec({ email: 'john.doe@hotmail.com' })).resolves;
 	});
 });

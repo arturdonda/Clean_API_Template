@@ -1,4 +1,3 @@
-import { UserNotFoundError } from '@/application/protocols/errors';
 import { IUserRepository } from '@/application/protocols/repositories';
 import { IEmailService, ITokenService } from '@/application/protocols/utils';
 import { IForgotPassword } from '@/domain/usecases/user';
@@ -13,17 +12,17 @@ export class ForgotPassword implements IForgotPassword {
 	exec = async ({ email }: IForgotPassword.Params): Promise<IForgotPassword.Result> => {
 		const user = await this.userRepository.getByEmail(email);
 
-		if (!user) throw new UserNotFoundError();
+		if (user) {
+			const resetToken = this.resetTokenService.generate(user.id);
 
-		const resetToken = this.resetTokenService.generate(user.id);
-
-		await this.emailService.send({
-			to: [user.email],
-			cc: [],
-			bcc: [],
-			subject: 'Redefinir a sua senha',
-			body: makeForgotPasswordEmailBody(user.name, resetToken.token),
-		});
+			await this.emailService.send({
+				to: [user.email],
+				cc: [],
+				bcc: [],
+				subject: 'Redefinir a sua senha',
+				body: makeForgotPasswordEmailBody(user.name, resetToken.token),
+			});
+		}
 	};
 }
 
