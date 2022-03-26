@@ -1,6 +1,6 @@
 import { MockUserRepository } from '@/application/__tests__/mock';
 import { UpdateOptionalData } from '@/application/services/user';
-import { UserNotFoundError } from '@/application/protocols/errors';
+import { UserNotFoundError, UserRegisteredError } from '@/application/protocols/errors';
 
 describe('Update optional data', () => {
 	const userRepository = new MockUserRepository();
@@ -62,5 +62,23 @@ describe('Update optional data', () => {
 				gender: 'F',
 			})
 		).rejects.toThrow(UserNotFoundError);
+	});
+
+	test('Duplicated cpf', async () => {
+		expect(
+			updateOptionalData.exec({
+				userId: '3',
+				cpf: '930.436.410-86',
+			})
+		).rejects.toThrow(UserRegisteredError);
+	});
+
+	test('Duplicated rg', async () => {
+		expect(
+			updateOptionalData.exec({
+				userId: '3',
+				rg: '30.502.505-3',
+			})
+		).rejects.toThrow(UserRegisteredError);
 	});
 });

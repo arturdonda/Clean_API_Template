@@ -22,7 +22,19 @@ export class MockUserRepository implements IUserRepository {
 	};
 
 	getByEmail = (email: string): Promise<IUserRepository.Result | null> => {
-		const user = this._users.filter(user => user.email.toLowerCase() === email.toLowerCase())[0];
+		const user = this._users.filter(user => user.email === email)[0];
+
+		return new Promise((resolve, reject) => resolve(user));
+	};
+
+	getByCpf = (cpf: string): Promise<IUserRepository.Result | null> => {
+		const user = this._users.filter(user => user.cpf === cpf)[0];
+
+		return new Promise((resolve, reject) => resolve(user));
+	};
+
+	getByRg = (rg: string): Promise<IUserRepository.Result | null> => {
+		const user = this._users.filter(user => user.rg === rg)[0];
 
 		return new Promise((resolve, reject) => resolve(user));
 	};

@@ -41,7 +41,7 @@ describe('Sign Up', () => {
 		expect(
 			signUpService.exec({
 				name: 'John Doe',
-				email: user.email,
+				email: user.email.toUpperCase(),
 				password: 'Abcde#123',
 				confirmationPassword: 'Abcde#123',
 			})

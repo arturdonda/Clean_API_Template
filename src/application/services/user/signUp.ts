@@ -14,7 +14,7 @@ export class SignUp implements ISignUp {
 	exec = async ({ name, email, password, confirmationPassword }: ISignUp.Params): Promise<ISignUp.Result> => {
 		if (password !== confirmationPassword) throw new InvalidPasswordError();
 
-		const userExists = !!(await this.userRepository.getByEmail(email));
+		const userExists = !!(await this.userRepository.getByEmail(User.validateEmail(email)));
 
 		if (userExists) throw new UserRegisteredError();
 
