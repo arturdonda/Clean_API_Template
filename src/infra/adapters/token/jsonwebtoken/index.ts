@@ -1,3 +1,3 @@
 export * from './accessTokenService';
-export * from './refreshTokenService';
+export * from './sessionTokenService';
 export * from './resetTokenService';

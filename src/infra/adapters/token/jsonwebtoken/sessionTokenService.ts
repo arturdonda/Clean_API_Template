@@ -1,7 +1,7 @@
 import { ITokenService } from '@application/protocols/utils';
 import { JwtAdapter } from './base';
 
-export class RefreshTokenService implements ITokenService {
+export class SessionTokenService implements ITokenService {
 	private readonly _secret = process.env.REFRESH_TOKEN_SECRET;
 	private readonly _expiresIn = `${process.env.REFRESH_TOKEN_EXPIRATION_IN_DAYS}d`;
 
