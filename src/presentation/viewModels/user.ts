@@ -1,19 +1,31 @@
 import { User } from '@domain/entities';
 
 export class UserViewModel {
-	id: string;
-	address: string | null;
-	birthday: string | null;
-	cpf: string | null;
-	createDate: string;
-	email: string;
-	gender: string | null;
-	name: string;
-	phone: string | null;
-	rg: string | null;
-
+	constructor({
+		id,
+		address,
+		birthday,
+		cpf,
+		createDate,
+		email,
+		gender,
+		name,
+		phone,
+		rg,
+	}: {
+		id: string;
+		address: string | null;
+		birthday: string | null;
+		cpf: string | null;
+		createDate: string;
+		email: string;
+		gender: string | null;
+		name: string;
+		phone: string | null;
+		rg: string | null;
+	}) {}
 	static map(entity: User): UserViewModel {
-		return {
+		return new UserViewModel({
 			id: entity.id,
 			address: entity.address,
 			birthday: entity.birthday ? entity.birthday.toISOString() : null,
@@ -24,7 +36,7 @@ export class UserViewModel {
 			name: entity.name,
 			phone: entity.phone,
 			rg: entity.rg,
-		};
+		});
 	}
 
 	static mapCollection(entities: User[]): UserViewModel[] {
