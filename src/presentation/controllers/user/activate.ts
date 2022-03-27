@@ -11,9 +11,9 @@ export class ActivateUserController implements Controller {
 
 			await this.activateService.exec({ confirmationCode: request.query.confirmationCode });
 
-			return ok({ message: 'Usuário ativado com sucesso', result: null });
+			return ok({ message: 'Usuário ativado com sucesso.', result: null });
 		} catch (error) {
-			return (error instanceof MissingParamError ? badRequest : internalServerError)({ message: 'Erro ao ativar usuário', result: error });
+			return (error instanceof MissingParamError ? badRequest : internalServerError)({ message: 'Erro ao ativar usuário.', result: error });
 		}
 	};
 }
