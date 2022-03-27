@@ -1,13 +1,14 @@
 import { MockIpService, MockTokenService, MockUserRepository } from '@application/__tests__/mock';
 import { CreateSession, RevokeSession } from '@application/services/session';
 import { UserNotFoundError } from '@application/errors';
+import { SessionNotFoundError } from '@domain/errors';
 
 describe('Revoke Session', () => {
 	const tokenService = new MockTokenService();
 	const userRepository = new MockUserRepository();
 	const ipService = new MockIpService();
 	const createSessionService = new CreateSession(tokenService, ipService);
-	const revokeSessionService = new RevokeSession(tokenService, userRepository, ipService);
+	const revokeSessionService = new RevokeSession(userRepository, ipService);
 
 	test('Valid token', async () => {
 		const user = await userRepository.getById('1');
@@ -27,6 +28,7 @@ describe('Revoke Session', () => {
 
 		expect(
 			await revokeSessionService.exec({
+				userId: user.id,
 				sessionToken: session.token,
 				ipAddress: '0.0.0.0',
 			})
@@ -41,14 +43,15 @@ describe('Revoke Session', () => {
 		);
 	});
 
-	test('Invalid token', async () => {
-		const token = tokenService.generate('0');
+	test('Invalid session', async () => {
+		const token = tokenService.generate('1');
 
 		expect(
 			revokeSessionService.exec({
+				userId: '1',
 				sessionToken: token.token,
 				ipAddress: '0.0.0.0',
 			})
-		).rejects.toThrow(UserNotFoundError);
+		).rejects.toThrow(SessionNotFoundError);
 	});
 });

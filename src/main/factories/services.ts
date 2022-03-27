@@ -29,7 +29,7 @@ const uuidService = new UuidService();
 
 export const createSessionService = new CreateSession(sessionTokenService, ipService);
 export const renewAccessService = new RenewAccess(sessionTokenService, accessTokenService);
-export const revokeSessionService = new RevokeSession(sessionTokenService, userRepository, ipService);
+export const revokeSessionService = new RevokeSession(userRepository, ipService);
 export const activateUserService = new Activate(userRepository);
 export const forgotPasswordService = new ForgotPassword(userRepository, resetTokenService, emailService);
 export const getActiveSessionsService = new GetActiveSessions(userRepository);

@@ -1,5 +1,5 @@
 import { Geolocation, Session } from '@domain/entities';
-import { InvalidParamError } from '@domain/errors';
+import { InvalidParamError, SessionNotFoundError } from '@domain/errors';
 
 export class User {
 	private _id: string;
@@ -179,9 +179,11 @@ export class User {
 	}
 
 	revokeSession(sessionToken: string, revoker: Geolocation) {
-		this._sessions.forEach(session => {
-			if (session.token === sessionToken) session.revoke(revoker);
-		});
+		const session = this.getSession(sessionToken);
+
+		if (!session) throw new SessionNotFoundError();
+
+		session.revoke(revoker);
 	}
 
 	//#endregion Methods

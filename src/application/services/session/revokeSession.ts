@@ -1,18 +1,12 @@
 import { IRevokeSession } from '@domain/usecases/session';
 import { IUserRepository } from '@application/protocols/repositories';
-import { IIpService, ITokenService } from '@application/protocols/utils';
+import { IIpService } from '@application/protocols/utils';
 import { UserNotFoundError } from '@application/errors';
 
 export class RevokeSession implements IRevokeSession {
-	constructor(
-		private readonly sessionTokenService: ITokenService,
-		private readonly userRepository: IUserRepository,
-		private readonly ipService: IIpService
-	) {}
+	constructor(private readonly userRepository: IUserRepository, private readonly ipService: IIpService) {}
 
-	exec = async ({ sessionToken, ipAddress }: IRevokeSession.Params): Promise<IRevokeSession.Result> => {
-		const { audience: userId } = this.sessionTokenService.validate(sessionToken);
-
+	exec = async ({ userId, sessionToken, ipAddress }: IRevokeSession.Params): Promise<IRevokeSession.Result> => {
 		const user = await this.userRepository.getById(userId);
 
 		if (!user) throw new UserNotFoundError();

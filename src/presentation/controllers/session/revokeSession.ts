@@ -9,7 +9,7 @@ export class RevokeSessionController implements Controller {
 		try {
 			if (!request.body.sessionToken) throw new MissingParamError('sessionToken');
 
-			await this.revokeSessionService.exec({ sessionToken: request.body.sessionToken, ipAddress: request.ip });
+			await this.revokeSessionService.exec({ userId: request.userId, sessionToken: request.body.sessionToken, ipAddress: request.ip });
 
 			return ok({ message: 'Sessão finalizada com sucesso', result: null });
 		} catch (error) {

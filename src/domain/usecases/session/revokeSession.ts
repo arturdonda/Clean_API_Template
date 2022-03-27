@@ -1,9 +1,10 @@
 export interface IRevokeSession {
-	exec: ({ sessionToken, ipAddress }: IRevokeSession.Params) => Promise<IRevokeSession.Result>;
+	exec: ({ userId, sessionToken, ipAddress }: IRevokeSession.Params) => Promise<IRevokeSession.Result>;
 }
 
 export namespace IRevokeSession {
 	export type Params = {
+		userId: string;
 		sessionToken: string;
 		ipAddress: string;
 	};
