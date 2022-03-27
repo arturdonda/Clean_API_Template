@@ -6,6 +6,15 @@ import { DatabaseError } from '@infra/errors';
 export class UserRepository implements IUserRepository {
 	private readonly database = mongoDB;
 
+	getAll = async (): Promise<IUserRepository.User[]> => {
+		return this.database.User.find()
+			.exec()
+			.then(users => users.map(user => makeUser(user)))
+			.catch(error => {
+				throw new DatabaseError(error);
+			});
+	};
+
 	getById = async (userId: string): Promise<IUserRepository.User | null> => {
 		return this.database.User.findById(userId)
 			.exec()

@@ -9,6 +9,10 @@ export class MockUserRepository implements IUserRepository {
 		this._users = userDatabase;
 	}
 
+	getAll = (): Promise<IUserRepository.User[]> => {
+		return new Promise((resolve, reject) => resolve(this._users));
+	};
+
 	getById = (userId: string): Promise<IUserRepository.User | null> => {
 		const user = this._users.filter(user => user.id === userId)[0];
 

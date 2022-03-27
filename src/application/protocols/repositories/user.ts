@@ -1,6 +1,7 @@
 import { User as UserEntity } from '@domain/entities';
 
 export interface IUserRepository {
+	getAll: () => Promise<IUserRepository.User[]>;
 	getById: (userId: string) => Promise<IUserRepository.User | null>;
 	getByConfirmationCode: (confirmationCode: string) => Promise<IUserRepository.User | null>;
 	getByEmail: (email: string) => Promise<IUserRepository.User | null>;
