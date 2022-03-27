@@ -6,7 +6,7 @@ export class RenewAccessController implements Controller {
 
 	handle = async (request: HttpRequest): Promise<HttpResponse<null>> => {
 		try {
-			const accessToken = this.renewAccessService.exec(request.cookies.refreshToken);
+			const accessToken = this.renewAccessService.exec(request.cookies.sessionToken);
 
 			return ok({
 				message: 'Acesso renovado com sucesso',

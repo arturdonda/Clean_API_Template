@@ -6,7 +6,7 @@ export class SignOutController implements Controller {
 
 	handle = async (request: HttpRequest): Promise<HttpResponse<null>> => {
 		try {
-			await this.revokeSessionService.exec({ userId: request.userId, sessionToken: request.cookies?.refreshToken, ipAddress: request.ip });
+			await this.revokeSessionService.exec({ userId: request.userId, sessionToken: request.cookies?.sessionToken, ipAddress: request.ip });
 
 			return ok({ message: 'Sessão finalizada com sucesso', result: null });
 		} catch (error) {

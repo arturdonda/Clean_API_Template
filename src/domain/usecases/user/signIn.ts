@@ -13,7 +13,7 @@ export namespace ISignIn {
 
 	export type Result = {
 		user: User;
-		refreshToken: string;
+		sessionToken: string;
 		accessToken: string;
 	};
 }

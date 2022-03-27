@@ -32,7 +32,7 @@ export class SignIn implements ISignIn {
 
 		return {
 			user: user,
-			refreshToken: session.token,
+			sessionToken: session.token,
 			accessToken: await this.renewAccessService.exec(session.token),
 		};
 	};

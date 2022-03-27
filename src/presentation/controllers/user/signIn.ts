@@ -11,7 +11,7 @@ export class SignInController implements Controller {
 			if (!request.body?.email) throw new MissingParamError('email');
 			if (!request.body?.password) throw new MissingParamError('password');
 
-			const { user, refreshToken, accessToken } = await this.signInService.exec({
+			const { user, sessionToken, accessToken } = await this.signInService.exec({
 				email: request.body.email,
 				password: request.body.password,
 				ipAddress: request.ip,
@@ -21,7 +21,7 @@ export class SignInController implements Controller {
 				message: 'Usuário logado com sucesso.',
 				result: UserViewModel.map(user),
 				headers: { authorization: `Bearer ${accessToken}` },
-				cookies: { refreshToken: refreshToken },
+				cookies: { sessionToken: sessionToken },
 			});
 		} catch (error) {
 			return (error instanceof MissingParamError ? badRequest : internalServerError)({ message: 'Erro ao logar usuário.', result: error });
