@@ -4,7 +4,7 @@
 	"description": "API template for NodeJS using Clean Architecture",
 	"main": "src/main/server.ts",
 	"author": "Artur Donda",
-	"license": "ISC",
+	"license": "MIT",
 	"scripts": {
 		"test": "jest",
 		"test-clear-cache": "jest --clearCache",
@@ -17,7 +17,8 @@
 		"@domain": "build/src/domain",
 		"@infra": "build/src/infra",
 		"@presentation": "build/src/presentation",
-		"@main": "build/src/main"
+		"@main": "build/src/main",
+		"@root": "./"
 	},
 	"dependencies": {
 		"bcryptjs": "^2.4.3",

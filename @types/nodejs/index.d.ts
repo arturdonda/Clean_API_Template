@@ -1,6 +1,6 @@
 declare namespace NodeJS {
 	export interface ProcessEnv {
-		PORT: number;
+		PORT: string;
 		ENV_NAME: string;
 		ISSUER: string;
 
@@ -11,9 +11,9 @@ declare namespace NodeJS {
 		CONFIRMATION_TOKEN_SECRET: string;
 		RESET_PASSWORD_TOKEN_SECRET: string;
 
-		REFRESH_TOKEN_EXPIRATION_IN_DAYS: number;
-		ACCESS_TOKEN_EXPIRATION_IN_MINUTES: number;
-		RESET_PASSWORD_TOKEN_EXPIRATION_IN_MINUTES: number;
+		REFRESH_TOKEN_EXPIRATION_IN_DAYS: string;
+		ACCESS_TOKEN_EXPIRATION_IN_MINUTES: string;
+		RESET_PASSWORD_TOKEN_EXPIRATION_IN_MINUTES: string;
 
 		IPDATA_KEY: string;
 
