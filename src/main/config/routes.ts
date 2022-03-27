@@ -13,7 +13,6 @@ const applyFunctionToAllFilesInDir = async (path: string, functionToApply: (file
 	try {
 		readdirSync(`${__dirname}/${path}`).map(dir => applyFunctionToAllFilesInDir(`${path}/${dir}`, functionToApply));
 	} catch (err) {
-		console.log('Route added:', path);
 		functionToApply(path);
 	}
 };
