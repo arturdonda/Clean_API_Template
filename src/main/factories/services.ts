@@ -9,7 +9,8 @@ import {
 	Activate,
 	ForgotPassword,
 	GetActiveSessions,
-	GetUserProfile,
+	GetUserById,
+	GetAllUsers,
 	SignIn,
 	SignUp,
 	UpdateForgottenPassword,
@@ -32,7 +33,8 @@ export const revokeSessionService = new RevokeSession(sessionTokenService, userR
 export const activateUserService = new Activate(userRepository);
 export const forgotPasswordService = new ForgotPassword(userRepository, resetTokenService, emailService);
 export const getActiveSessionsService = new GetActiveSessions(userRepository);
-export const getUserService = new GetUserProfile(userRepository);
+export const getUserByIdService = new GetUserById(userRepository);
+export const getAllUsersService = new GetAllUsers(userRepository);
 export const signInService = new SignIn(userRepository, passwordHashService, createSessionService, renewAccessService);
 export const signUpService = new SignUp(userRepository, uuidService, passwordHashService);
 export const updateOptionalData = new UpdateOptionalData(userRepository);
