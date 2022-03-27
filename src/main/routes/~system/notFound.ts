@@ -1,5 +1,5 @@
-import { Router, Request, Response, NextFunction } from 'express';
 import { notFound } from '@presentation/protocols';
+import { Router, Request, Response, NextFunction } from 'express';
 
 export default (router: Router): void => {
 	router.get('*', (req: Request, res: Response, next: NextFunction) => next(notFound({ message: 'Nenhuma rota encontrada.', result: null })));

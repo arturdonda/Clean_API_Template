@@ -1,6 +1,6 @@
-import { setupRoutes } from './routes';
+import { setupRoutes } from '@main/config/routes';
+import { createApiResponse } from '@main/middlewares';
 import express from 'express';
-import { createApiResponse } from '../middlewares/createApiResponse';
 
 const app = express();
 
