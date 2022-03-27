@@ -7,8 +7,8 @@ export class UpdatePasswordController implements Controller {
 
 	handle = async (request: HttpRequest): Promise<HttpResponse<null>> => {
 		try {
-			if (!request.body.password) throw new MissingParamError('password');
-			if (!request.body.confirmationPassword) throw new MissingParamError('confirmationPassword');
+			if (!request.body?.password) throw new MissingParamError('password');
+			if (!request.body?.confirmationPassword) throw new MissingParamError('confirmationPassword');
 
 			await this.updatePasswordService.exec({
 				userId: request.userId,

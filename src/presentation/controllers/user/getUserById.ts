@@ -8,7 +8,7 @@ export class GetUserByIdController implements Controller {
 
 	handle = async (request: HttpRequest): Promise<HttpResponse<UserViewModel>> => {
 		try {
-			if (!request.query.userId) throw new MissingParamError('userId');
+			if (!request.query?.userId) throw new MissingParamError('userId');
 
 			const user = await this.getUserByIdService.exec({ userId: request.query.userId });
 

@@ -7,7 +7,7 @@ export class RevokeSessionController implements Controller {
 
 	handle = async (request: HttpRequest): Promise<HttpResponse<null>> => {
 		try {
-			if (!request.body.sessionToken) throw new MissingParamError('sessionToken');
+			if (!request.body?.sessionToken) throw new MissingParamError('sessionToken');
 
 			await this.revokeSessionService.exec({ userId: request.userId, sessionToken: request.body.sessionToken, ipAddress: request.ip });
 

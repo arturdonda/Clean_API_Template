@@ -7,9 +7,9 @@ export class UpdateForgottenPasswordController implements Controller {
 
 	handle = async (request: HttpRequest): Promise<HttpResponse<null>> => {
 		try {
-			if (!request.body.resetToken) throw new MissingParamError('resetToken');
-			if (!request.body.password) throw new MissingParamError('password');
-			if (!request.body.confirmationPassword) throw new MissingParamError('confirmationPassword');
+			if (!request.body?.resetToken) throw new MissingParamError('resetToken');
+			if (!request.body?.password) throw new MissingParamError('password');
+			if (!request.body?.confirmationPassword) throw new MissingParamError('confirmationPassword');
 
 			await this.updateForgottenPasswordService.exec({
 				resetToken: request.body.resetToken,

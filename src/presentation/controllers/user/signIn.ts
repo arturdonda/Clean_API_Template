@@ -8,8 +8,8 @@ export class SignInController implements Controller {
 
 	handle = async (request: HttpRequest): Promise<HttpResponse<UserViewModel>> => {
 		try {
-			if (!request.body.email) throw new MissingParamError('email');
-			if (!request.body.password) throw new MissingParamError('password');
+			if (!request.body?.email) throw new MissingParamError('email');
+			if (!request.body?.password) throw new MissingParamError('password');
 
 			const { user, refreshToken, accessToken } = await this.signInService.exec({
 				email: request.body.email,

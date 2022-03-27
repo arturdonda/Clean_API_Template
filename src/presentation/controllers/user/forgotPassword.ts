@@ -7,7 +7,7 @@ export class ForgotPasswordController implements Controller {
 
 	handle = async (request: HttpRequest): Promise<HttpResponse<null>> => {
 		try {
-			if (!request.body.email) throw new MissingParamError('email');
+			if (!request.body?.email) throw new MissingParamError('email');
 
 			await this.forgotPasswordService.exec({ email: request.body.email });
 

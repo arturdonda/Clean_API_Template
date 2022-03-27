@@ -8,10 +8,10 @@ export class SignUpController implements Controller {
 
 	handle = async (request: HttpRequest): Promise<HttpResponse<UserViewModel>> => {
 		try {
-			if (!request.body.name) throw new MissingParamError('name');
-			if (!request.body.email) throw new MissingParamError('email');
-			if (!request.body.password) throw new MissingParamError('password');
-			if (!request.body.confirmationPassword) throw new MissingParamError('confirmationPassword');
+			if (!request.body?.name) throw new MissingParamError('name');
+			if (!request.body?.email) throw new MissingParamError('email');
+			if (!request.body?.password) throw new MissingParamError('password');
+			if (!request.body?.confirmationPassword) throw new MissingParamError('confirmationPassword');
 
 			const user = await this.signUpService.exec({
 				name: request.body.name,
