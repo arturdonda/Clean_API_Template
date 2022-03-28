@@ -9,12 +9,12 @@ export class RenewAccessController implements Controller {
 			const accessToken = this.renewAccessService.exec(request.cookies.sessionToken);
 
 			return ok({
-				message: 'Acesso renovado com sucesso',
+				message: 'Acesso renovado com sucesso.',
 				result: null,
 				headers: { authorization: `Bearer ${accessToken}` },
 			});
 		} catch (error) {
-			return internalServerError({ message: 'Erro ao renovar acesso', result: error });
+			return internalServerError({ message: 'Erro ao renovar acesso.', result: error });
 		}
 	};
 }

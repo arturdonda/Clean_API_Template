@@ -8,9 +8,9 @@ export class SignOutController implements Controller {
 		try {
 			await this.revokeSessionService.exec({ userId: request.userId, sessionToken: request.cookies?.sessionToken, ipAddress: request.ip });
 
-			return ok({ message: 'Sessão finalizada com sucesso', result: null });
+			return ok({ message: 'Sessão finalizada com sucesso.', result: null });
 		} catch (error) {
-			return internalServerError({ message: 'Erro ao finalizar sessão', result: error });
+			return internalServerError({ message: 'Erro ao finalizar sessão.', result: error });
 		}
 	};
 }
