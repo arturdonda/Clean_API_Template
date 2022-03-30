@@ -13,15 +13,15 @@ import { Router } from 'express';
 import { makeRevokeSessionController } from '@main/factories/session';
 
 export default (router: Router): void => {
-	const prefix = 'user';
+	const prefix = 'users';
 
-	router.get(`/${prefix}/all`, authorize, adaptRoute(makeGetAllUsersController()));
+	router.get(`/${prefix}`, authorize, adaptRoute(makeGetAllUsersController()));
 
 	router.get(`/${prefix}/:userId`, authorize, adaptRoute(makeGetUserByIdController()));
 
 	router.get(`/${prefix}/me`, authorize, adaptRoute(makeGetUserMeController()));
 
-	router.get(`/${prefix}/session`, authorize, adaptRoute(makeGetActiveSessionsController()));
+	router.get(`/${prefix}/me/session`, authorize, adaptRoute(makeGetActiveSessionsController()));
 
 	router.post(`/${prefix}`, adaptRoute(makeSignUpController()));
 
