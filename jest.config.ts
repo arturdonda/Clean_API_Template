@@ -15,6 +15,7 @@ const config: Config.InitialOptions = {
 		'@root/(.*)': '<rootDir>/$1',
 	},
 	modulePathIgnorePatterns: ['mock'],
+	preset: '@shelf/jest-mongodb',
 };
 
 export default config;
