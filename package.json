@@ -12,14 +12,6 @@
 		"build": "rimraf ./build && tsc",
 		"start": "node build/src/main/server.js"
 	},
-	"_moduleAliases": {
-		"@application": "build/src/application",
-		"@domain": "build/src/domain",
-		"@infra": "build/src/infra",
-		"@presentation": "build/src/presentation",
-		"@main": "build/src/main",
-		"@root": "./"
-	},
 	"dependencies": {
 		"bcryptjs": "^2.4.3",
 		"dotenv": "^16.0.0",

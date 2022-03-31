@@ -1,5 +1,5 @@
 require('dotenv').config();
-import 'module-alias/register';
+import '../../../module-alias';
 import { setupRoutes } from '@main/config/routes';
 import { createApiResponse } from '@main/middlewares';
 import express from 'express';
