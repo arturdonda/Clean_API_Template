@@ -21,7 +21,7 @@ export default (router: Router): void => {
 
 	router.get(`/${prefix}/me`, authorize, adaptRoute(makeGetUserMeController()));
 
-	router.get(`/${prefix}/me/session`, authorize, adaptRoute(makeGetActiveSessionsController()));
+	router.get(`/${prefix}/me/sessions`, authorize, adaptRoute(makeGetActiveSessionsController()));
 
 	router.post(`/${prefix}`, adaptRoute(makeSignUpController()));
 
@@ -29,5 +29,5 @@ export default (router: Router): void => {
 
 	router.put(`/${prefix}/me/password`, authorize, adaptRoute(makeUpdatePasswordController()));
 
-	router.delete(`/${prefix}/session/:sessionToken`, authorize, adaptRoute(makeRevokeSessionController()));
+	router.delete(`/${prefix}/me/sessions/:sessionToken`, authorize, adaptRoute(makeRevokeSessionController()));
 };
