@@ -53,7 +53,7 @@ export class User {
 		this._email = User.validateEmail(email);
 		this._gender = gender ?? null;
 		this._name = User.validateName(name);
-		this._password = User.validatePassword(password);
+		this._password = password;
 		this._phone = phone ? User.validatePhone(phone) : null;
 		this._rg = rg ? User.validateRg(rg) : null;
 		this._status = 'Pending';
@@ -147,7 +147,7 @@ export class User {
 	}
 
 	set password(password) {
-		this._password = User.validatePassword(password);
+		this._password = password;
 	}
 
 	set phone(phone) {
