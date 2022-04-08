@@ -1,4 +1,4 @@
-import { ok, notFound } from '@presentation/protocols';
+import { ok, notFound } from '@presentation/helpers';
 import pkgJson from '@root/package.json';
 import { Router, Request, Response, NextFunction } from 'express';
 

@@ -1,7 +1,8 @@
 import { ISignIn } from '@domain/usecases/user';
 import { UserViewModel } from '@presentation/viewModels';
 import { MissingParamError } from '@presentation/errors';
-import { Controller, HttpRequest, HttpResponse, ok, badRequest, internalServerError } from '@presentation/protocols';
+import { Controller, HttpRequest, HttpResponse } from '@presentation/protocols';
+import { ok, errorHandler } from '@presentation/helpers';
 
 export class SignInController implements Controller {
 	constructor(private readonly signInService: ISignIn) {}
@@ -24,7 +25,7 @@ export class SignInController implements Controller {
 				cookies: { sessionToken: sessionToken },
 			});
 		} catch (error) {
-			return (error instanceof MissingParamError ? badRequest : internalServerError)({ message: 'Erro ao logar usuário.', result: error });
+			return errorHandler(error, 'Erro ao logar usuário.');
 		}
 	};
 }

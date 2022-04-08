@@ -1,6 +1,7 @@
 import { IGetUserById } from '@domain/usecases/user';
 import { UserViewModel } from '@presentation/viewModels';
-import { Controller, HttpRequest, HttpResponse, ok, internalServerError } from '@presentation/protocols';
+import { Controller, HttpRequest, HttpResponse } from '@presentation/protocols';
+import { ok, errorHandler } from '@presentation/helpers';
 
 export class GetUserMeController implements Controller {
 	constructor(private readonly getUserByIdService: IGetUserById) {}
@@ -11,7 +12,7 @@ export class GetUserMeController implements Controller {
 
 			return ok({ message: 'Usuário retornado com sucesso.', result: UserViewModel.map(user) });
 		} catch (error) {
-			return internalServerError({ message: 'Erro ao retornar usuário.', result: error });
+			return errorHandler(error, 'Erro ao retornar usuário.');
 		}
 	};
 }

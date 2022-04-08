@@ -1,6 +1,7 @@
 import { IRevokeSession } from '@domain/usecases/session';
 import { MissingParamError } from '@presentation/errors';
-import { Controller, HttpRequest, HttpResponse, ok, badRequest, internalServerError } from '@presentation/protocols';
+import { Controller, HttpRequest, HttpResponse } from '@presentation/protocols';
+import { ok, errorHandler } from '@presentation/helpers';
 
 export class RevokeSessionController implements Controller {
 	constructor(private readonly revokeSessionService: IRevokeSession) {}
@@ -13,7 +14,7 @@ export class RevokeSessionController implements Controller {
 
 			return ok({ message: 'Sessão finalizada com sucesso.', result: null });
 		} catch (error) {
-			return (error instanceof MissingParamError ? badRequest : internalServerError)({ message: 'Erro ao finalizar sessão.', result: error });
+			return errorHandler(error, 'Erro ao finalizar sessão.');
 		}
 	};
 }

@@ -1,6 +1,7 @@
 import { IUpdateForgottenPassword } from '@domain/usecases/user';
 import { MissingParamError } from '@presentation/errors';
-import { Controller, HttpRequest, HttpResponse, ok, badRequest, internalServerError } from '@presentation/protocols';
+import { Controller, HttpRequest, HttpResponse } from '@presentation/protocols';
+import { ok, errorHandler } from '@presentation/helpers';
 
 export class UpdateForgottenPasswordController implements Controller {
 	constructor(private readonly updateForgottenPasswordService: IUpdateForgottenPassword) {}
@@ -19,7 +20,7 @@ export class UpdateForgottenPasswordController implements Controller {
 
 			return ok({ message: 'Senha atualizada com sucesso.', result: null });
 		} catch (error) {
-			return (error instanceof MissingParamError ? badRequest : internalServerError)({ message: 'Erro ao atualizar senha.', result: error });
+			return errorHandler(error, 'Erro ao atualizar senha.');
 		}
 	};
 }

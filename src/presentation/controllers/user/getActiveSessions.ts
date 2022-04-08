@@ -1,6 +1,7 @@
 import { IGetActiveSessions } from '@domain/usecases/user';
 import { SessionViewModel } from '@presentation/viewModels';
-import { Controller, HttpRequest, HttpResponse, ok, internalServerError } from '@presentation/protocols';
+import { Controller, HttpRequest, HttpResponse } from '@presentation/protocols';
+import { ok, errorHandler } from '@presentation/helpers';
 
 export class GetActiveSessionsController implements Controller {
 	constructor(private readonly getActiveSessionsService: IGetActiveSessions) {}
@@ -11,7 +12,7 @@ export class GetActiveSessionsController implements Controller {
 
 			return ok({ message: 'Sessões retornadas com sucesso.', result: SessionViewModel.mapCollection(sessions) });
 		} catch (error) {
-			return internalServerError({ message: 'Erro ao retornar sessões.', result: error });
+			return errorHandler(error, 'Erro ao retornar sessões.');
 		}
 	};
 }

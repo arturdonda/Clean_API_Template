@@ -1,6 +1,7 @@
 import { IUpdateOptionalData } from '@domain/usecases/user';
 import { UserViewModel } from '@presentation/viewModels';
-import { Controller, HttpRequest, HttpResponse, ok, internalServerError } from '@presentation/protocols';
+import { Controller, HttpRequest, HttpResponse } from '@presentation/protocols';
+import { ok, errorHandler } from '@presentation/helpers';
 
 export class UpdateOptionalDataController implements Controller {
 	constructor(private readonly updateOptionalDataService: IUpdateOptionalData) {}
@@ -14,7 +15,7 @@ export class UpdateOptionalDataController implements Controller {
 
 			return ok({ message: 'Dados atualizados com sucesso.', result: UserViewModel.map(user) });
 		} catch (error) {
-			return internalServerError({ message: 'Erro ao atualizar dados.', result: error });
+			return errorHandler(error, 'Erro ao atualizar dados.');
 		}
 	};
 }

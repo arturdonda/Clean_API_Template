@@ -1,5 +1,6 @@
 import { IRevokeSession } from '@domain/usecases/session';
-import { Controller, HttpRequest, HttpResponse, ok, internalServerError } from '@presentation/protocols';
+import { Controller, HttpRequest, HttpResponse } from '@presentation/protocols';
+import { ok, errorHandler } from '@presentation/helpers';
 
 export class SignOutController implements Controller {
 	constructor(private readonly revokeSessionService: IRevokeSession) {}
@@ -10,7 +11,7 @@ export class SignOutController implements Controller {
 
 			return ok({ message: 'Sessão finalizada com sucesso.', result: null });
 		} catch (error) {
-			return internalServerError({ message: 'Erro ao finalizar sessão.', result: error });
+			return errorHandler(error, 'Erro ao finalizar sessão.');
 		}
 	};
 }

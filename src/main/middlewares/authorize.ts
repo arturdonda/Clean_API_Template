@@ -1,5 +1,5 @@
 import { AccessTokenService } from '@infra/adapters/token/jsonwebtoken';
-import { unauthorized } from '@presentation/protocols';
+import { unauthorized } from '@presentation/helpers';
 import { Request, Response, NextFunction } from 'express';
 
 export const authorize = async (req: Request, res: Response, next: NextFunction) => {

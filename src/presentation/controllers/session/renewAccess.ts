@@ -1,5 +1,6 @@
 import { IRenewAccess } from '@domain/usecases/session';
-import { Controller, HttpRequest, HttpResponse, ok, internalServerError } from '@presentation/protocols';
+import { Controller, HttpRequest, HttpResponse } from '@presentation/protocols';
+import { ok, errorHandler } from '@presentation/helpers';
 
 export class RenewAccessController implements Controller {
 	constructor(private readonly renewAccessService: IRenewAccess) {}
@@ -14,7 +15,7 @@ export class RenewAccessController implements Controller {
 				headers: { authorization: `Bearer ${accessToken}` },
 			});
 		} catch (error) {
-			return internalServerError({ message: 'Erro ao renovar acesso.', result: error });
+			return errorHandler(error, 'Erro ao renovar acesso.');
 		}
 	};
 }

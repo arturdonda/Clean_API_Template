@@ -1,7 +1,8 @@
 import { ISignUp } from '@domain/usecases/user';
 import { UserViewModel } from '@presentation/viewModels';
 import { MissingParamError } from '@presentation/errors';
-import { Controller, HttpRequest, HttpResponse, created, badRequest, internalServerError } from '@presentation/protocols';
+import { Controller, HttpRequest, HttpResponse } from '@presentation/protocols';
+import { created, errorHandler } from '@presentation/helpers';
 
 export class SignUpController implements Controller {
 	constructor(private readonly signUpService: ISignUp) {}
@@ -22,7 +23,7 @@ export class SignUpController implements Controller {
 
 			return created({ message: 'Usuário criado com sucesso.', result: UserViewModel.map(user) });
 		} catch (error) {
-			return (error instanceof MissingParamError ? badRequest : internalServerError)({ message: 'Erro ao criar usuário.', result: error });
+			return errorHandler(error, 'Erro ao criar usuário.');
 		}
 	};
 }
