@@ -1,3 +1,4 @@
+import { User } from '@domain/entities';
 import { ISignIn } from '@domain/usecases/user';
 import { ICreateSession, IRenewAccess } from '@domain/usecases/session';
 import { IUserRepository } from '@application/protocols/repositories';
@@ -13,7 +14,9 @@ export class SignIn implements ISignIn {
 	) {}
 
 	exec = async ({ email, password, ipAddress }: ISignIn.Params): Promise<ISignIn.Result> => {
-		const user = await this.userRepository.getByEmail(email);
+		const validEmail = User.validateEmail(email);
+
+		const user = await this.userRepository.getByEmail(validEmail);
 
 		if (!user) throw new UserNotFoundError();
 

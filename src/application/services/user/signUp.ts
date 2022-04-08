@@ -12,18 +12,22 @@ export class SignUp implements ISignUp {
 	) {}
 
 	exec = async ({ name, email, password, confirmationPassword }: ISignUp.Params): Promise<ISignUp.Result> => {
+		const validName = User.validateName(name);
+		const validEmail = User.validateEmail(email);
+		const validPassword = User.validatePassword(password);
+
 		if (password !== confirmationPassword) throw new InvalidPasswordError();
 
-		const userExists = !!(await this.userRepository.getByEmail(User.validateEmail(email)));
+		const userExists = !!(await this.userRepository.getByEmail(validEmail));
 
 		if (userExists) throw new UserRegisteredError('E-mail');
 
 		return await this.userRepository.create(
 			new User({
 				confirmationCode: `CC${this.uuidService.generate()}`,
-				email: email,
-				name: name,
-				password: this.passwordHashService.hash(password),
+				email: validEmail,
+				name: validName,
+				password: this.passwordHashService.hash(validPassword),
 			})
 		);
 	};

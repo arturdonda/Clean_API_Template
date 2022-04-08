@@ -1,6 +1,7 @@
+import { User } from '@domain/entities';
+import { IForgotPassword } from '@domain/usecases/user';
 import { IUserRepository } from '@application/protocols/repositories';
 import { IEmailService, ITokenService } from '@application/protocols/utils';
-import { IForgotPassword } from '@domain/usecases/user';
 
 export class ForgotPassword implements IForgotPassword {
 	constructor(
@@ -10,7 +11,9 @@ export class ForgotPassword implements IForgotPassword {
 	) {}
 
 	exec = async ({ email }: IForgotPassword.Params): Promise<IForgotPassword.Result> => {
-		const user = await this.userRepository.getByEmail(email);
+		const validEmail = User.validateEmail(email);
+
+		const user = await this.userRepository.getByEmail(validEmail);
 
 		if (user) {
 			const resetToken = this.resetTokenService.generate(user.id);
