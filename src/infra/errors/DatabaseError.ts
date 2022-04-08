@@ -1,10 +1,10 @@
 export class DatabaseError extends Error {
 	constructor(error: Error) {
 		super(`Database error: ${error.message}`);
+		Object.setPrototypeOf(this, new.target.prototype);
 
-		this.name = 'DatabaseError';
-		this.stack = error.stack;
+		this.name = this.constructor.name;
 
-		Object.setPrototypeOf(this, DatabaseError.prototype);
+		Error.captureStackTrace(this);
 	}
 }
