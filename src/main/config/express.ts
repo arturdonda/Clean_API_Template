@@ -6,10 +6,13 @@ import express from 'express';
 
 const app = express();
 
+// Setup middlewares
+app.use(express.json());
+
 // Setup routes
 setupRoutes(app);
 
-// Setup middlewares
+// Setup response middleware
 app.use(createApiResponse);
 
 export default app;
