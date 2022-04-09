@@ -12,7 +12,11 @@ describe('Get User By Id', () => {
 		expect(getUserByIdService.exec({ userId: '1' })).resolves.toEqual(user);
 	});
 
-	test('Invalid Id', () => {
+	test('Nonexistent Id', () => {
 		expect(getUserByIdService.exec({ userId: '0' })).rejects.toThrow(UserNotFoundError);
+	});
+
+	test('Invalid Id', () => {
+		expect(getUserByIdService.exec({ userId: '' })).rejects.toThrow("Campo 'Id' inválido: não pode ser vazio.");
 	});
 });
