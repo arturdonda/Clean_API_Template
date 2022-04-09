@@ -31,7 +31,11 @@ describe('Forgot Password', () => {
 		tokenSpy.mockRestore();
 	});
 
-	test('Invalid e-mail', async () => {
+	test('Nonexistent e-mail', async () => {
 		expect(forgotPasswordService.exec({ email: 'john.doe@hotmail.com' })).resolves;
+	});
+
+	test('Invalid e-mail', async () => {
+		expect(forgotPasswordService.exec({ email: 'john.doe@hotmailcom' })).rejects.toThrow("Campo 'E-mail' inválido: formato inválido.");
 	});
 });
