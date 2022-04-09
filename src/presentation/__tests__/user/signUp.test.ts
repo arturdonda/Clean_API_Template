@@ -1,14 +1,14 @@
+import { MockEmailService, MockHashService, MockUserRepository, MockUuidService } from '@application/__tests__/mock';
 import { SignUp } from '@application/services/user';
-import { MockHashService, MockUserRepository, MockUuidService } from '@application/__tests__/mock';
 import { SignUpController } from '@presentation/controllers/user';
-import { MissingParamError } from '@presentation/errors';
 import { UserViewModel } from '@presentation/viewModels';
 
 describe('Sign Up Controller', () => {
 	const mockUserRespository = new MockUserRepository();
 	const uuidService = new MockUuidService();
 	const passwordHashService = new MockHashService();
-	const signUpService = new SignUp(mockUserRespository, uuidService, passwordHashService);
+	const emailService = new MockEmailService();
+	const signUpService = new SignUp(mockUserRespository, uuidService, passwordHashService, emailService);
 	const signUpController = new SignUpController(signUpService);
 
 	test('With required parameter', async () => {
