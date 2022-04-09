@@ -1,12 +1,12 @@
+import { MockEmailService, MockHashService, MockUserRepository } from '@application/__tests__/mock';
 import { UpdatePassword } from '@application/services/user';
-import { MockHashService, MockUserRepository } from '@application/__tests__/mock';
 import { UpdatePasswordController } from '@presentation/controllers/user';
-import { MissingParamError } from '@presentation/errors';
 
 describe('Update Password Controller', () => {
 	const mockUserRepository = new MockUserRepository();
 	const passwordHashService = new MockHashService();
-	const updatePasswordService = new UpdatePassword(mockUserRepository, passwordHashService);
+	const emailService = new MockEmailService();
+	const updatePasswordService = new UpdatePassword(mockUserRepository, passwordHashService, emailService);
 	const updatePasswordController = new UpdatePasswordController(updatePasswordService);
 
 	test('With required parameter', async () => {
