@@ -1,6 +1,6 @@
 import { MockUserRepository } from '@application/__tests__/mock';
 import { UpdateOptionalData } from '@application/services/user';
-import { UserNotFoundError, UserRegisteredError } from '@application/errors';
+import { UserNotFoundError } from '@application/errors';
 
 describe('Update optional data', () => {
 	const userRepository = new MockUserRepository();
@@ -53,7 +53,7 @@ describe('Update optional data', () => {
 		expect(user.rg).toBeNull();
 	});
 
-	test('Invalid user', async () => {
+	test('Nonexistent user', async () => {
 		expect(
 			updateOptionalData.exec({
 				userId: '0',
@@ -80,5 +80,86 @@ describe('Update optional data', () => {
 				rg: '30.502.505-3',
 			})
 		).rejects.toThrow('RG já cadastrado.');
+	});
+
+	test('Invalid Id', async () => {
+		expect(
+			updateOptionalData.exec({
+				userId: '',
+				rg: '30.502.505-3',
+			})
+		).rejects.toThrow("Campo 'Id' inválido: não pode ser vazio.");
+	});
+
+	test('Invalid Address', async () => {
+		expect(
+			updateOptionalData.exec({
+				userId: '3',
+				address: 'Rua',
+			})
+		).rejects.toThrow("Campo 'Endereço' inválido: deve conter pelo menos 5 caracteres.");
+	});
+
+	test('Invalid Birthday - Before 1900', async () => {
+		expect(
+			updateOptionalData.exec({
+				userId: '3',
+				birthday: new Date(1899, 0, 1),
+			})
+		).rejects.toThrow("Campo 'Data de nascimento' inválido: deve ser posterior a 01/01/1900.");
+	});
+
+	test('Invalid Birthday - Future', async () => {
+		expect(
+			updateOptionalData.exec({
+				userId: '3',
+				birthday: new Date(new Date().valueOf() + 86400 * 1000),
+			})
+		).rejects.toThrow("Campo 'Data de nascimento' inválido: não pode ser no futuro.");
+	});
+
+	test('Invalid Gender', async () => {
+		expect(
+			updateOptionalData.exec({
+				userId: '3',
+				gender: 'X',
+			})
+		).rejects.toThrow("Campo 'Gênero' inválido: deve ser 'M', 'F' ou 'O'.");
+	});
+
+	test('Invalid Phone', async () => {
+		expect(
+			updateOptionalData.exec({
+				userId: '3',
+				phone: '12345678',
+			})
+		).rejects.toThrow("Campo 'Telefone' inválido: deve conter 10 ou 11 dígitos.");
+	});
+
+	test('Invalid CPF - Lenght', async () => {
+		expect(
+			updateOptionalData.exec({
+				userId: '3',
+				cpf: '123',
+			})
+		).rejects.toThrow("Campo 'CPF' inválido: deve conter 11 dígitos.");
+	});
+
+	test('Invalid CPF - Incorrect', async () => {
+		expect(
+			updateOptionalData.exec({
+				userId: '3',
+				cpf: '123.456.789-10',
+			})
+		).rejects.toThrow("Campo 'CPF' inválido: dígitos verificadores incorretos.");
+	});
+
+	test('Invalid RG', async () => {
+		expect(
+			updateOptionalData.exec({
+				userId: '3',
+				rg: '123',
+			})
+		).rejects.toThrow("Campo 'RG' inválido: formato inválido.");
 	});
 });
