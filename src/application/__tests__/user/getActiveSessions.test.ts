@@ -11,7 +11,11 @@ describe('Get Active Sessions', () => {
 		expect(getActiveSessionsService.exec({ userId: '1' })).resolves.toEqual<Session[]>([]);
 	});
 
-	test('Invalid Id', () => {
+	test('Nonexistent Id', () => {
 		expect(getActiveSessionsService.exec({ userId: '0' })).rejects.toThrow(UserNotFoundError);
+	});
+
+	test('Invalid Id', () => {
+		expect(getActiveSessionsService.exec({ userId: '' })).rejects.toThrow("Campo 'Id' inválido: não pode ser vazio.");
 	});
 });
