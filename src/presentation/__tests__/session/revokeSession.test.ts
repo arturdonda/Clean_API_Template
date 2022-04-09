@@ -25,10 +25,10 @@ describe('Revoke Session Controller', () => {
 			await revokeSessionController.handle({
 				ip: '0.0.0.0',
 				userId: '1',
-				query: null,
+				query: { sessionToken: session.token },
 				cookies: null,
 				headers: null,
-				body: { sessionToken: session.token },
+				body: null,
 			})
 		).toMatchObject(
 			expect.objectContaining({
@@ -61,7 +61,11 @@ describe('Revoke Session Controller', () => {
 				body: {
 					success: false,
 					message: 'Erro ao finalizar sessão.',
-					result: expect.any(MissingParamError),
+					result: expect.objectContaining({
+						name: 'MissingParamError',
+						message: "O parâmetro 'sessionToken' é obrigatório.",
+						stack: expect.any(String),
+					}),
 				},
 			})
 		);
