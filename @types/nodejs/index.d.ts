@@ -20,6 +20,6 @@ declare namespace NodeJS {
 		EMAIL_SERVICE_USERNAME: string;
 		EMAIL_SERVICE_PASSWORD: string;
 
-		RESET_PASSWORD_LINK: string;
+		API_BASE_URL: string;
 	}
 }
