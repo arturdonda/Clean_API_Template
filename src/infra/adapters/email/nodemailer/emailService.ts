@@ -8,15 +8,15 @@ export class EmailService implements IEmailService {
 		this._transport = nodemailer.createTransport({
 			service: 'Outlook',
 			auth: {
-				user: process.env.EMAIL_USERNAME,
-				pass: process.env.EMAIL_PASSWORD,
+				user: process.env.EMAIL_SERVICE_USERNAME,
+				pass: process.env.EMAIL_SERVICE_PASSWORD,
 			},
 		});
 	}
 
 	send = async ({ to, cc, bcc, subject, body }: IEmailService.SendParams): Promise<IEmailService.Result> => {
 		await this._transport.sendMail({
-			from: `"API Template" <${process.env.EMAIL_USERNAME}>`,
+			from: `"API Template" <${process.env.EMAIL_SERVICE_USERNAME}>`,
 			to: to,
 			cc: cc,
 			bcc: bcc,
@@ -33,7 +33,7 @@ export class EmailService implements IEmailService {
 			<br>
 			<p>Sua conta no API TEMPLATE está quase pronta. Para ativá-la, por favor confirme o seu endereço de email clicando no link abaixo.</p>
 			<br>
-			<a href="${process.env.API_BASE_URL}/auth/activate/${confirmationCode} target="_blank">Ativar minha conta/Confirmar meu email</a>
+			<a href="${process.env.API_BASE_URL}/auth/activate/${confirmationCode}" target="_blank">Ativar minha conta/Confirmar meu email</a>
 			<br>
 			<br>
 			<p>Sua conta não será ativada até que seu email seja confirmado.</p>
