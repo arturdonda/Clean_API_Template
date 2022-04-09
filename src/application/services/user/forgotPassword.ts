@@ -15,25 +15,9 @@ export class ForgotPassword implements IForgotPassword {
 
 		const user = await this.userRepository.getByEmail(validEmail);
 
-		if (user) {
-			const resetToken = this.resetTokenService.generate(user.id);
+		if (!user) return;
+		const resetToken = this.resetTokenService.generate(user.id);
 
-			await this.emailService.send({
-				to: [user.email],
-				cc: [],
-				bcc: [],
-				subject: 'Redefinir a sua senha',
-				body: makeForgotPasswordEmailBody(user.name, resetToken.token),
-			});
-		}
+		await this.emailService.sendForgotPasswordEmail({ name: user.name, email: user.email, resetToken: resetToken.token });
 	};
 }
-
-const makeForgotPasswordEmailBody = (name: string, token: string) => `
-Olá ${name},
-
-Esqueceu a sua senha? Sem problemas, vamos cadastrar uma nova senha para você!
-<a href="${process.env.RESET_PASSWORD_LINK}/${token}" target="_blank">Redefinir senha</a>
-
-Se você não pediu para redefinir a senha, você pode desconsiderar este e-mail com segurança.
-`;
