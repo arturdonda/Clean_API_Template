@@ -7,7 +7,11 @@
 	"license": "MIT",
 	"scripts": {
 		"test": "jest",
-		"test-clear-cache": "jest --clearCache",
+		"test:domain": "jest --testPathPattern=src/domain",
+		"test:application": "jest --testPathPattern=src/application",
+		"test:presentation": "jest --testPathPattern=src/presentation",
+		"test:main": "jest --testPathPattern=src/main",
+		"test:clear": "jest --clearCache",
 		"dev": "nodemon src/main/server.ts",
 		"build": "rimraf ./build && tsc",
 		"start": "node build/src/main/server.js"
