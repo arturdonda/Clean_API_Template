@@ -53,7 +53,11 @@ describe('Activate User Controller', () => {
 				body: {
 					success: false,
 					message: 'Erro ao ativar usuário.',
-					result: expect.any(MissingParamError),
+					result: expect.objectContaining({
+						name: 'MissingParamError',
+						message: "O parâmetro 'confirmationCode' é obrigatório.",
+						stack: expect.any(String),
+					}),
 				},
 			})
 		);
