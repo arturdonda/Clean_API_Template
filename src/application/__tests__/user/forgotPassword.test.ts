@@ -13,19 +13,13 @@ describe('Forgot Password', () => {
 		const user = await userRepository.getById('1');
 		if (!user) throw new UserNotFoundError();
 
-		const emailSpy = jest.spyOn(emailService, 'send');
+		const emailSpy = jest.spyOn(emailService, 'sendForgotPasswordEmail');
 		const tokenSpy = jest.spyOn(tokenService, 'generate');
 
 		await forgotPasswordService.exec({ email: user.email });
 
 		expect(tokenSpy).toHaveBeenCalledWith(user.id);
-		expect(emailSpy).toHaveBeenCalledWith({
-			to: [user.email],
-			cc: [],
-			bcc: [],
-			subject: 'Redefinir a sua senha',
-			body: expect.stringContaining(`Olá ${user.name},`),
-		});
+		expect(emailSpy).toHaveBeenCalledWith(expect.objectContaining({ name: user.name, email: user.email }));
 
 		emailSpy.mockRestore();
 		tokenSpy.mockRestore();
