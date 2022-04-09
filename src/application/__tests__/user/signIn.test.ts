@@ -42,6 +42,16 @@ describe('Sign In', () => {
 		expect(user.sessions.length).toBe(1);
 	});
 
+	test('Nonexistent e-mail', async () => {
+		expect(
+			signInService.exec({
+				email: 'sueli@hotmail.com',
+				password: 'Sueli@123',
+				ipAddress: '0.0.0.0',
+			})
+		).rejects.toThrow(UserNotFoundError);
+	});
+
 	test('Invalid e-mail', async () => {
 		expect(
 			signInService.exec({
@@ -49,7 +59,7 @@ describe('Sign In', () => {
 				password: 'Sueli@123',
 				ipAddress: '0.0.0.0',
 			})
-		).rejects.toThrow(UserNotFoundError);
+		).rejects.toThrow("Campo 'E-mail' inválido: formato inválido.");
 	});
 
 	test('Invalid password', async () => {
