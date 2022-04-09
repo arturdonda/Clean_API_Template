@@ -1,7 +1,7 @@
 import { MockHashService, MockIpService, MockTokenService, MockUserRepository, MockUuidService } from '@application/__tests__/mock';
 import { SignIn, SignUp } from '@application/services/user';
 import { CreateSession, RenewAccess } from '@application/services/session';
-import { InvalidPasswordError, UserAccountPendingActivation, UserNotFoundError, UserRegisteredError } from '@application/errors';
+import { InvalidPasswordError, UserAccountPendingActivation, UserNotFoundError } from '@application/errors';
 
 describe('Sign Up', () => {
 	const userRepository = new MockUserRepository();
@@ -33,6 +33,28 @@ describe('Sign Up', () => {
 		).rejects.toThrow(UserAccountPendingActivation);
 	});
 
+	test('Invalid name', async () => {
+		expect(
+			signUpService.exec({
+				name: 'Doe',
+				email: 'john.doe@hotmail.com',
+				password: 'Abcde#123',
+				confirmationPassword: 'Abcde#123',
+			})
+		).rejects.toThrow("Campo 'Nome' inválido: deve conter pelo menos 3 caracteres.");
+	});
+
+	test('Invalid e-mail', async () => {
+		expect(
+			signUpService.exec({
+				name: 'John Doe',
+				email: 'john.doehotmail.com',
+				password: 'Abcde#123',
+				confirmationPassword: 'Abcde#123',
+			})
+		).rejects.toThrow("Campo 'E-mail' inválido: formato inválido.");
+	});
+
 	test('Registered e-mail', async () => {
 		const user = await userRepository.getById('1');
 
@@ -46,6 +68,17 @@ describe('Sign Up', () => {
 				confirmationPassword: 'Abcde#123',
 			})
 		).rejects.toThrow('E-mail já cadastrado.');
+	});
+
+	test('Invalid password', async () => {
+		expect(
+			signUpService.exec({
+				name: 'John Doe',
+				email: 'john.doe@hotmail.com',
+				password: 'abcde#123',
+				confirmationPassword: 'abcde#123',
+			})
+		).rejects.toThrow("Campo 'Senha' inválido: deve conter pelo menos 1 caractere maiúsculo (A-Z).");
 	});
 
 	test('Unmatch passwords', async () => {
