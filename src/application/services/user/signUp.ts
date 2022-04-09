@@ -1,14 +1,15 @@
 import { User } from '@domain/entities';
 import { ISignUp } from '@domain/usecases/user';
 import { IUserRepository } from '@application/protocols/repositories';
-import { IHashService, IUuidService } from '@application/protocols/utils';
+import { IEmailService, IHashService, IUuidService } from '@application/protocols/utils';
 import { InvalidPasswordError, UserRegisteredError } from '@application/errors';
 
 export class SignUp implements ISignUp {
 	constructor(
 		private readonly userRepository: IUserRepository,
 		private readonly uuidService: IUuidService,
-		private readonly passwordHashService: IHashService
+		private readonly passwordHashService: IHashService,
+		private readonly emailService: IEmailService
 	) {}
 
 	exec = async ({ name, email, password, confirmationPassword }: ISignUp.Params): Promise<ISignUp.Result> => {
@@ -22,7 +23,7 @@ export class SignUp implements ISignUp {
 
 		if (userExists) throw new UserRegisteredError('E-mail');
 
-		return await this.userRepository.create(
+		const user = await this.userRepository.create(
 			new User({
 				confirmationCode: `CC${this.uuidService.generate()}`,
 				email: validEmail,
@@ -30,5 +31,9 @@ export class SignUp implements ISignUp {
 				password: this.passwordHashService.hash(validPassword),
 			})
 		);
+
+		await this.emailService.sendAccountConfirmationEmail({ name: user.name, email: user.email, confirmationCode: user.confirmationCode });
+
+		return user;
 	};
 }
