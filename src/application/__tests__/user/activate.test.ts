@@ -19,6 +19,6 @@ describe('Activate User', () => {
 	});
 
 	test('Invalid Confirmation Code', async () => {
-		expect(activateService.exec({ confirmationCode: '123' })).rejects.toThrow(UserNotFoundError);
+		expect(activateService.exec({ confirmationCode: '123' })).rejects.toThrow("Campo 'Código de Confirmação' inválido: prefixo inválido.");
 	});
 });
