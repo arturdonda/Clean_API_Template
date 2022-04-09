@@ -66,7 +66,11 @@ describe('Sign In Controller', () => {
 				body: {
 					success: false,
 					message: 'Erro ao logar usuário.',
-					result: expect.any(MissingParamError),
+					result: expect.objectContaining({
+						name: 'MissingParamError',
+						message: "O parâmetro 'email' é obrigatório.",
+						stack: expect.any(String),
+					}),
 				},
 			})
 		);
@@ -88,7 +92,11 @@ describe('Sign In Controller', () => {
 				body: {
 					success: false,
 					message: 'Erro ao logar usuário.',
-					result: expect.any(MissingParamError),
+					result: expect.objectContaining({
+						name: 'MissingParamError',
+						message: "O parâmetro 'password' é obrigatório.",
+						stack: expect.any(String),
+					}),
 				},
 			})
 		);
