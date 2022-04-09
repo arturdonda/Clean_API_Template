@@ -8,9 +8,9 @@ export class ActivateUserController implements Controller {
 
 	handle = async (request: HttpRequest): Promise<HttpResponse<null>> => {
 		try {
-			if (!request.query?.confirmationCode) throw new MissingParamError('confirmationCode');
+			if (!request.body?.confirmationCode) throw new MissingParamError('confirmationCode');
 
-			await this.activateService.exec({ confirmationCode: request.query.confirmationCode });
+			await this.activateService.exec({ confirmationCode: request.body.confirmationCode });
 
 			return ok({ message: 'Usuário ativado com sucesso.', result: null });
 		} catch (error) {

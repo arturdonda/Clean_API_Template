@@ -7,11 +7,11 @@ import { Router } from 'express';
 export default (router: Router): void => {
 	const prefix = 'auth';
 
-	router.get(`/${prefix}/activate/:confirmationCode`, adaptRoute(makeActivateUserController()));
-
 	router.get(`/${prefix}/refresh`, authorize, adaptRoute(makeRenewAccessController()));
 
 	router.get(`/${prefix}/sign-out`, authorize, adaptRoute(makeSignOutController()));
+
+	router.post(`/${prefix}/activate`, adaptRoute(makeActivateUserController()));
 
 	router.post(`/${prefix}/sign-in`, adaptRoute(makeSignInController()));
 
