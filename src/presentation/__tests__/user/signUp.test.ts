@@ -55,7 +55,11 @@ describe('Sign Up Controller', () => {
 				body: {
 					success: false,
 					message: 'Erro ao criar usuário.',
-					result: expect.any(MissingParamError),
+					result: expect.objectContaining({
+						name: 'MissingParamError',
+						message: "O parâmetro 'name' é obrigatório.",
+						stack: expect.any(String),
+					}),
 				},
 			})
 		);
@@ -77,7 +81,11 @@ describe('Sign Up Controller', () => {
 				body: {
 					success: false,
 					message: 'Erro ao criar usuário.',
-					result: expect.any(MissingParamError),
+					result: expect.objectContaining({
+						name: 'MissingParamError',
+						message: "O parâmetro 'email' é obrigatório.",
+						stack: expect.any(String),
+					}),
 				},
 			})
 		);
@@ -99,7 +107,11 @@ describe('Sign Up Controller', () => {
 				body: {
 					success: false,
 					message: 'Erro ao criar usuário.',
-					result: expect.any(MissingParamError),
+					result: expect.objectContaining({
+						name: 'MissingParamError',
+						message: "O parâmetro 'password' é obrigatório.",
+						stack: expect.any(String),
+					}),
 				},
 			})
 		);
@@ -121,7 +133,11 @@ describe('Sign Up Controller', () => {
 				body: {
 					success: false,
 					message: 'Erro ao criar usuário.',
-					result: expect.any(MissingParamError),
+					result: expect.objectContaining({
+						name: 'MissingParamError',
+						message: "O parâmetro 'confirmationPassword' é obrigatório.",
+						stack: expect.any(String),
+					}),
 				},
 			})
 		);
