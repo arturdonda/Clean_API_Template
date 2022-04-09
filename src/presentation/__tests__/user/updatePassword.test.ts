@@ -53,7 +53,11 @@ describe('Update Password Controller', () => {
 				body: {
 					success: false,
 					message: 'Erro ao atualizar senha.',
-					result: expect.any(MissingParamError),
+					result: expect.objectContaining({
+						name: 'MissingParamError',
+						message: "O parâmetro 'password' é obrigatório.",
+						stack: expect.any(String),
+					}),
 				},
 			})
 		);
@@ -75,7 +79,11 @@ describe('Update Password Controller', () => {
 				body: {
 					success: false,
 					message: 'Erro ao atualizar senha.',
-					result: expect.any(MissingParamError),
+					result: expect.objectContaining({
+						name: 'MissingParamError',
+						message: "O parâmetro 'confirmationPassword' é obrigatório.",
+						stack: expect.any(String),
+					}),
 				},
 			})
 		);
