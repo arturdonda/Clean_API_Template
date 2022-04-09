@@ -1,4 +1,4 @@
-import { MockHashService, MockIpService, MockTokenService, MockUserRepository } from '@application/__tests__/mock';
+import { MockEmailService, MockHashService, MockIpService, MockTokenService, MockUserRepository } from '@application/__tests__/mock';
 import { UpdatePassword, UpdateForgottenPassword, SignIn } from '@application/services/user';
 import { CreateSession, RenewAccess } from '@application/services/session';
 import { InvalidPasswordError, UserNotFoundError } from '@application/errors';
@@ -7,7 +7,8 @@ describe('Update forgotten password', () => {
 	const tokenService = new MockTokenService();
 	const userRepository = new MockUserRepository();
 	const passwordHashService = new MockHashService();
-	const updatePasswordService = new UpdatePassword(userRepository, passwordHashService);
+	const emailService = new MockEmailService();
+	const updatePasswordService = new UpdatePassword(userRepository, passwordHashService, emailService);
 	const updateForgottenPasswordService = new UpdateForgottenPassword(tokenService, updatePasswordService);
 	const ipService = new MockIpService();
 	const createSessionService = new CreateSession(tokenService, ipService);
@@ -15,6 +16,8 @@ describe('Update forgotten password', () => {
 	const signInService = new SignIn(userRepository, passwordHashService, createSessionService, renewAccessService);
 
 	test('Valid parameters', async () => {
+		const emailSpy = jest.spyOn(emailService, 'sendPasswordChangeConfirmationEmail');
+
 		const resetToken = tokenService.generate('1');
 
 		const user = await userRepository.getById('1');
@@ -33,6 +36,8 @@ describe('Update forgotten password', () => {
 			})
 		).resolves;
 
+		expect(emailSpy).toHaveBeenCalledWith({ name: user.name, email: user.email });
+
 		expect(
 			signInService.exec({
 				email: user.email,
@@ -40,6 +45,8 @@ describe('Update forgotten password', () => {
 				ipAddress: '0.0.0.0',
 			})
 		).resolves;
+
+		emailSpy.mockRestore();
 	});
 
 	test('Invalid token', async () => {
