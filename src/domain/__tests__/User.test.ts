@@ -474,6 +474,40 @@ describe('RG', () => {
 	});
 });
 
+describe('Gender', () => {
+	test('Constructor - invalid character', () => {
+		const validPassword = User.validatePassword('Abcde#123');
+
+		expect(
+			() =>
+				new User({
+					id: '123',
+					confirmationCode: 'CCb192e8488dcc4d79bd58215179b9d9b3',
+					name: 'John Doe',
+					email: 'john.doe@hotmail.com',
+					password: validPassword,
+					gender: 'X' as any,
+				})
+		).toThrow("Campo 'Gênero' inválido: deve ser 'M', 'F' ou 'O'.");
+	});
+
+	test('Setter - invalid lenght', () => {
+		const validPassword = User.validatePassword('Abcde#123');
+
+		const user = new User({
+			id: '123',
+			confirmationCode: 'CCb192e8488dcc4d79bd58215179b9d9b3',
+			name: 'John Doe',
+			email: 'john.doe@hotmail.com',
+			password: validPassword,
+		});
+
+		expect(() => {
+			user.gender = '?' as any;
+		}).toThrow("Campo 'Gênero' inválido: deve ser 'M', 'F' ou 'O'.");
+	});
+});
+
 //#endregion Optional fields
 
 //#region Methods
