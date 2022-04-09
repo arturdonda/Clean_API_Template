@@ -15,7 +15,7 @@ export class UpdateOptionalData implements IUpdateOptionalData {
 
 		if (address) user.address = User.validateAddress(address);
 		if (birthday) user.birthday = User.validateBirthday(birthday);
-		if (gender) user.gender = gender as any;
+		if (gender) user.gender = User.validateGender(gender) as any;
 		if (phone) user.phone = User.validatePhone(phone);
 
 		if (cpf) {
