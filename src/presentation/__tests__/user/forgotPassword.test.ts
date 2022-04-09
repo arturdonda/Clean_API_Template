@@ -55,7 +55,11 @@ describe('Forgot Password Controller', () => {
 				body: {
 					success: false,
 					message: 'Erro ao enviar e-mail de alteração de senha.',
-					result: expect.any(MissingParamError),
+					result: expect.objectContaining({
+						name: 'MissingParamError',
+						message: "O parâmetro 'email' é obrigatório.",
+						stack: expect.any(String),
+					}),
 				},
 			})
 		);
