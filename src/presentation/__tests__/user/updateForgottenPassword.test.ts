@@ -1,13 +1,13 @@
+import { MockEmailService, MockHashService, MockTokenService, MockUserRepository } from '@application/__tests__/mock';
 import { UpdateForgottenPassword, UpdatePassword } from '@application/services/user';
-import { MockHashService, MockTokenService, MockUserRepository } from '@application/__tests__/mock';
 import { UpdateForgottenPasswordController } from '@presentation/controllers/user';
-import { MissingParamError } from '@presentation/errors';
 
 describe('Update Forgotten Password Controller', () => {
 	const mockUserRepository = new MockUserRepository();
 	const passwordHashService = new MockHashService();
 	const tokenService = new MockTokenService();
-	const updatePasswordService = new UpdatePassword(mockUserRepository, passwordHashService);
+	const emailService = new MockEmailService();
+	const updatePasswordService = new UpdatePassword(mockUserRepository, passwordHashService, emailService);
 	const updateForgottenPasswordService = new UpdateForgottenPassword(tokenService, updatePasswordService);
 	const updateForgottenPasswordController = new UpdateForgottenPasswordController(updateForgottenPasswordService);
 
