@@ -1,7 +1,6 @@
-import { Activate } from '@application/services/user';
 import { MockUserRepository } from '@application/__tests__/mock';
+import { Activate } from '@application/services/user';
 import { ActivateUserController } from '@presentation/controllers/user';
-import { MissingParamError } from '@presentation/errors';
 
 describe('Activate User Controller', () => {
 	const mockUserRespository = new MockUserRepository();
@@ -16,10 +15,10 @@ describe('Activate User Controller', () => {
 			await activateUserController.handle({
 				ip: '0.0.0.0',
 				userId: '',
-				query: { confirmationCode: user.confirmationCode },
+				query: null,
 				cookies: null,
 				headers: null,
-				body: null,
+				body: { confirmationCode: user.confirmationCode },
 			})
 		).toMatchObject(
 			expect.objectContaining({
