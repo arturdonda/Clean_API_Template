@@ -1,4 +1,4 @@
-import { MockHashService, MockIpService, MockTokenService, MockUserRepository, MockUuidService } from '@application/__tests__/mock';
+import { MockEmailService, MockHashService, MockIpService, MockTokenService, MockUserRepository, MockUuidService } from '@application/__tests__/mock';
 import { SignIn, SignUp } from '@application/services/user';
 import { CreateSession, RenewAccess } from '@application/services/session';
 import { InvalidPasswordError, UserAccountPendingActivation, UserNotFoundError } from '@application/errors';
@@ -11,10 +11,13 @@ describe('Sign Up', () => {
 	const ipService = new MockIpService();
 	const createSessionService = new CreateSession(tokenService, ipService);
 	const renewAccessService = new RenewAccess(tokenService, tokenService);
-	const signUpService = new SignUp(userRepository, uuidService, passwordHashService);
+	const emailService = new MockEmailService();
+	const signUpService = new SignUp(userRepository, uuidService, passwordHashService, emailService);
 	const signInService = new SignIn(userRepository, passwordHashService, createSessionService, renewAccessService);
 
 	test('Valid parameters', async () => {
+		const emailSpy = jest.spyOn(emailService, 'sendAccountConfirmationEmail');
+
 		expect(
 			await signUpService.exec({
 				name: 'John Doe',
@@ -31,6 +34,10 @@ describe('Sign Up', () => {
 				ipAddress: '0.0.0.0',
 			})
 		).rejects.toThrow(UserAccountPendingActivation);
+
+		expect(emailSpy).toHaveBeenCalledWith(expect.objectContaining({ name: 'John Doe', email: 'john.doe@hotmail.com' }));
+
+		emailSpy.mockRestore();
 	});
 
 	test('Invalid name', async () => {
