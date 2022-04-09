@@ -1,7 +1,7 @@
 import { badRequest, internalServerError } from '@presentation/helpers';
 
 export const errorHandler = (error: any, friendlyMessage: string) => {
-	console.error(error);
+	if (process.env.NODE_ENV !== 'test') console.error(error);
 
 	return (error.userError ? badRequest : internalServerError)({
 		message: friendlyMessage,
