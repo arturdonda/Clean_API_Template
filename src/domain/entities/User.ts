@@ -51,7 +51,7 @@ export class User {
 		this._cpf = cpf ? User.validateCpf(cpf) : null;
 		this._createDate = createDate ? User.validateCreateDate(createDate) : new Date();
 		this._email = User.validateEmail(email);
-		this._gender = gender ?? null;
+		this._gender = gender ? (User.validateGender(gender) as GENDER) : null;
 		this._name = User.validateName(name);
 		this._password = password;
 		this._phone = phone ? User.validatePhone(phone) : null;
@@ -139,7 +139,7 @@ export class User {
 	}
 
 	set gender(gender) {
-		this._gender = gender ?? null;
+		this._gender = gender ? (User.validateGender(gender) as GENDER) : null;
 	}
 
 	set name(name) {
@@ -277,6 +277,12 @@ export class User {
 		if (!/^[a-zA-Z0-9]{5,}$/.test(rg)) throw new InvalidParamError('RG', 'formato inválido.');
 
 		return rg;
+	};
+
+	static validateGender = (gender: string) => {
+		if (!/^[MFO]$/.test(gender)) throw new InvalidParamError('Gênero', "deve ser 'M', 'F' ou 'O'.");
+
+		return gender;
 	};
 
 	//#endregion Static Validations
