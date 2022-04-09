@@ -53,7 +53,11 @@ describe('Get User By Id Controller', () => {
 				body: {
 					success: false,
 					message: 'Erro ao retornar usuário.',
-					result: expect.any(MissingParamError),
+					result: expect.objectContaining({
+						name: 'MissingParamError',
+						message: "O parâmetro 'userId' é obrigatório.",
+						stack: expect.any(String),
+					}),
 				},
 			})
 		);
