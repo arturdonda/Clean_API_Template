@@ -11,11 +11,17 @@ export const adaptRoute = (controller: Controller) => {
 };
 
 const makeHttpRequest = (req: Request): HttpRequest => {
+	const cookies =
+		req.headers['set-cookie']?.map(cookie => {
+			const [key, ...value] = cookie.split('=');
+			return [key, value.join('=')];
+		}) ?? [];
+
 	const request: HttpRequest = {
-		ip: req.ip,
+		ip: req.ip.replace(/[^\d\.]/g, ''),
 		query: req.params,
 		headers: req.headers as Record<string, string>,
-		cookies: req.cookies,
+		cookies: Object.assign(Object.fromEntries(cookies), req.cookies),
 		body: req.body,
 		userId: req.userId,
 	};
