@@ -2,6 +2,7 @@ import { Session } from '@domain/entities';
 import { GeolocationViewModel } from '.';
 
 export class SessionViewModel {
+	private readonly token;
 	private readonly expiredAt;
 	private readonly createdAt;
 	private readonly revokedAt;
@@ -9,6 +10,7 @@ export class SessionViewModel {
 	private readonly revokedBy;
 
 	constructor(properties: DtoProperties) {
+		this.token = properties.token;
 		this.expiredAt = properties.expiredAt;
 		this.createdAt = properties.createdAt;
 		this.revokedAt = properties.revokedAt;
@@ -18,6 +20,7 @@ export class SessionViewModel {
 
 	static map(entity: Session): SessionViewModel {
 		return new SessionViewModel({
+			token: entity.token,
 			expiredAt: entity.expiredAt.toISOString(),
 			createdAt: entity.createdAt.toISOString(),
 			revokedAt: entity.revokedAt ? entity.revokedAt.toISOString() : null,
@@ -32,6 +35,7 @@ export class SessionViewModel {
 }
 
 type DtoProperties = {
+	token: string;
 	expiredAt: string;
 	createdAt: string;
 	revokedAt: string | null;
