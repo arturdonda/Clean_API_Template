@@ -17,9 +17,9 @@ export default (router: Router): void => {
 
 	router.get(`/${prefix}`, authorize, adaptRoute(makeGetAllUsersController()));
 
-	router.get(`/${prefix}/:userId`, authorize, adaptRoute(makeGetUserByIdController()));
-
 	router.get(`/${prefix}/me`, authorize, adaptRoute(makeGetUserMeController()));
+
+	router.get(`/${prefix}/:userId`, authorize, adaptRoute(makeGetUserByIdController()));
 
 	router.get(`/${prefix}/me/sessions`, authorize, adaptRoute(makeGetActiveSessionsController()));
 
