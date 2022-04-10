@@ -1,4 +1,5 @@
 import { ITokenService } from '@application/protocols/utils';
+import { InvalidTokenError, TokenExpiredError } from '@infra/errors';
 import jwt from 'jsonwebtoken';
 
 export class JwtAdapter implements ITokenService {
@@ -17,9 +18,22 @@ export class JwtAdapter implements ITokenService {
 	};
 
 	validate = (token: string): ITokenService.ValidateResult => {
-		const decoded = jwt.verify(token, this.secret, {
-			issuer: process.env.ISSUER,
-		}) as jwt.JwtPayload;
+		let decoded: jwt.JwtPayload;
+
+		jwt.verify(
+			token,
+			this.secret,
+			{
+				issuer: process.env.ISSUER,
+			},
+			(err: any, payload: jwt.JwtPayload) => {
+				if (err) {
+					throw err.name === 'TokenExpiredError' ? new TokenExpiredError(new Date(err.expiredAt).toISOString()) : new InvalidTokenError(err.message);
+				}
+
+				decoded = payload;
+			}
+		);
 
 		return {
 			issuedAt: decoded.iat ? new Date(decoded.iat * 1000) : new Date(),
