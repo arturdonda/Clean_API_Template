@@ -115,7 +115,7 @@ export class User {
 	}
 
 	get sessions() {
-		return this._sessions.filter(session => session.isActive);
+		return this._sessions;
 	}
 
 	//#endregion Getters

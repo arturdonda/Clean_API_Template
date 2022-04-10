@@ -13,6 +13,6 @@ export class GetActiveSessions implements IGetActiveSessions {
 
 		if (!user) throw new UserNotFoundError();
 
-		return user.sessions;
+		return user.sessions.filter(session => session.isActive);
 	};
 }
