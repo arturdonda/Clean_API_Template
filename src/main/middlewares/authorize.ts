@@ -1,4 +1,5 @@
 import { AccessTokenService } from '@infra/adapters/token/jsonwebtoken';
+import { TokenExpiredError } from '@infra/errors';
 import { unauthorized } from '@presentation/helpers';
 import { Request, Response, NextFunction } from 'express';
 
@@ -8,10 +9,18 @@ export const authorize = async (req: Request, res: Response, next: NextFunction)
 
 	const accessTokenService = new AccessTokenService();
 
-	const accessToken = accessTokenService.validate(req.headers.authorization.split(' ')[1]);
+	try {
+		const accessToken = accessTokenService.validate(req.headers.authorization.split(' ')[1]);
 
-	if (accessToken.expiredAt >= new Date()) return next(unauthorized({ message: 'Token de acesso expirado', result: null }));
+		req.userId = accessToken.audience;
 
-	req.userId = accessToken.audience;
-	return next();
+		return next();
+	} catch (err) {
+		next(
+			unauthorized({
+				message: err instanceof TokenExpiredError ? 'Token de acesso expirado' : 'Token inválido',
+				result: null,
+			})
+		);
+	}
 };
