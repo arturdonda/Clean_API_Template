@@ -7,7 +7,7 @@ import { Router } from 'express';
 export default (router: Router): void => {
 	const prefix = 'auth';
 
-	router.get(`/${prefix}/refresh`, authorize, adaptRoute(makeRenewAccessController()));
+	router.get(`/${prefix}/refresh`, adaptRoute(makeRenewAccessController()));
 
 	router.get(`/${prefix}/sign-out`, authorize, adaptRoute(makeSignOutController()));
 
