@@ -28,7 +28,7 @@ const resetTokenService = new ResetTokenService();
 const uuidService = new UuidService();
 
 export const createSessionService = new CreateSession(sessionTokenService, ipService);
-export const renewAccessService = new RenewAccess(sessionTokenService, accessTokenService);
+export const renewAccessService = new RenewAccess(sessionTokenService, accessTokenService, userRepository);
 export const revokeSessionService = new RevokeSession(userRepository, ipService);
 export const activateUserService = new Activate(userRepository);
 export const forgotPasswordService = new ForgotPassword(userRepository, resetTokenService, emailService);
