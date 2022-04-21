@@ -1,8 +1,9 @@
 declare namespace NodeJS {
 	export interface ProcessEnv {
+		NODE_ENV: string;
 		PORT: string;
-		ENV_NAME: string;
 		ISSUER: string;
+		LOCAL_IP: string;
 
 		MONGODB_CONNECTION_STRING: string;
 

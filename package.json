@@ -12,10 +12,10 @@
 		"test:presentation": "jest --testPathPattern=src/presentation/__tests__/%npm_config_path%",
 		"test:main": "jest --testPathPattern=src/main/__tests__/%npm_config_path%",
 		"test:clear": "jest --clearCache",
-		"dev": "nodemon src/main/server.ts",
+		"dev": "set NODE_ENV=dev&&nodemon src/main/server.ts",
 		"prebuild": "rimraf ./build",
 		"build": "tsc",
-		"start": "node build/src/main/server.js"
+		"start": "set NODE_ENV=prod&&node build/src/main/server.js"
 	},
 	"dependencies": {
 		"bcryptjs": "^2.4.3",
