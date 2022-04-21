@@ -11,7 +11,7 @@ describe('Sign In Controller', () => {
 	const tokenService = new MockTokenService();
 	const ipService = new MockIpService();
 	const createSessionService = new CreateSession(tokenService, ipService);
-	const renewAccessService = new RenewAccess(tokenService, tokenService);
+	const renewAccessService = new RenewAccess(tokenService, tokenService, mockUserRespository);
 	const signInService = new SignIn(mockUserRespository, passwordHashService, createSessionService, renewAccessService);
 	const signInController = new SignInController(signInService);
 
