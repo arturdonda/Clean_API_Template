@@ -6,8 +6,15 @@ export default (router: Router): void => {
 	router.get('/', (req: Request, res: Response, next: NextFunction) =>
 		next(
 			ok({
-				message: 'Bem vindo(a) ao Template NodeJS API',
-				result: { name: 'API Template', version: pkgJson.version, repo: 'https://github.com/arturdonda/API_Template_CleanArch' },
+				message: 'Bem vindo(a) ao Clean API Template',
+				result: {
+					name: pkgJson.name,
+					description: pkgJson.description,
+					version: pkgJson.version,
+					author: pkgJson.author,
+					license: pkgJson.license,
+					repo: pkgJson.repository.url,
+				},
 			})
 		)
 	);
