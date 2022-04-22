@@ -1,5 +1,5 @@
 {
-	"name": "api_template_cleanarch",
+	"name": "clean_api_template",
 	"version": "1.0.0",
 	"description": "API template for NodeJS using Clean Architecture",
 	"main": "src/main/server.ts",
