@@ -5,6 +5,10 @@
 	"main": "src/main/server.ts",
 	"author": "Artur Donda",
 	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/arturdonda/Clean_API_Template"
+	},
 	"scripts": {
 		"test": "jest",
 		"test:domain": "jest --testPathPattern=src/domain/__tests__/%npm_config_path%",
