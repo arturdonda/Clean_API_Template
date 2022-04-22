@@ -12,7 +12,7 @@ export const adaptRoute = (controller: Controller) => {
 
 const makeHttpRequest = (req: Request): HttpRequest => {
 	const request: HttpRequest = {
-		ip: req.ip.replace(/[^\d\.]/g, ''),
+		ip: process.env.NODE_ENV === 'dev' ? process.env.LOCAL_IP : req.ip.replace(/[^\d\.]/g, ''),
 		query: req.params,
 		headers: req.headers as Record<string, string>,
 		cookies: req.cookies,
