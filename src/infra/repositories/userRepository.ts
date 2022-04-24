@@ -4,10 +4,13 @@ import { makeUser } from '@infra/adapters/db/mongoose/dtos';
 import { DatabaseError } from '@infra/errors';
 
 export class UserRepository implements IUserRepository {
-	private readonly database = mongoDB;
+	private readonly users = mongoDB.collections.User;
 
 	getAll = async (): Promise<IUserRepository.User[]> => {
-		return this.database.User.find()
+		const users = await this.users;
+
+		return users
+			.find()
 			.exec()
 			.then(users => users.map(user => makeUser(user)))
 			.catch(error => {
@@ -16,7 +19,10 @@ export class UserRepository implements IUserRepository {
 	};
 
 	getById = async (userId: string): Promise<IUserRepository.User | null> => {
-		return this.database.User.findById(userId)
+		const users = await this.users;
+
+		return users
+			.findById(userId)
 			.exec()
 			.then(user => (user ? makeUser(user) : null))
 			.catch(error => {
@@ -25,7 +31,10 @@ export class UserRepository implements IUserRepository {
 	};
 
 	getByConfirmationCode = async (confirmationCode: string): Promise<IUserRepository.User | null> => {
-		return this.database.User.findOne({ confirmationCode })
+		const users = await this.users;
+
+		return users
+			.findOne({ confirmationCode })
 			.exec()
 			.then(user => (user ? makeUser(user) : null))
 			.catch(error => {
@@ -34,7 +43,10 @@ export class UserRepository implements IUserRepository {
 	};
 
 	getByEmail = async (email: string): Promise<IUserRepository.User | null> => {
-		return this.database.User.findOne({ email })
+		const users = await this.users;
+
+		return users
+			.findOne({ email })
 			.exec()
 			.then(user => (user ? makeUser(user) : null))
 			.catch(error => {
@@ -43,7 +55,10 @@ export class UserRepository implements IUserRepository {
 	};
 
 	getByCpf = async (cpf: string): Promise<IUserRepository.User | null> => {
-		return this.database.User.findOne({ cpf })
+		const users = await this.users;
+
+		return users
+			.findOne({ cpf })
 			.exec()
 			.then(user => (user ? makeUser(user) : null))
 			.catch(error => {
@@ -52,7 +67,10 @@ export class UserRepository implements IUserRepository {
 	};
 
 	getByRg = async (rg: string): Promise<IUserRepository.User | null> => {
-		return this.database.User.findOne({ rg })
+		const users = await this.users;
+
+		return users
+			.findOne({ rg })
 			.exec()
 			.then(user => (user ? makeUser(user) : null))
 			.catch(error => {
@@ -61,20 +79,23 @@ export class UserRepository implements IUserRepository {
 	};
 
 	create = async (user: IUserRepository.User): Promise<IUserRepository.User> => {
-		return this.database.User.create({
-			address: user.address,
-			birthday: user.birthday,
-			confirmationCode: user.confirmationCode,
-			cpf: user.cpf,
-			createDate: user.createDate,
-			email: user.email,
-			gender: user.gender,
-			name: user.name,
-			password: user.password,
-			phone: user.phone,
-			rg: user.rg,
-			status: user.status,
-		})
+		const users = await this.users;
+
+		return users
+			.create({
+				address: user.address,
+				birthday: user.birthday,
+				confirmationCode: user.confirmationCode,
+				cpf: user.cpf,
+				createDate: user.createDate,
+				email: user.email,
+				gender: user.gender,
+				name: user.name,
+				password: user.password,
+				phone: user.phone,
+				rg: user.rg,
+				status: user.status,
+			})
 			.then(user => makeUser(user))
 			.catch(error => {
 				throw new DatabaseError(error);
@@ -82,54 +103,57 @@ export class UserRepository implements IUserRepository {
 	};
 
 	update = async (user: IUserRepository.User): Promise<IUserRepository.User | null> => {
-		return this.database.User.findByIdAndUpdate(
-			user.id,
-			{
-				$set: {
-					address: user.address,
-					birthday: user.birthday,
-					cpf: user.cpf,
-					email: user.email,
-					gender: user.gender,
-					name: user.name,
-					password: user.password,
-					phone: user.phone,
-					rg: user.rg,
-					status: user.status,
-					sessions: user.sessions.map(session => ({
-						token: session.token,
-						expiredAt: session.expiredAt,
-						createdAt: session.createdAt,
-						revokedAt: session.revokedAt,
-						createdBy: {
-							ip: session.createdBy.ip,
-							countryName: session.createdBy.countryName,
-							countryCode: session.createdBy.countryCode,
-							countryFlag: session.createdBy.countryFlag,
-							stateName: session.createdBy.stateName,
-							stateCode: session.createdBy.stateCode,
-							city: session.createdBy.city,
-							latitude: session.createdBy.latitude,
-							longitude: session.createdBy.longitude,
-						},
-						revokedBy: session.revokedBy
-							? {
-									ip: session.revokedBy.ip,
-									countryName: session.revokedBy.countryName,
-									countryCode: session.revokedBy.countryCode,
-									countryFlag: session.revokedBy.countryFlag,
-									stateName: session.revokedBy.stateName,
-									stateCode: session.revokedBy.stateCode,
-									city: session.revokedBy.city,
-									latitude: session.revokedBy.latitude,
-									longitude: session.revokedBy.longitude,
-							  }
-							: null,
-					})),
+		const users = await this.users;
+
+		return users
+			.findByIdAndUpdate(
+				user.id,
+				{
+					$set: {
+						address: user.address,
+						birthday: user.birthday,
+						cpf: user.cpf,
+						email: user.email,
+						gender: user.gender,
+						name: user.name,
+						password: user.password,
+						phone: user.phone,
+						rg: user.rg,
+						status: user.status,
+						sessions: user.sessions.map(session => ({
+							token: session.token,
+							expiredAt: session.expiredAt,
+							createdAt: session.createdAt,
+							revokedAt: session.revokedAt,
+							createdBy: {
+								ip: session.createdBy.ip,
+								countryName: session.createdBy.countryName,
+								countryCode: session.createdBy.countryCode,
+								countryFlag: session.createdBy.countryFlag,
+								stateName: session.createdBy.stateName,
+								stateCode: session.createdBy.stateCode,
+								city: session.createdBy.city,
+								latitude: session.createdBy.latitude,
+								longitude: session.createdBy.longitude,
+							},
+							revokedBy: session.revokedBy
+								? {
+										ip: session.revokedBy.ip,
+										countryName: session.revokedBy.countryName,
+										countryCode: session.revokedBy.countryCode,
+										countryFlag: session.revokedBy.countryFlag,
+										stateName: session.revokedBy.stateName,
+										stateCode: session.revokedBy.stateCode,
+										city: session.revokedBy.city,
+										latitude: session.revokedBy.latitude,
+										longitude: session.revokedBy.longitude,
+								  }
+								: null,
+						})),
+					},
 				},
-			},
-			{ new: true }
-		)
+				{ new: true }
+			)
 			.exec()
 			.then(updatedUser => (updatedUser ? makeUser(updatedUser) : null))
 			.catch(error => {
