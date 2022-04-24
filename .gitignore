@@ -9,3 +9,6 @@
 
 # Local Environment files
 .env
+
+# MongoDB memory server url
+globalConfig.json
