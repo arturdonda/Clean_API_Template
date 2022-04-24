@@ -1,7 +1,7 @@
 import type { Config } from '@jest/types';
 
 const config: Config.InitialOptions = {
-	roots: ['<rootDir>/src'],
+	roots: ['<rootDir>/tests'],
 	testEnvironment: 'node',
 	transform: {
 		'.+\\.ts$': 'ts-jest',
@@ -13,6 +13,7 @@ const config: Config.InitialOptions = {
 		'@presentation/(.*)': '<rootDir>/src/presentation/$1',
 		'@main/(.*)': '<rootDir>/src/main/$1',
 		'@root/(.*)': '<rootDir>/$1',
+		'@tests/(.*)': '<rootDir>/tests/$1',
 	},
 	modulePathIgnorePatterns: ['mock'],
 	preset: '@shelf/jest-mongodb',

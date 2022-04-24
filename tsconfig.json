@@ -18,7 +18,8 @@
 			"@infra/*": ["infra/*"],
 			"@presentation/*": ["presentation/*"],
 			"@main/*": ["main/*"],
-			"@root/*": ["../*"]
+			"@root/*": ["../*"],
+			"@tests/*": ["../tests/*"]
 		}
 	}
 }
