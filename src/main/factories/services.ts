@@ -4,7 +4,7 @@ import { IpService } from '@infra/adapters/ip/ipdata';
 import { AccessTokenService, ResetTokenService, SessionTokenService } from '@infra/adapters/token/jsonwebtoken';
 import { UuidService } from '@infra/adapters/uuid/crypto';
 import { UserRepository } from '@infra/repositories';
-import { CreateSession, RenewAccess, RevokeSession } from '@application/services/session';
+import { CreateSession, RenewAccess, RevokeSession } from '@application/usecases/session';
 import {
 	Activate,
 	ForgotPassword,
@@ -16,7 +16,7 @@ import {
 	UpdateForgottenPassword,
 	UpdateOptionalData,
 	UpdatePassword,
-} from '@application/services/user';
+} from '@application/usecases/user';
 
 const userRepository = new UserRepository();
 const emailService = new EmailService();

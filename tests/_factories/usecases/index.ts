@@ -1,5 +1,5 @@
 import { IUserRepository } from '@application/protocols/repositories';
-import { CreateSession, RenewAccess, RevokeSession } from '@application/services/session';
+import { CreateSession, RenewAccess, RevokeSession } from '@application/usecases/session';
 import {
 	Activate,
 	ForgotPassword,
@@ -11,7 +11,7 @@ import {
 	UpdateForgottenPassword,
 	UpdateOptionalData,
 	UpdatePassword,
-} from '@application/services/user';
+} from '@application/usecases/user';
 import { mockEmailService, mockHashService, mockIpService, mockTokenService, mockUuidService } from '@tests/_factories/adapters';
 
 export const makeCreateSession = () => new CreateSession(mockTokenService, mockIpService);
