@@ -13,6 +13,7 @@
 		"test": "jest",
 		"test:domain": "jest --testPathPattern=tests/domain/%npm_config_path%",
 		"test:application": "jest --testPathPattern=tests/application/%npm_config_path%",
+		"test:infra": "jest --testPathPattern=tests/infra/%npm_config_path%",
 		"test:presentation": "jest --testPathPattern=tests/presentation/%npm_config_path%",
 		"test:main": "jest --testPathPattern=tests/main/%npm_config_path%",
 		"test:clear": "jest --clearCache",
