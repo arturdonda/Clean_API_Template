@@ -66,17 +66,6 @@ describe('Create new Session', () => {
 				})
 		).toThrow("Campo 'Session Token' inválido: não pode ser vazio.");
 	});
-
-	test('Invalid Expiration Date', () => {
-		expect(
-			() =>
-				new Session({
-					token: '74b954c3ab0a465a9661fa563cd36553',
-					expiredAt: new Date(new Date().valueOf() - 86400000),
-					createdBy: geolocation,
-				})
-		).toThrow("Campo 'Data de expiração' inválido: não pode ser no passado.");
-	});
 });
 
 describe('Revoke Session', () => {

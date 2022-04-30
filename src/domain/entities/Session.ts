@@ -11,7 +11,7 @@ export class Session {
 
 	constructor({ token, expiredAt, createdBy, createdAt }: { token: string; expiredAt: Date; createdBy: Geolocation; createdAt?: Date }) {
 		this._token = Session.validateToken(token);
-		this._expiredAt = Session.validateExpiredAt(expiredAt);
+		this._expiredAt = expiredAt;
 		this._createdAt = createdAt ? Session.validateCreatedAt(createdAt) : new Date();
 		this._revokedAt = null;
 		this._createdBy = createdBy;
@@ -75,11 +75,4 @@ export class Session {
 
 		return token;
 	}
-
-	static validateExpiredAt(expiredAt: Date) {
-		if (expiredAt <= new Date()) throw new InvalidParamError('Data de expiração', 'não pode ser no passado.');
-
-		return expiredAt;
-	}
-	//#endregion Static Validations
 }
