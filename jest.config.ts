@@ -17,6 +17,7 @@ const config: Config.InitialOptions = {
 	},
 	modulePathIgnorePatterns: ['mock'],
 	preset: '@shelf/jest-mongodb',
+	setupFiles: ['dotenv/config'],
 };
 
 export default config;
