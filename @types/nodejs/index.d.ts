@@ -1,6 +1,6 @@
 declare namespace NodeJS {
 	export interface ProcessEnv {
-		NODE_ENV: string;
+		NODE_ENV: 'dev' | 'prod' | 'test';
 		PORT: string;
 		ISSUER: string;
 		LOCAL_IP: string;
