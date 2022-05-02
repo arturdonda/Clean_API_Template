@@ -6,7 +6,7 @@ import { ok, errorHandler } from '@presentation/helpers';
 export class ActivateUserController implements Controller {
 	constructor(private readonly activateService: IActivate) {}
 
-	handle = async (request: HttpRequest): Promise<HttpResponse<null>> => {
+	async handle(request: HttpRequest): Promise<HttpResponse<null>> {
 		try {
 			if (!request.body?.confirmationCode) throw new MissingParamError('confirmationCode');
 
@@ -16,5 +16,5 @@ export class ActivateUserController implements Controller {
 		} catch (error) {
 			return errorHandler(error, 'Erro ao ativar usuário.');
 		}
-	};
+	}
 }

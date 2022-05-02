@@ -6,7 +6,7 @@ import { ok, errorHandler } from '@presentation/helpers';
 export class GetAllUsersController implements Controller {
 	constructor(private readonly getAllUserService: IGetAllUsers) {}
 
-	handle = async (request: HttpRequest): Promise<HttpResponse<UserViewModel[]>> => {
+	async handle(request: HttpRequest): Promise<HttpResponse<UserViewModel[]>> {
 		try {
 			const users = await this.getAllUserService.exec();
 
@@ -14,5 +14,5 @@ export class GetAllUsersController implements Controller {
 		} catch (error) {
 			return errorHandler(error, 'Erro ao retornar usuários.');
 		}
-	};
+	}
 }

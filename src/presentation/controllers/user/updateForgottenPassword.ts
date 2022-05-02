@@ -6,7 +6,7 @@ import { ok, errorHandler } from '@presentation/helpers';
 export class UpdateForgottenPasswordController implements Controller {
 	constructor(private readonly updateForgottenPasswordService: IUpdateForgottenPassword) {}
 
-	handle = async (request: HttpRequest): Promise<HttpResponse<null>> => {
+	async handle(request: HttpRequest): Promise<HttpResponse<null>> {
 		try {
 			if (!request.body?.resetToken) throw new MissingParamError('resetToken');
 			if (!request.body?.password) throw new MissingParamError('password');
@@ -22,5 +22,5 @@ export class UpdateForgottenPasswordController implements Controller {
 		} catch (error) {
 			return errorHandler(error, 'Erro ao atualizar senha.');
 		}
-	};
+	}
 }

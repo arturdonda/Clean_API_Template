@@ -7,7 +7,7 @@ import { ok, errorHandler } from '@presentation/helpers';
 export class GetUserByIdController implements Controller {
 	constructor(private readonly getUserByIdService: IGetUserById) {}
 
-	handle = async (request: HttpRequest): Promise<HttpResponse<UserViewModel>> => {
+	async handle(request: HttpRequest): Promise<HttpResponse<UserViewModel>> {
 		try {
 			if (!request.query?.userId) throw new MissingParamError('userId');
 
@@ -17,5 +17,5 @@ export class GetUserByIdController implements Controller {
 		} catch (error) {
 			return errorHandler(error, 'Erro ao retornar usuário.');
 		}
-	};
+	}
 }

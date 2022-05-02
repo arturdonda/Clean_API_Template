@@ -6,7 +6,7 @@ import { ok, errorHandler } from '@presentation/helpers';
 export class GetActiveSessionsController implements Controller {
 	constructor(private readonly getActiveSessionsService: IGetActiveSessions) {}
 
-	handle = async (request: HttpRequest): Promise<HttpResponse<SessionViewModel[]>> => {
+	async handle(request: HttpRequest): Promise<HttpResponse<SessionViewModel[]>> {
 		try {
 			const sessions = await this.getActiveSessionsService.exec({ userId: request.userId });
 
@@ -14,5 +14,5 @@ export class GetActiveSessionsController implements Controller {
 		} catch (error) {
 			return errorHandler(error, 'Erro ao retornar sessões.');
 		}
-	};
+	}
 }

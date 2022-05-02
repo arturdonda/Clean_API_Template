@@ -6,7 +6,7 @@ import { Controller, HttpRequest, HttpResponse } from '@presentation/protocols';
 export class RenewAccessController implements Controller {
 	constructor(private readonly renewAccessService: IRenewAccess) {}
 
-	handle = async (request: HttpRequest): Promise<HttpResponse<null>> => {
+	async handle(request: HttpRequest): Promise<HttpResponse<null>> {
 		try {
 			if (!request.cookies?.sessionToken) throw new MissingSessionTokenError();
 			const accessToken = await this.renewAccessService.exec(request.cookies.sessionToken);
@@ -19,5 +19,5 @@ export class RenewAccessController implements Controller {
 		} catch (error) {
 			return errorHandler(error, 'Erro ao renovar acesso.');
 		}
-	};
+	}
 }

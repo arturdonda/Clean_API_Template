@@ -7,7 +7,7 @@ import { ok, errorHandler } from '@presentation/helpers';
 export class SignInController implements Controller {
 	constructor(private readonly signInService: ISignIn) {}
 
-	handle = async (request: HttpRequest): Promise<HttpResponse<UserViewModel>> => {
+	async handle(request: HttpRequest): Promise<HttpResponse<UserViewModel>> {
 		try {
 			if (!request.body?.email) throw new MissingParamError('email');
 			if (!request.body?.password) throw new MissingParamError('password');
@@ -27,5 +27,5 @@ export class SignInController implements Controller {
 		} catch (error) {
 			return errorHandler(error, 'Erro ao logar usuário.');
 		}
-	};
+	}
 }

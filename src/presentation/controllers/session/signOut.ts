@@ -5,7 +5,7 @@ import { ok, errorHandler } from '@presentation/helpers';
 export class SignOutController implements Controller {
 	constructor(private readonly revokeSessionService: IRevokeSession) {}
 
-	handle = async (request: HttpRequest): Promise<HttpResponse<null>> => {
+	async handle(request: HttpRequest): Promise<HttpResponse<null>> {
 		try {
 			await this.revokeSessionService.exec({ userId: request.userId, sessionToken: request.cookies?.sessionToken, ipAddress: request.ip });
 
@@ -18,5 +18,5 @@ export class SignOutController implements Controller {
 		} catch (error) {
 			return errorHandler(error, 'Erro ao finalizar sessão.');
 		}
-	};
+	}
 }

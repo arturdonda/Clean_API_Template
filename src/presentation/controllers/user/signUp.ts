@@ -7,7 +7,7 @@ import { created, errorHandler } from '@presentation/helpers';
 export class SignUpController implements Controller {
 	constructor(private readonly signUpService: ISignUp) {}
 
-	handle = async (request: HttpRequest): Promise<HttpResponse<UserViewModel>> => {
+	async handle(request: HttpRequest): Promise<HttpResponse<UserViewModel>> {
 		try {
 			if (!request.body?.name) throw new MissingParamError('name');
 			if (!request.body?.email) throw new MissingParamError('email');
@@ -25,5 +25,5 @@ export class SignUpController implements Controller {
 		} catch (error) {
 			return errorHandler(error, 'Erro ao criar usuário.');
 		}
-	};
+	}
 }

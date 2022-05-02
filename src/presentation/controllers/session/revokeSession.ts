@@ -6,7 +6,7 @@ import { ok, errorHandler } from '@presentation/helpers';
 export class RevokeSessionController implements Controller {
 	constructor(private readonly revokeSessionService: IRevokeSession) {}
 
-	handle = async (request: HttpRequest): Promise<HttpResponse<null>> => {
+	async handle(request: HttpRequest): Promise<HttpResponse<null>> {
 		try {
 			if (!request.query?.sessionToken) throw new MissingParamError('sessionToken');
 
@@ -16,5 +16,5 @@ export class RevokeSessionController implements Controller {
 		} catch (error) {
 			return errorHandler(error, 'Erro ao finalizar sessão.');
 		}
-	};
+	}
 }

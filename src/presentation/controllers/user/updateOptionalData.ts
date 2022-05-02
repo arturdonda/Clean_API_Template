@@ -6,7 +6,7 @@ import { ok, errorHandler } from '@presentation/helpers';
 export class UpdateOptionalDataController implements Controller {
 	constructor(private readonly updateOptionalDataService: IUpdateOptionalData) {}
 
-	handle = async (request: HttpRequest): Promise<HttpResponse<UserViewModel>> => {
+	async handle(request: HttpRequest): Promise<HttpResponse<UserViewModel>> {
 		try {
 			const user = await this.updateOptionalDataService.exec({
 				userId: request.userId,
@@ -17,5 +17,5 @@ export class UpdateOptionalDataController implements Controller {
 		} catch (error) {
 			return errorHandler(error, 'Erro ao atualizar dados.');
 		}
-	};
+	}
 }
