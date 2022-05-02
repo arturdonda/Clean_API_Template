@@ -12,3 +12,6 @@
 
 # MongoDB memory server url
 globalConfig.json
+
+# Coverage tests folder
+/coverage
