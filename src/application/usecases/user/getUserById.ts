@@ -7,7 +7,7 @@ export class GetUserById implements IGetUserById {
 	constructor(private readonly userRepository: IUserRepository) {}
 
 	exec = async ({ userId }: IGetUserById.Params): Promise<IGetUserById.Result> => {
-		const validId = User.validadeId(userId);
+		const validId = User.validateId(userId);
 
 		const user = await this.userRepository.getById(validId);
 

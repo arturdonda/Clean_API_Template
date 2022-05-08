@@ -6,7 +6,7 @@ export class CreateSession implements ICreateSession {
 	constructor(private readonly sessionTokenService: ITokenService, private readonly ipService: IIpService) {}
 
 	exec = async ({ userId, ipAddress }: ICreateSession.Params): Promise<ICreateSession.Result> => {
-		const validId = User.validadeId(userId);
+		const validId = User.validateId(userId);
 
 		const sessionToken = this.sessionTokenService.generate(validId);
 

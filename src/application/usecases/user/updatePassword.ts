@@ -12,7 +12,7 @@ export class UpdatePassword implements IUpdatePassword {
 	) {}
 
 	exec = async ({ userId, password, confirmationPassword }: IUpdatePassword.Params): Promise<IUpdatePassword.Result> => {
-		const validId = User.validadeId(userId);
+		const validId = User.validateId(userId);
 		const validPassword = User.validatePassword(password);
 
 		if (password !== confirmationPassword) throw new InvalidPasswordError();

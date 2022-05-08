@@ -7,7 +7,7 @@ export class UpdateOptionalData implements IUpdateOptionalData {
 	constructor(private readonly userRepository: IUserRepository) {}
 
 	exec = async ({ userId, address, birthday, cpf, gender, phone, rg }: IUpdateOptionalData.Params): Promise<IUpdateOptionalData.Result> => {
-		const validId = User.validadeId(userId);
+		const validId = User.validateId(userId);
 
 		const user = await this.userRepository.getById(validId);
 

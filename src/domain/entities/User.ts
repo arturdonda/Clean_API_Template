@@ -44,7 +44,7 @@ export class User {
 		phone?: string;
 		rg?: string;
 	}) {
-		this._id = id ? User.validadeId(id) : '';
+		this._id = id ? User.validateId(id) : '';
 		this._address = address ? User.validateAddress(address) : null;
 		this._birthday = birthday ? User.validateBirthday(birthday) : null;
 		this._confirmationCode = User.validateConfirmationCode(confirmationCode);
@@ -190,7 +190,7 @@ export class User {
 
 	//#region Static Validations
 
-	static validadeId = (id: string) => {
+	static validateId = (id: string) => {
 		if (id.trim().length === 0) throw new InvalidParamError('Id', 'não pode ser vazio.');
 		return id;
 	};

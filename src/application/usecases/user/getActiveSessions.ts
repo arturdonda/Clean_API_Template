@@ -7,7 +7,7 @@ export class GetActiveSessions implements IGetActiveSessions {
 	constructor(private readonly userRepository: IUserRepository) {}
 
 	exec = async ({ userId }: IGetActiveSessions.Params): Promise<IGetActiveSessions.Result> => {
-		const validId = User.validadeId(userId);
+		const validId = User.validateId(userId);
 
 		const user = await this.userRepository.getById(validId);
 

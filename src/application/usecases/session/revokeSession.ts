@@ -8,7 +8,7 @@ export class RevokeSession implements IRevokeSession {
 	constructor(private readonly userRepository: IUserRepository, private readonly ipService: IIpService) {}
 
 	exec = async ({ userId, sessionToken, ipAddress }: IRevokeSession.Params): Promise<IRevokeSession.Result> => {
-		const validId = User.validadeId(userId);
+		const validId = User.validateId(userId);
 		const validSessionToken = Session.validateToken(sessionToken);
 
 		const user = await this.userRepository.getById(validId);
