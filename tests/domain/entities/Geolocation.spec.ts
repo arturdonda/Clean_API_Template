@@ -1,7 +1,12 @@
 import { Geolocation } from '@domain/entities';
+import { InvalidParamError } from '@domain/errors';
 
-describe('All valid parameters', () => {
-	test('All valid parameters', () => {
+const validateIpAddressSpy = jest.spyOn(Geolocation, 'validateIpAddress');
+const validateLatitudeSpy = jest.spyOn(Geolocation, 'validateLatitude');
+const validateLongitudeSpy = jest.spyOn(Geolocation, 'validateLongitude');
+
+describe('Getters', () => {
+	it('should return all fields correctly', () => {
 		const geolocation = new Geolocation({
 			ip: '0.0.0.0',
 			countryName: 'Brazil',
@@ -26,66 +31,31 @@ describe('All valid parameters', () => {
 	});
 });
 
-describe('IP Address', () => {
-	test('Over 255', () => {
-		expect(
-			() =>
-				new Geolocation({
-					ip: '0.0.256.0',
-					countryName: 'Brazil',
-					countryCode: 'BR',
-					countryFlag: '🇧🇷',
-					stateName: 'Minas Gerais',
-					stateCode: 'MG',
-					city: 'Uberlândia',
-					latitude: -19.0233,
-					longitude: -48.3348,
-				})
-		).toThrow("Campo 'Endereço IP' inválido: formato inválido.");
+describe('Field validation', () => {
+	it('should validate fields upon creation', () => {
+		new Geolocation({
+			ip: '0.0.0.0',
+			countryName: 'Brazil',
+			countryCode: 'BR',
+			countryFlag: '🇧🇷',
+			stateName: 'Minas Gerais',
+			stateCode: 'MG',
+			city: 'Uberlândia',
+			latitude: -19.0233,
+			longitude: -48.3348,
+		});
+
+		expect(validateIpAddressSpy).toHaveBeenCalled();
+		expect(validateLatitudeSpy).toHaveBeenCalled();
+		expect(validateLongitudeSpy).toHaveBeenCalled();
 	});
 
-	test('Less digits', () => {
-		expect(
-			() =>
-				new Geolocation({
-					ip: '0.0.0',
-					countryName: 'Brazil',
-					countryCode: 'BR',
-					countryFlag: '🇧🇷',
-					stateName: 'Minas Gerais',
-					stateCode: 'MG',
-					city: 'Uberlândia',
-					latitude: -19.0233,
-					longitude: -48.3348,
-				})
-		).toThrow("Campo 'Endereço IP' inválido: formato inválido.");
-	});
-
-	test('More digits', () => {
-		expect(
-			() =>
-				new Geolocation({
-					ip: '0.0.0.0.0',
-					countryName: 'Brazil',
-					countryCode: 'BR',
-					countryFlag: '🇧🇷',
-					stateName: 'Minas Gerais',
-					stateCode: 'MG',
-					city: 'Uberlândia',
-					latitude: -19.0233,
-					longitude: -48.3348,
-				})
-		).toThrow("Campo 'Endereço IP' inválido: formato inválido.");
-	});
-});
-
-describe('Country Name', () => {
-	test('Empty', () => {
+	it('should throw InvalidParamError - country name', () => {
 		expect(
 			() =>
 				new Geolocation({
 					ip: '0.0.0.0',
-					countryName: ' ',
+					countryName: '',
 					countryCode: 'BR',
 					countryFlag: '🇧🇷',
 					stateName: 'Minas Gerais',
@@ -94,12 +64,9 @@ describe('Country Name', () => {
 					latitude: -19.0233,
 					longitude: -48.3348,
 				})
-		).toThrow("Campo 'Nome do país' inválido: não pode ser vazio.");
+		).toThrow(InvalidParamError);
 	});
-});
-
-describe('Country Code', () => {
-	test('Empty', () => {
+	it('should throw InvalidParamError - country code', () => {
 		expect(
 			() =>
 				new Geolocation({
@@ -113,12 +80,10 @@ describe('Country Code', () => {
 					latitude: -19.0233,
 					longitude: -48.3348,
 				})
-		).toThrow("Campo 'Cód do país' inválido: não pode ser vazio.");
+		).toThrow(InvalidParamError);
 	});
-});
 
-describe('Country Flag', () => {
-	test('Empty', () => {
+	it('should throw InvalidParamError - country flag', () => {
 		expect(
 			() =>
 				new Geolocation({
@@ -132,12 +97,10 @@ describe('Country Flag', () => {
 					latitude: -19.0233,
 					longitude: -48.3348,
 				})
-		).toThrow("Campo 'Bandeira do país' inválido: não pode ser vazio.");
+		).toThrow(InvalidParamError);
 	});
-});
 
-describe('State Name', () => {
-	test('Empty', () => {
+	it('should throw InvalidParamError - state name', () => {
 		expect(
 			() =>
 				new Geolocation({
@@ -145,18 +108,16 @@ describe('State Name', () => {
 					countryName: 'Brazil',
 					countryCode: 'BR',
 					countryFlag: '🇧🇷',
-					stateName: ' ',
+					stateName: '',
 					stateCode: 'MG',
 					city: 'Uberlândia',
 					latitude: -19.0233,
 					longitude: -48.3348,
 				})
-		).toThrow("Campo 'Nome do estado' inválido: não pode ser vazio.");
+		).toThrow(InvalidParamError);
 	});
-});
 
-describe('State Code', () => {
-	test('Empty', () => {
+	it('should throw InvalidParamError - state code', () => {
 		expect(
 			() =>
 				new Geolocation({
@@ -170,12 +131,10 @@ describe('State Code', () => {
 					latitude: -19.0233,
 					longitude: -48.3348,
 				})
-		).toThrow("Campo 'Cód do estado' inválido: não pode ser vazio.");
+		).toThrow(InvalidParamError);
 	});
-});
 
-describe('City', () => {
-	test('Empty', () => {
+	it('should throw InvalidParamError - city', () => {
 		expect(
 			() =>
 				new Geolocation({
@@ -189,78 +148,54 @@ describe('City', () => {
 					latitude: -19.0233,
 					longitude: -48.3348,
 				})
-		).toThrow("Campo 'Cidade' inválido: não pode ser vazio.");
+		).toThrow(InvalidParamError);
 	});
 });
 
-describe('Latitude', () => {
-	test('Less than -90', () => {
-		expect(
-			() =>
-				new Geolocation({
-					ip: '0.0.0.0',
-					countryName: 'Brazil',
-					countryCode: 'BR',
-					countryFlag: '🇧🇷',
-					stateName: 'Minas Gerais',
-					stateCode: 'MG',
-					city: 'Uberlândia',
-					latitude: -91.0233,
-					longitude: -48.3348,
-				})
-		).toThrow("Campo 'Latitude' inválido: range permitido é de -90 a 90.");
+describe('Static validations', () => {
+	describe('IP Address', () => {
+		it('should return ip address', () => {
+			expect(Geolocation.validateIpAddress('0.0.0.0')).toBe('0.0.0.0');
+		});
+
+		it('should throw InvalidParamError - over 255', () => {
+			expect(() => Geolocation.validateIpAddress('0.256.0.0')).toThrow(InvalidParamError);
+		});
+
+		it('should throw InvalidParamError - invalid format', () => {
+			expect(() => Geolocation.validateIpAddress('0..0.0')).toThrow(InvalidParamError);
+		});
+
+		it('should throw InvalidParamError - invalid format', () => {
+			expect(() => Geolocation.validateIpAddress('0.00.0')).toThrow(InvalidParamError);
+		});
 	});
 
-	test('Bigger than 90', () => {
-		expect(
-			() =>
-				new Geolocation({
-					ip: '0.0.0.0',
-					countryName: 'Brazil',
-					countryCode: 'BR',
-					countryFlag: '🇧🇷',
-					stateName: 'Minas Gerais',
-					stateCode: 'MG',
-					city: 'Uberlândia',
-					latitude: 91.0233,
-					longitude: -48.3348,
-				})
-		).toThrow("Campo 'Latitude' inválido: range permitido é de -90 a 90.");
-	});
-});
+	describe('Latitude', () => {
+		it('should return latitude', () => {
+			expect(Geolocation.validateLatitude(-19.0233)).toBe(-19.0233);
+		});
 
-describe('Longitude', () => {
-	test('Less than -180', () => {
-		expect(
-			() =>
-				new Geolocation({
-					ip: '0.0.0.0',
-					countryName: 'Brazil',
-					countryCode: 'BR',
-					countryFlag: '🇧🇷',
-					stateName: 'Minas Gerais',
-					stateCode: 'MG',
-					city: 'Uberlândia',
-					latitude: -19.0233,
-					longitude: -180.3348,
-				})
-		).toThrow("Campo 'Longitude' inválido: range permitido é de -180 a 180.");
+		it('should throw InvalidParamError - lower than -90', () => {
+			expect(() => Geolocation.validateLatitude(-92)).toThrow(InvalidParamError);
+		});
+
+		it('should throw InvalidParamError - bigger than 90', () => {
+			expect(() => Geolocation.validateLatitude(92)).toThrow(InvalidParamError);
+		});
 	});
 
-	test('Bigger than 180', () => {
-		expect(
-			() =>
-				new Geolocation({
-					ip: '0.0.0.0',
-					countryName: 'Brazil',
-					countryCode: 'BR',
-					countryFlag: '🇧🇷',
-					stateName: 'Minas Gerais',
-					stateCode: 'MG',
-					city: 'Uberlândia',
-					latitude: -19.0233,
-					longitude: 180.3348,
-				})
-		).toThrow("Campo 'Longitude' inválido: range permitido é de -180 a 180.");
+	describe('Longitude', () => {
+		it('should return longitude', () => {
+			expect(Geolocation.validateLongitude(-48.3348)).toBe(-48.3348);
+		});
+
+		it('should throw InvalidParamError - lower than -180', () => {
+			expect(() => Geolocation.validateLongitude(-182)).toThrow(InvalidParamError);
+		});
+
+		it('should throw InvalidParamError - bigger than 180', () => {
+			expect(() => Geolocation.validateLongitude(182)).toThrow(InvalidParamError);
+		});
 	});
 });
