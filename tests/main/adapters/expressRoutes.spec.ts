@@ -45,4 +45,24 @@ describe('Adapt Express Routes', () => {
 			userId: '123',
 		});
 	});
+
+	it('Should override IP with LOCAL_IP variable', async () => {
+		process.env.NODE_ENV = 'dev';
+		process.env.LOCAL_IP = '0.0.0.1';
+
+		const middleware = adaptRoute(testController);
+
+		await middleware(request as Request, response as Response, next);
+
+		expect(controllerSpy).toHaveBeenCalledWith({
+			ip: process.env.LOCAL_IP,
+			query: { id: '0' },
+			headers: { authorization: '123' },
+			cookies: { foo: 'bar' },
+			body: { a: 'a', b: 'b', c: 'c' },
+			userId: '123',
+		});
+
+		process.env.NODE_ENV = 'test';
+	});
 });
