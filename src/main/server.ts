@@ -1,3 +1,5 @@
-import app from './config/express';
+import { configureApp } from './config/express';
 
-app.listen(process.env.PORT, () => console.log(`[Server]: ⚡️ Running on port ${process.env.PORT}`));
+configureApp().then(app => {
+	app.listen(process.env.PORT, () => console.log(`[Server]: ⚡️ Running on port ${process.env.PORT}`));
+});
