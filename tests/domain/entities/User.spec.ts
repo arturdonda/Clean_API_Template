@@ -13,8 +13,6 @@ const nameValidationSpy = jest.spyOn(User, 'validateName');
 const phoneValidationSpy = jest.spyOn(User, 'validatePhone');
 const rgValidationSpy = jest.spyOn(User, 'validateRg');
 
-beforeEach(() => jest.clearAllMocks());
-
 describe('Getters', () => {
 	it('should return all fields correctly', () => {
 		const user = new User({
@@ -374,7 +372,7 @@ describe('User methods', () => {
 	it('should revoke session', () => {
 		user.revokeSession(session.token, geolocation);
 
-		expect(user.getSession(session.token).revokedAt.valueOf()).toBeCloseTo(new Date().valueOf());
+		expect(user.getSession(session.token).revokedAt.valueOf() / 1000).toBeCloseTo(new Date().valueOf() / 1000, 0);
 		expect(user.getSession(session.token).revokedBy).toEqual(geolocation);
 	});
 
