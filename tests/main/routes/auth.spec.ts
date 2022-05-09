@@ -1,4 +1,4 @@
-import app from '@main/config/express';
+import { configureApp } from '@main/config/express';
 import mongo from '@infra/adapters/db/mongoose';
 import request from 'supertest';
 import { RenewAccessController, SignOutController } from '@presentation/controllers/session';
@@ -8,11 +8,15 @@ import { AccessTokenService } from '@infra/adapters/token/jsonwebtoken';
 jest.mock('@presentation/controllers/session');
 jest.mock('@presentation/controllers/user');
 
-const agent = request.agent(app);
+let agent: request.SuperAgentTest;
+
 const { token: accessToken } = new AccessTokenService().generate('123');
 
 describe('Auth routes', () => {
 	beforeAll(async () => {
+		const app = await configureApp();
+		agent = request.agent(app);
+
 		await mongo.connect(process.env.MONGO_URL);
 	});
 

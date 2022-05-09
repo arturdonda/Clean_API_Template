@@ -1,12 +1,15 @@
 import pkgJson from '@root/package.json';
-import app from '@main/config/express';
+import { configureApp } from '@main/config/express';
 import mongo from '@infra/adapters/db/mongoose';
 import request from 'supertest';
 
-const agent = request.agent(app);
+let agent: request.SuperAgentTest;
 
 describe('System routes', () => {
 	beforeAll(async () => {
+		const app = await configureApp();
+		agent = request.agent(app);
+
 		await mongo.connect(process.env.MONGO_URL);
 	});
 
