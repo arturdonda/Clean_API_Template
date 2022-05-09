@@ -1,4 +1,8 @@
 import { Session, Geolocation } from '@domain/entities';
+import { InvalidParamError } from '@domain/errors';
+
+const validateCreatedAtSpy = jest.spyOn(Session, 'validateCreatedAt');
+const validateTokenSpy = jest.spyOn(Session, 'validateToken');
 
 const geolocation = new Geolocation({
 	ip: '0.0.0.0',
@@ -12,73 +16,57 @@ const geolocation = new Geolocation({
 	longitude: -48.3348,
 });
 
-describe('Create new Session', () => {
-	test('All valid parameters', () => {
+describe('Getters', () => {
+	it('should return all fields correctly', () => {
 		const session = new Session({
-			token: '74b954c3ab0a465a9661fa563cd36553',
+			token: '12345',
 			expiredAt: new Date(new Date().valueOf() + 86400000),
 			createdBy: geolocation,
 		});
 
-		expect(session.token).toBe('74b954c3ab0a465a9661fa563cd36553');
+		expect(session.token).toBe('12345');
 		expect(session.expiredAt.valueOf() / 1000).toBeCloseTo(new Date(new Date().valueOf() + 86400000).valueOf() / 1000, 0);
 		expect(session.createdAt.valueOf() / 1000).toBeCloseTo(new Date().valueOf() / 1000, 0);
 		expect(session.revokedAt).toBeNull();
-		expect(session.createdBy).toStrictEqual(geolocation);
+		expect(session.createdBy).toEqual(geolocation);
 		expect(session.revokedBy).toBeNull();
-	});
-
-	test('Valid Creation Date', () => {
-		const session = new Session({
-			token: '74b954c3ab0a465a9661fa563cd36553',
-			expiredAt: new Date(new Date().valueOf() + 86400000),
-			createdAt: new Date(new Date().valueOf() - 86400000),
-			createdBy: geolocation,
-		});
-
-		expect(session.token).toBe('74b954c3ab0a465a9661fa563cd36553');
-		expect(session.expiredAt.valueOf() / 1000).toBeCloseTo(new Date(new Date().valueOf() + 86400000).valueOf() / 1000, 0);
-		expect(session.createdAt.valueOf() / 1000).toBeCloseTo(new Date(new Date().valueOf() - 86400000).valueOf() / 1000, 0);
-		expect(session.revokedAt).toBeNull();
-		expect(session.createdBy).toStrictEqual(geolocation);
-		expect(session.revokedBy).toBeNull();
-	});
-
-	test('Invalid Creation Date', () => {
-		expect(
-			() =>
-				new Session({
-					token: '74b954c3ab0a465a9661fa563cd36553',
-					expiredAt: new Date(new Date().valueOf() + 86400000),
-					createdAt: new Date(new Date().valueOf() + 86400000),
-					createdBy: geolocation,
-				})
-		).toThrow("Campo 'Data de criação' inválido: não pode ser no futuro.");
-	});
-
-	test('Invalid Session Token', () => {
-		expect(
-			() =>
-				new Session({
-					token: ' ',
-					expiredAt: new Date(new Date().valueOf() + 86400000),
-					createdBy: geolocation,
-				})
-		).toThrow("Campo 'Session Token' inválido: não pode ser vazio.");
+		expect(session.isExpired).toBeFalsy();
+		expect(session.isActive).toBeTruthy();
 	});
 });
 
-describe('Revoke Session', () => {
-	test('Revoke Session', () => {
-		const session = new Session({
-			token: '74b954c3ab0a465a9661fa563cd36553',
+describe('Field validation', () => {
+	it('should validate fields upon creation', () => {
+		new Session({
+			token: '12345',
 			expiredAt: new Date(new Date().valueOf() + 86400000),
+			createdAt: new Date(),
 			createdBy: geolocation,
 		});
 
-		session.revoke(geolocation);
+		expect(validateCreatedAtSpy).toHaveBeenCalled();
+		expect(validateTokenSpy).toHaveBeenCalled();
+	});
+});
 
-		expect(session.revokedAt && session.revokedAt.valueOf() / 1000).toBeCloseTo(new Date().valueOf() / 1000, 0);
-		expect(session.revokedBy).toStrictEqual(geolocation);
+describe('Static validation', () => {
+	describe('Created At', () => {
+		it('should return created at', () => {
+			expect(Session.validateCreatedAt(new Date(2000, 0, 1))).toEqual(new Date(2000, 0, 1));
+		});
+
+		it('should throw InvalidParamError', () => {
+			expect(() => Session.validateCreatedAt(new Date(new Date().valueOf() + 86400 * 1000))).toThrow(InvalidParamError);
+		});
+	});
+
+	describe('Token', () => {
+		it('should return token', () => {
+			expect(Session.validateToken('12345')).toBe('12345');
+		});
+
+		it('should throw InvalidParamError', () => {
+			expect(() => Session.validateToken('')).toThrow(InvalidParamError);
+		});
 	});
 });
