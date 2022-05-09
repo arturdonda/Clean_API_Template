@@ -64,6 +64,7 @@ export class Session {
 	//#endregion Methods
 
 	//#region Static Validations
+
 	static validateCreatedAt(createdAt: Date) {
 		if (createdAt > new Date()) throw new InvalidParamError('Data de criação', 'não pode ser no futuro.');
 
@@ -75,4 +76,6 @@ export class Session {
 
 		return token;
 	}
+
+	//#endregion Static Validations
 }
