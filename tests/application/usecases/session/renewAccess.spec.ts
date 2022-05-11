@@ -1,32 +1,43 @@
 import { Geolocation, Session } from '@domain/entities';
-import { makeCreateSession, makeRenewAccess, makeRevokeSession } from '@tests/_factories/usecases';
 import { ExpiredTokenError, RevokedTokenError, UserNotFoundError } from '@application/errors';
 import { mockUserRepository, mockTokenService } from '@tests/_factories/adapters';
+import { makeCreateSession, makeRenewAccess, makeRevokeSession } from '@tests/_factories/usecases';
 
 describe('Renew Access', () => {
 	const renewAccessService = makeRenewAccess(mockUserRepository);
 	const createSessionService = makeCreateSession();
 	const revokeSessionService = makeRevokeSession(mockUserRepository);
 
-	test('Valid session token', async () => {
+	it('should validate session token', async () => {
 		const user = await mockUserRepository.getById('1');
-		const session = await createSessionService.exec({ userId: '1', ipAddress: '0.0.0.0' });
+		const session = await createSessionService.exec({ userId: user.id, ipAddress: '0.0.0.0' });
+
+		const tokenServiceSpy = jest.spyOn(mockTokenService, 'validate');
+		const tokenValidationSpy = jest.spyOn(Session, 'validateToken');
 
 		user.addSession(session);
 
-		expect(renewAccessService.exec(session.token)).resolves;
-		expect(mockTokenService.validate(await renewAccessService.exec(session.token)).audience).toBe(mockTokenService.validate(session.token).audience);
+		await renewAccessService.exec(session.token);
+
+		expect(tokenServiceSpy).toHaveBeenCalledTimes(1);
+		expect(tokenValidationSpy).toHaveBeenCalledTimes(1);
+
+		expect(tokenServiceSpy).toHaveBeenCalledWith(session.token);
+		expect(tokenValidationSpy).toHaveBeenCalledWith(session.token);
+
+		tokenServiceSpy.mockRestore();
+		tokenValidationSpy.mockRestore();
 	});
 
-	test('Invalid user', async () => {
-		const sessionToken = mockTokenService.generate('0');
+	it('should validate user against database', async () => {
+		const session = await createSessionService.exec({ userId: '0', ipAddress: '0.0.0.0' });
 
-		expect(renewAccessService.exec(sessionToken.token)).rejects.toThrow(UserNotFoundError);
+		expect(renewAccessService.exec(session.token)).rejects.toThrow(UserNotFoundError);
 	});
 
-	test('Revoked session token', async () => {
+	it('should throw RevokedTokenError', async () => {
 		const user = await mockUserRepository.getById('1');
-		const session = await createSessionService.exec({ userId: '1', ipAddress: '0.0.0.0' });
+		const session = await createSessionService.exec({ userId: user.id, ipAddress: '0.0.0.0' });
 
 		user.addSession(session);
 
@@ -39,9 +50,9 @@ describe('Renew Access', () => {
 		expect(renewAccessService.exec(session.token)).rejects.toThrow(RevokedTokenError);
 	});
 
-	test('Expired session token', async () => {
+	it('should throw ExpiredTokenError', async () => {
 		const user = await mockUserRepository.getById('1');
-		const sessionToken = mockTokenService.generate('1', new Date(new Date().valueOf() + 1000));
+		const sessionToken = mockTokenService.generate(user.id, new Date(2000, 0, 1));
 
 		user.addSession(
 			new Session({
@@ -61,12 +72,24 @@ describe('Renew Access', () => {
 			})
 		);
 
-		await new Promise<void>((resolve, reject) => {
-			setTimeout(() => {
-				resolve();
-			}, 1000);
-		});
-
 		expect(renewAccessService.exec(sessionToken.token)).rejects.toThrow(ExpiredTokenError);
+	});
+
+	it('should return a valid token for the user', async () => {
+		const user = await mockUserRepository.getById('1');
+		const session = await createSessionService.exec({ userId: user.id, ipAddress: '0.0.0.0' });
+
+		const tokenServiceSpy = jest.spyOn(mockTokenService, 'generate');
+
+		user.addSession(session);
+
+		const accessToken = await renewAccessService.exec(session.token);
+
+		expect(tokenServiceSpy).toHaveBeenCalledTimes(1);
+		expect(tokenServiceSpy).toHaveBeenCalledWith(user.id);
+
+		expect(mockTokenService.validate(accessToken).audience).toBe(user.id);
+
+		tokenServiceSpy.mockRestore();
 	});
 });
