@@ -1,9 +1,9 @@
-import { User } from '@domain/entities';
+import { Session, User } from '@domain/entities';
 import { mockTokenService } from '@tests/_factories/adapters';
-import { makeCreateSession } from '@tests/_factories/usecases';
+import { createSessionService } from '@tests/_factories/usecases';
 
 describe('Create Session', () => {
-	const createSessionService = makeCreateSession();
+	afterAll(() => jest.restoreAllMocks());
 
 	it('should validate user id', async () => {
 		const ipValidationSpy = jest.spyOn(User, 'validateId');
@@ -15,8 +15,6 @@ describe('Create Session', () => {
 
 		expect(ipValidationSpy).toHaveBeenCalledTimes(1);
 		expect(ipValidationSpy).toHaveBeenCalledWith('1');
-
-		ipValidationSpy.mockRestore();
 	});
 
 	it('should generate token with user id', async () => {
@@ -29,28 +27,14 @@ describe('Create Session', () => {
 
 		expect(tokenSpy).toHaveBeenCalledTimes(1);
 		expect(tokenSpy).toHaveBeenCalledWith('1');
-
-		tokenSpy.mockRestore();
 	});
 
 	it('should return a new session', async () => {
-		const tokenSpy = jest.spyOn(mockTokenService, 'generate');
-
-		const sessionResult = await createSessionService.exec({
-			userId: '1',
-			ipAddress: '0.0.0.0',
-		});
-
-		const tokenResult = tokenSpy.mock.results[0].value;
-
-		expect(sessionResult).toMatchObject({
-			token: tokenResult.token,
-			expiredAt: tokenResult.expiredAt,
-			createdBy: expect.objectContaining({
-				ip: '0.0.0.0',
-			}),
-		});
-
-		tokenSpy.mockRestore();
+		expect(
+			createSessionService.exec({
+				userId: '1',
+				ipAddress: '0.0.0.0',
+			})
+		).resolves.toEqual<Session>(expect.any(Session));
 	});
 });
