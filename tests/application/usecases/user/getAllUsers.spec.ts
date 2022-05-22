@@ -1,10 +1,15 @@
-import { makeGetAllUsers } from '@tests/_factories/usecases';
+import { User } from '@domain/entities';
+import { getAllUsersService } from '@tests/_factories/usecases';
 import { mockUserRepository } from '@tests/_factories/adapters';
 
 describe('Get All Users', () => {
-	const getAllUsersService = makeGetAllUsers(mockUserRepository);
+	beforeAll(() => mockUserRepository.resetDatabase());
 
-	test('Get All Users', async () => {
-		expect(getAllUsersService.exec()).resolves.toHaveLength(5);
+	afterAll(() => jest.restoreAllMocks());
+
+	it('should return all users from fatabase', async () => {
+		const users = await mockUserRepository.getAll();
+
+		expect(getAllUsersService.exec()).resolves.toEqual<User[]>(users);
 	});
 });
