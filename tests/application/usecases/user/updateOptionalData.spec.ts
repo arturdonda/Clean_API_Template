@@ -1,164 +1,110 @@
-import { makeUpdateOptionalData } from '@tests/_factories/usecases';
-import { UserNotFoundError } from '@application/errors';
+import { User } from '@domain/entities';
+import { UserNotFoundError, UserRegisteredError } from '@application/errors';
+import { updateOptionalDataService } from '@tests/_factories/usecases';
 import { mockUserRepository } from '@tests/_factories/adapters';
 
 describe('Update optional data', () => {
-	const updateOptionalData = makeUpdateOptionalData(mockUserRepository);
+	const address = 'Not Found Street, 404';
+	const birthday = new Date(2000, 0, 1);
+	const gender = 'M';
+	const phone = '1234567890';
+	const cpf = '93043641086';
+	const rg = '305025053';
 
-	test('Valid - all parameters', async () => {
-		expect(
-			await updateOptionalData.exec({
-				userId: '1',
-				address: 'Not Found Street, 404',
-				birthday: new Date(2000, 0, 1),
-				cpf: '930.436.410-86',
-				gender: 'F',
-				phone: '(12) 93456-7890',
-				rg: '30.502.505-3',
-			})
-		).resolves;
+	beforeAll(() => mockUserRepository.resetDatabase());
+
+	afterAll(() => jest.restoreAllMocks());
+
+	it('should validate id', async () => {
+		const validateId = jest.spyOn(User, 'validateId');
+
+		await updateOptionalDataService.exec({ userId: '1' });
+
+		expect(validateId).toHaveBeenCalledTimes(1);
+		expect(validateId).toHaveBeenCalledWith('1');
+	});
+
+	it('should validate user against database', async () => {
+		expect(updateOptionalDataService.exec({ userId: '0' })).rejects.toThrow(UserNotFoundError);
+	});
+
+	it('should validate and update address', async () => {
+		const addressValidationSpy = jest.spyOn(User, 'validateAddress');
+
+		await updateOptionalDataService.exec({ userId: '1', address: address });
+
+		expect(addressValidationSpy).toHaveBeenCalledWith(address);
 
 		const user = await mockUserRepository.getById('1');
 
-		if (!user) throw new UserNotFoundError();
-
-		expect(user.address).toBe('Not Found Street, 404');
-		expect(user.birthday).toStrictEqual(new Date(2000, 0, 1));
-		expect(user.cpf).toBe('93043641086');
-		expect(user.gender).toBe('F');
-		expect(user.phone).toBe('12934567890');
-		expect(user.rg).toBe('305025053');
+		expect(user.address).toBe(address);
 	});
 
-	test('Valid - some parameters', async () => {
-		expect(
-			await updateOptionalData.exec({
-				userId: '2',
-				address: 'Not Found Street, 404',
-				birthday: new Date(2000, 0, 1),
-				gender: 'F',
-			})
-		).resolves;
+	it('should validate and update birthday', async () => {
+		const birthdayValidationSpy = jest.spyOn(User, 'validateBirthday');
 
-		const user = await mockUserRepository.getById('2');
+		await updateOptionalDataService.exec({ userId: '1', birthday: birthday });
 
-		if (!user) throw new UserNotFoundError();
+		expect(birthdayValidationSpy).toHaveBeenCalledWith(birthday);
 
-		expect(user.address).toBe('Not Found Street, 404');
-		expect(user.birthday).toStrictEqual(new Date(2000, 0, 1));
-		expect(user.cpf).toBeNull();
-		expect(user.gender).toBe('F');
-		expect(user.phone).toBeNull();
-		expect(user.rg).toBeNull();
+		const user = await mockUserRepository.getById('1');
+
+		expect(user.birthday).toBe(birthday);
 	});
 
-	test('Nonexistent user', async () => {
-		expect(
-			updateOptionalData.exec({
-				userId: '0',
-				address: 'Not Found Street, 404',
-				birthday: new Date(2000, 0, 1),
-				gender: 'F',
-			})
-		).rejects.toThrow(UserNotFoundError);
+	it('should validate and update gender', async () => {
+		const genderValidationSpy = jest.spyOn(User, 'validateGender');
+
+		await updateOptionalDataService.exec({ userId: '1', gender: gender });
+
+		expect(genderValidationSpy).toHaveBeenCalledWith(gender);
+
+		const user = await mockUserRepository.getById('1');
+
+		expect(user.gender).toBe(gender);
 	});
 
-	test('Duplicated cpf', async () => {
-		expect(
-			updateOptionalData.exec({
-				userId: '3',
-				cpf: '930.436.410-86',
-			})
-		).rejects.toThrow('CPF já cadastrado.');
+	it('should validate and update phone', async () => {
+		const phoneValidationSpy = jest.spyOn(User, 'validatePhone');
+
+		await updateOptionalDataService.exec({ userId: '1', phone: phone });
+
+		expect(phoneValidationSpy).toHaveBeenCalledWith(phone);
+
+		const user = await mockUserRepository.getById('1');
+
+		expect(user.phone).toBe(phone);
 	});
 
-	test('Duplicated rg', async () => {
-		expect(
-			updateOptionalData.exec({
-				userId: '3',
-				rg: '30.502.505-3',
-			})
-		).rejects.toThrow('RG já cadastrado.');
+	it('should validate and update cpf', async () => {
+		const cpfValidationSpy = jest.spyOn(User, 'validateCpf');
+
+		await updateOptionalDataService.exec({ userId: '1', cpf: cpf });
+
+		expect(cpfValidationSpy).toHaveBeenCalledWith(cpf);
+
+		const user = await mockUserRepository.getById('1');
+
+		expect(user.cpf).toBe(cpf);
 	});
 
-	test('Invalid Id', async () => {
-		expect(
-			updateOptionalData.exec({
-				userId: '',
-				rg: '30.502.505-3',
-			})
-		).rejects.toThrow("Campo 'Id' inválido: não pode ser vazio.");
+	it('should validate and update rg', async () => {
+		const rgValidationSpy = jest.spyOn(User, 'validateRg');
+
+		await updateOptionalDataService.exec({ userId: '1', rg: rg });
+
+		expect(rgValidationSpy).toHaveBeenCalledWith(rg);
+
+		const user = await mockUserRepository.getById('1');
+
+		expect(user.rg).toBe(rg);
 	});
 
-	test('Invalid Address', async () => {
-		expect(
-			updateOptionalData.exec({
-				userId: '3',
-				address: 'Rua',
-			})
-		).rejects.toThrow("Campo 'Endereço' inválido: deve conter pelo menos 5 caracteres.");
+	it('should validate if duplicated cpf', async () => {
+		expect(updateOptionalDataService.exec({ userId: '2', cpf: cpf })).rejects.toThrow(UserRegisteredError);
 	});
 
-	test('Invalid Birthday - Before 1900', async () => {
-		expect(
-			updateOptionalData.exec({
-				userId: '3',
-				birthday: new Date(1899, 0, 1),
-			})
-		).rejects.toThrow("Campo 'Data de nascimento' inválido: deve ser posterior a 01/01/1900.");
-	});
-
-	test('Invalid Birthday - Future', async () => {
-		expect(
-			updateOptionalData.exec({
-				userId: '3',
-				birthday: new Date(new Date().valueOf() + 86400 * 1000),
-			})
-		).rejects.toThrow("Campo 'Data de nascimento' inválido: não pode ser no futuro.");
-	});
-
-	test('Invalid Gender', async () => {
-		expect(
-			updateOptionalData.exec({
-				userId: '3',
-				gender: 'X',
-			})
-		).rejects.toThrow("Campo 'Gênero' inválido: deve ser 'M', 'F' ou 'O'.");
-	});
-
-	test('Invalid Phone', async () => {
-		expect(
-			updateOptionalData.exec({
-				userId: '3',
-				phone: '12345678',
-			})
-		).rejects.toThrow("Campo 'Telefone' inválido: deve conter 10 ou 11 dígitos.");
-	});
-
-	test('Invalid CPF - Lenght', async () => {
-		expect(
-			updateOptionalData.exec({
-				userId: '3',
-				cpf: '123',
-			})
-		).rejects.toThrow("Campo 'CPF' inválido: deve conter 11 dígitos.");
-	});
-
-	test('Invalid CPF - Incorrect', async () => {
-		expect(
-			updateOptionalData.exec({
-				userId: '3',
-				cpf: '123.456.789-10',
-			})
-		).rejects.toThrow("Campo 'CPF' inválido: dígitos verificadores incorretos.");
-	});
-
-	test('Invalid RG', async () => {
-		expect(
-			updateOptionalData.exec({
-				userId: '3',
-				rg: '123',
-			})
-		).rejects.toThrow("Campo 'RG' inválido: formato inválido.");
+	it('should validate if duplicated rg', async () => {
+		expect(updateOptionalDataService.exec({ userId: '2', rg: rg })).rejects.toThrow(UserRegisteredError);
 	});
 });
