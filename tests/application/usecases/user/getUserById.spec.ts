@@ -1,21 +1,27 @@
-import { makeGetUserById } from '@tests/_factories/usecases';
+import { User } from '@domain/entities';
 import { UserNotFoundError } from '@application/errors';
+import { getUserByIdService } from '@tests/_factories/usecases';
 import { mockUserRepository } from '@tests/_factories/adapters';
 
 describe('Get User By Id', () => {
-	const getUserByIdService = makeGetUserById(mockUserRepository);
+	beforeAll(() => mockUserRepository.resetDatabase());
 
-	test('Valid Id', async () => {
-		const user = await mockUserRepository.getById('1');
+	afterAll(() => jest.restoreAllMocks());
 
-		expect(getUserByIdService.exec({ userId: '1' })).resolves.toEqual(user);
+	it('should validate id', async () => {
+		const validationSpy = jest.spyOn(User, 'validateId');
+
+		await getUserByIdService.exec({ userId: '1' });
+
+		expect(validationSpy).toHaveBeenCalledTimes(1);
+		expect(validationSpy).toHaveBeenCalledWith('1');
 	});
 
-	test('Nonexistent Id', () => {
+	it('should validate user against database', async () => {
 		expect(getUserByIdService.exec({ userId: '0' })).rejects.toThrow(UserNotFoundError);
 	});
 
-	test('Invalid Id', () => {
-		expect(getUserByIdService.exec({ userId: '' })).rejects.toThrow("Campo 'Id' inválido: não pode ser vazio.");
+	it('should return user', async () => {
+		expect(getUserByIdService.exec({ userId: '1' })).resolves.toEqual<User>(expect.objectContaining({ id: '1' }));
 	});
 });
