@@ -1,121 +1,98 @@
 import { Session, User } from '@domain/entities';
 import { UserNotFoundError } from '@application/errors';
 import { mockUserRepository, mockIpService } from '@tests/_factories/adapters';
-import { makeCreateSession, makeRevokeSession } from '@tests/_factories/usecases';
+import { createSessionService, revokeSessionService } from '@tests/_factories/usecases';
 
 describe('Revoke Session', () => {
-	const createSessionService = makeCreateSession();
-	const revokeSessionService = makeRevokeSession(mockUserRepository);
+	let sessionToken: string;
 
-	it('should validate user id', async () => {
+	beforeEach(async () => {
+		mockUserRepository.resetDatabase();
+
 		const user = await mockUserRepository.getById('1');
 		const session = await createSessionService.exec({ userId: user.id, ipAddress: '0.0.0.0' });
 
-		const ipValidationSpy = jest.spyOn(User, 'validateId');
-
 		user.addSession(session);
 
+		await mockUserRepository.update(user);
+
+		sessionToken = session.token;
+	});
+
+	afterAll(() => jest.restoreAllMocks());
+
+	it('should validate user id', async () => {
+		const ipValidationSpy = jest.spyOn(User, 'validateId');
+
 		await revokeSessionService.exec({
-			userId: user.id,
+			userId: '1',
 			ipAddress: '0.0.0.0',
-			sessionToken: session.token,
+			sessionToken: sessionToken,
 		});
 
 		expect(ipValidationSpy).toHaveBeenCalledTimes(1);
-		expect(ipValidationSpy).toHaveBeenCalledWith(user.id);
-
-		ipValidationSpy.mockRestore();
+		expect(ipValidationSpy).toHaveBeenCalledWith('1');
 	});
 
 	it('should validate session token', async () => {
-		const user = await mockUserRepository.getById('1');
-		const session = await createSessionService.exec({ userId: user.id, ipAddress: '0.0.0.0' });
-
 		const tokenValidationSpy = jest.spyOn(Session, 'validateToken');
 
-		user.addSession(session);
-
 		await revokeSessionService.exec({
-			userId: user.id,
+			userId: '1',
 			ipAddress: '0.0.0.0',
-			sessionToken: session.token,
+			sessionToken: sessionToken,
 		});
 
 		expect(tokenValidationSpy).toHaveBeenCalledTimes(1);
-		expect(tokenValidationSpy).toHaveBeenCalledWith(session.token);
-
-		tokenValidationSpy.mockRestore();
+		expect(tokenValidationSpy).toHaveBeenCalledWith(sessionToken);
 	});
 
 	it('should validate user against database', async () => {
-		const session = await createSessionService.exec({ userId: '0', ipAddress: '0.0.0.0' });
-
 		expect(
 			revokeSessionService.exec({
 				userId: '0',
 				ipAddress: '0.0.0.0',
-				sessionToken: session.token,
+				sessionToken: sessionToken,
 			})
 		).rejects.toThrow(UserNotFoundError);
 	});
 
 	it('should get revoker information from ip service', async () => {
-		const user = await mockUserRepository.getById('1');
-		const session = await createSessionService.exec({ userId: user.id, ipAddress: '0.0.0.0' });
-
 		const ipServiceSpy = jest.spyOn(mockIpService, 'lookup');
 
-		user.addSession(session);
-
 		await revokeSessionService.exec({
-			userId: user.id,
+			userId: '1',
 			ipAddress: '0.0.0.0',
-			sessionToken: session.token,
+			sessionToken: sessionToken,
 		});
 
 		expect(ipServiceSpy).toHaveBeenCalledTimes(1);
-		expect(ipServiceSpy).toHaveBeenCalledWith(session.revokedBy.ip);
-
-		ipServiceSpy.mockRestore();
+		expect(ipServiceSpy).toHaveBeenCalledWith('0.0.0.0');
 	});
 
 	it('should revoke session', async () => {
-		const user = await mockUserRepository.getById('1');
-		const session = await createSessionService.exec({ userId: user.id, ipAddress: '0.0.0.0' });
-
 		const userRevokeSpy = jest.spyOn(User.prototype, 'revokeSession');
 
-		user.addSession(session);
-
 		await revokeSessionService.exec({
-			userId: user.id,
+			userId: '1',
 			ipAddress: '0.0.0.0',
-			sessionToken: session.token,
+			sessionToken: sessionToken,
 		});
 
 		expect(userRevokeSpy).toHaveBeenCalledTimes(1);
-		expect(userRevokeSpy).toHaveBeenCalledWith(session.token, expect.objectContaining({ ip: session.revokedBy.ip }));
-
-		userRevokeSpy.mockRestore();
+		expect(userRevokeSpy).toHaveBeenCalledWith(sessionToken, expect.objectContaining({ ip: '0.0.0.0' }));
 	});
 
 	it('should persist changes to database', async () => {
-		const user = await mockUserRepository.getById('1');
-		const session = await createSessionService.exec({ userId: user.id, ipAddress: '0.0.0.0' });
-
 		const databaseSpy = jest.spyOn(mockUserRepository, 'update');
 
-		user.addSession(session);
-
 		await revokeSessionService.exec({
-			userId: user.id,
+			userId: '1',
 			ipAddress: '0.0.0.0',
-			sessionToken: session.token,
+			sessionToken: sessionToken,
 		});
 
 		expect(databaseSpy).toHaveBeenCalledTimes(1);
-		expect(databaseSpy).toHaveBeenCalledWith(expect.objectContaining({ id: user.id }));
-
-		databaseSpy.mockRestore();
+		expect(databaseSpy).toHaveBeenCalledWith(expect.objectContaining({ id: '1' }));
 	});
 });
