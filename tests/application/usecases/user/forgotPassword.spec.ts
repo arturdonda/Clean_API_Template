@@ -1,31 +1,66 @@
-import { makeForgotPassword } from '@tests/_factories/usecases';
-import { UserNotFoundError } from '@application/errors';
+import { User } from '@domain/entities';
+import { forgotPasswordService } from '@tests/_factories/usecases';
 import { mockUserRepository, mockEmailService, mockTokenService } from '@tests/_factories/adapters';
 
 describe('Forgot Password', () => {
-	const forgotPasswordService = makeForgotPassword(mockUserRepository);
+	let user: User;
 
-	test('Valid e-mail', async () => {
-		const user = await mockUserRepository.getById('1');
-		if (!user) throw new UserNotFoundError();
+	beforeAll(async () => {
+		mockUserRepository.resetDatabase();
+		user = await mockUserRepository.getById('1');
+	});
 
-		const emailSpy = jest.spyOn(mockEmailService, 'sendForgotPasswordEmail');
-		const tokenSpy = jest.spyOn(mockTokenService, 'generate');
+	afterAll(() => jest.restoreAllMocks());
+
+	it('should validate e-mail', async () => {
+		const validationSpy = jest.spyOn(User, 'validateEmail');
 
 		await forgotPasswordService.exec({ email: user.email });
 
-		expect(tokenSpy).toHaveBeenCalledWith(user.id);
-		expect(emailSpy).toHaveBeenCalledWith(expect.objectContaining({ name: user.name, email: user.email }));
-
-		emailSpy.mockRestore();
-		tokenSpy.mockRestore();
+		expect(validationSpy).toHaveBeenCalledTimes(1);
+		expect(validationSpy).toHaveBeenCalledWith(user.email);
 	});
 
-	test('Nonexistent e-mail', async () => {
-		expect(forgotPasswordService.exec({ email: 'john.doe@hotmail.com' })).resolves;
+	it('should validate user against database', async () => {
+		const getByEmailSpy = jest.spyOn(mockUserRepository, 'getByEmail');
+
+		await forgotPasswordService.exec({ email: user.email });
+
+		expect(getByEmailSpy).toHaveBeenCalledTimes(1);
+		expect(getByEmailSpy).toHaveBeenCalledWith(user.email);
 	});
 
-	test('Invalid e-mail', async () => {
-		expect(forgotPasswordService.exec({ email: 'john.doe@hotmailcom' })).rejects.toThrow("Campo 'E-mail' inválido: formato inválido.");
+	it('should generate reset token', async () => {
+		const resetTokenSpy = jest.spyOn(mockTokenService, 'generate');
+
+		await forgotPasswordService.exec({ email: user.email });
+
+		expect(resetTokenSpy).toHaveBeenCalledTimes(1);
+		expect(resetTokenSpy).toHaveBeenCalledWith(user.id);
+	});
+
+	it('should send forgot password e-mail', async () => {
+		const emailSpy = jest.spyOn(mockEmailService, 'sendForgotPasswordEmail');
+
+		await forgotPasswordService.exec({ email: user.email });
+
+		expect(emailSpy).toHaveBeenCalledTimes(1);
+		expect(emailSpy).toHaveBeenCalledWith({
+			name: user.name,
+			email: user.email,
+			resetToken: expect.any(String),
+		});
+	});
+
+	it('should not generate token and send e-mail if invalid user', async () => {
+		const resetTokenSpy = jest.spyOn(mockTokenService, 'generate');
+		const emailSpy = jest.spyOn(mockEmailService, 'sendForgotPasswordEmail');
+		resetTokenSpy.mockReset();
+		emailSpy.mockReset();
+
+		await forgotPasswordService.exec({ email: 'a@b.com' });
+
+		expect(resetTokenSpy).toHaveBeenCalledTimes(0);
+		expect(emailSpy).toHaveBeenCalledTimes(0);
 	});
 });
