@@ -1,10 +1,9 @@
 import { GetUserByIdController } from '@presentation/controllers/user';
 import { UserViewModel } from '@presentation/viewModels';
-import { makeGetUserById } from '@tests/_factories/usecases';
+import { getUserByIdService } from '@tests/_factories/usecases';
 import { mockUserRepository } from '@tests/_factories/adapters';
 
 describe('Get User By Id Controller', () => {
-	const getUserByIdService = makeGetUserById(mockUserRepository);
 	const getUserByIdController = new GetUserByIdController(getUserByIdService);
 
 	test('With required parameter', async () => {

@@ -1,9 +1,8 @@
 import { ForgotPasswordController } from '@presentation/controllers/user';
-import { makeForgotPassword } from '@tests/_factories/usecases';
+import { forgotPasswordService } from '@tests/_factories/usecases';
 import { mockUserRepository } from '@tests/_factories/adapters';
 
 describe('Forgot Password Controller', () => {
-	const forgotPasswordService = makeForgotPassword(mockUserRepository);
 	const forgotPasswordController = new ForgotPasswordController(forgotPasswordService);
 
 	test('With required parameter', async () => {

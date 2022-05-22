@@ -1,11 +1,9 @@
 import { GetActiveSessionsController } from '@presentation/controllers/user';
 import { SessionViewModel } from '@presentation/viewModels';
-import { makeGetActiveSessions, makeCreateSession } from '@tests/_factories/usecases';
+import { getActiveSessionsService, createSessionService } from '@tests/_factories/usecases';
 import { mockUserRepository } from '@tests/_factories/adapters';
 
 describe('Get Active Sessions Controller', () => {
-	const getActiveSessionsService = makeGetActiveSessions(mockUserRepository);
-	const createSessionService = makeCreateSession();
 	const getActiveSessionsController = new GetActiveSessionsController(getActiveSessionsService);
 
 	test('With required parameter', async () => {

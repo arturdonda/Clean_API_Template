@@ -1,10 +1,9 @@
 import { UpdateOptionalDataController } from '@presentation/controllers/user';
 import { UserViewModel } from '@presentation/viewModels';
-import { makeUpdateOptionalData } from '@tests/_factories/usecases';
+import { updateOptionalDataService } from '@tests/_factories/usecases';
 import { mockUserRepository } from '@tests/_factories/adapters';
 
 describe('Update Optional Data Controller', () => {
-	const updateOptionalDataService = makeUpdateOptionalData(mockUserRepository);
 	const updateOptionalDataController = new UpdateOptionalDataController(updateOptionalDataService);
 
 	test('With optional parameter', async () => {

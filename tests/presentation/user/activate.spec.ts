@@ -1,14 +1,13 @@
 import { ActivateUserController } from '@presentation/controllers/user';
-import { makeActivate } from '@tests/_factories/usecases';
+import { activateService } from '@tests/_factories/usecases';
 import { mockUserRepository } from '@tests/_factories/adapters';
 
 describe('Activate User Controller', () => {
-	const activateUserService = makeActivate(mockUserRepository);
-	const activateUserController = new ActivateUserController(activateUserService);
+	const activateUserController = new ActivateUserController(activateService);
 
 	test('With required parameter', async () => {
 		const user = await mockUserRepository.getById('1');
-		const serviceSpy = jest.spyOn(activateUserService, 'exec');
+		const serviceSpy = jest.spyOn(activateService, 'exec');
 
 		expect(
 			await activateUserController.handle({

@@ -1,9 +1,8 @@
 import { UpdatePasswordController } from '@presentation/controllers/user';
-import { makeUpdatePassword } from '@tests/_factories/usecases';
+import { updatePasswordService } from '@tests/_factories/usecases';
 import { mockUserRepository } from '@tests/_factories/adapters';
 
 describe('Update Password Controller', () => {
-	const updatePasswordService = makeUpdatePassword(mockUserRepository);
 	const updatePasswordController = new UpdatePasswordController(updatePasswordService);
 
 	test('With required parameter', async () => {

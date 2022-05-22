@@ -1,10 +1,9 @@
 import { GetAllUsersController } from '@presentation/controllers/user';
 import { UserViewModel } from '@presentation/viewModels';
-import { makeGetAllUsers } from '@tests/_factories/usecases';
+import { getAllUsersService } from '@tests/_factories/usecases';
 import { mockUserRepository } from '@tests/_factories/adapters';
 
 describe('Get All Users Controller', () => {
-	const getAllUsersService = makeGetAllUsers(mockUserRepository);
 	const getAllUsersController = new GetAllUsersController(getAllUsersService);
 
 	test('With required parameter', async () => {

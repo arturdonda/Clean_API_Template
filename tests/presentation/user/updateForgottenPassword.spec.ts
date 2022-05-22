@@ -1,9 +1,8 @@
 import { UpdateForgottenPasswordController } from '@presentation/controllers/user';
-import { makeUpdateForgottenPassword } from '@tests/_factories/usecases';
+import { updateForgottenPasswordService } from '@tests/_factories/usecases';
 import { mockUserRepository, mockTokenService } from '@tests/_factories/adapters';
 
 describe('Update Forgotten Password Controller', () => {
-	const updateForgottenPasswordService = makeUpdateForgottenPassword(mockUserRepository);
 	const updateForgottenPasswordController = new UpdateForgottenPasswordController(updateForgottenPasswordService);
 
 	const { token: resetToken } = mockTokenService.generate('1');

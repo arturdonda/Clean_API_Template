@@ -1,10 +1,9 @@
 import { SignInController } from '@presentation/controllers/user';
 import { UserViewModel } from '@presentation/viewModels';
-import { makeSignIn } from '@tests/_factories/usecases';
+import { signInService } from '@tests/_factories/usecases';
 import { mockUserRepository } from '@tests/_factories/adapters';
 
 describe('Sign In Controller', () => {
-	const signInService = makeSignIn(mockUserRepository);
 	const signInController = new SignInController(signInService);
 
 	test('With required parameter', async () => {

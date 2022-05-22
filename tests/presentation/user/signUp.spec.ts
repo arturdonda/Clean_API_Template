@@ -1,10 +1,9 @@
 import { SignUpController } from '@presentation/controllers/user';
 import { UserViewModel } from '@presentation/viewModels';
-import { makeSignUp } from '@tests/_factories/usecases';
+import { signUpService } from '@tests/_factories/usecases';
 import { mockUserRepository } from '@tests/_factories/adapters';
 
 describe('Sign Up Controller', () => {
-	const signUpService = makeSignUp(mockUserRepository);
 	const signUpController = new SignUpController(signUpService);
 
 	test('With required parameter', async () => {
