@@ -1,23 +1,40 @@
-import { makeActivate } from '@tests/_factories/usecases';
+import { User } from '@domain/entities';
 import { UserNotFoundError } from '@application/errors';
+import { activateService } from '@tests/_factories/usecases';
 import { mockUserRepository } from '@tests/_factories/adapters';
 
 describe('Activate User', () => {
-	const activateService = makeActivate(mockUserRepository);
+	let user: User;
 
-	test('Valid Confirmation Code', async () => {
-		const user = await mockUserRepository.getById('1');
+	beforeAll(async () => {
+		mockUserRepository.resetDatabase();
 
-		if (!user) throw new UserNotFoundError();
-
-		expect(mockUserRepository.getByConfirmationCode(user.confirmationCode)).resolves.toHaveProperty('status', 'Pending');
-
-		expect(activateService.exec({ confirmationCode: user.confirmationCode })).resolves;
-
-		expect(mockUserRepository.getByConfirmationCode(user.confirmationCode)).resolves.toHaveProperty('status', 'Active');
+		user = await mockUserRepository.getById('1');
 	});
 
-	test('Invalid Confirmation Code', async () => {
-		expect(activateService.exec({ confirmationCode: '123' })).rejects.toThrow("Campo 'Código de Confirmação' inválido: prefixo inválido.");
+	afterAll(() => jest.restoreAllMocks());
+
+	it('should validate confirmation code', async () => {
+		const validationSpy = jest.spyOn(User, 'validateConfirmationCode');
+
+		await activateService.exec({ confirmationCode: user.confirmationCode });
+
+		expect(validationSpy).toHaveBeenCalledTimes(1);
+		expect(validationSpy).toHaveBeenCalledWith(user.confirmationCode);
+	});
+
+	it('should validate user against database', async () => {
+		expect(activateService.exec({ confirmationCode: 'CC123' })).rejects.toThrow(UserNotFoundError);
+	});
+
+	it('should update user status and persist on database', async () => {
+		mockUserRepository.resetDatabase();
+		const user = await mockUserRepository.getById('1');
+
+		expect(user.status).toBe('Pending');
+
+		await activateService.exec({ confirmationCode: user.confirmationCode });
+
+		expect(user.status).toBe('Active');
 	});
 });
