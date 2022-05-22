@@ -1,66 +1,41 @@
-import { makeUpdateForgottenPassword, makeSignIn } from '@tests/_factories/usecases';
-import { InvalidPasswordError, UserNotFoundError } from '@application/errors';
-import { mockUserRepository, mockEmailService, mockTokenService } from '@tests/_factories/adapters';
+import { updateForgottenPasswordService, updatePasswordService } from '@tests/_factories/usecases';
+import { mockUserRepository, mockTokenService } from '@tests/_factories/adapters';
 
 describe('Update forgotten password', () => {
-	const updateForgottenPasswordService = makeUpdateForgottenPassword(mockUserRepository);
-	const signInService = makeSignIn(mockUserRepository);
+	const { token: resetToken } = mockTokenService.generate('1');
+	const password = 'Test@123';
 
-	test('Valid parameters', async () => {
-		const emailSpy = jest.spyOn(mockEmailService, 'sendPasswordChangeConfirmationEmail');
+	beforeAll(() => mockUserRepository.resetDatabase());
 
-		const resetToken = mockTokenService.generate('1');
+	afterAll(() => jest.restoreAllMocks());
 
-		const user = await mockUserRepository.getById('1');
+	it('should validate reset token', async () => {
+		const resetTokenSpy = jest.spyOn(mockTokenService, 'validate');
 
-		if (!user) throw new UserNotFoundError();
+		await updateForgottenPasswordService.exec({
+			resetToken: resetToken,
+			password: password,
+			confirmationPassword: password,
+		});
 
-		user.status = 'Active';
-
-		await mockUserRepository.update(user);
-
-		expect(
-			await updateForgottenPasswordService.exec({
-				resetToken: resetToken.token,
-				password: 'Test@123',
-				confirmationPassword: 'Test@123',
-			})
-		).resolves;
-
-		expect(emailSpy).toHaveBeenCalledWith({ name: user.name, email: user.email });
-
-		expect(
-			signInService.exec({
-				email: user.email,
-				password: 'Test@123',
-				ipAddress: '0.0.0.0',
-			})
-		).resolves;
-
-		emailSpy.mockRestore();
+		expect(resetTokenSpy).toHaveBeenCalledTimes(1);
+		expect(resetTokenSpy).toHaveBeenCalledWith(resetToken);
 	});
 
-	test('Invalid token', async () => {
-		const resetToken = mockTokenService.generate('0');
+	it('should call update password service', async () => {
+		const updatePasswordSpy = jest.spyOn(updatePasswordService, 'exec');
 
-		expect(
-			updateForgottenPasswordService.exec({
-				resetToken: resetToken.token,
-				password: 'Test@123',
-				confirmationPassword: 'Test@123',
-			})
-		).rejects.toThrow(UserNotFoundError);
-	});
+		await updateForgottenPasswordService.exec({
+			resetToken: resetToken,
+			password: password,
+			confirmationPassword: password,
+		});
 
-	test('Unmatch passwords', async () => {
-		const resetToken = mockTokenService.generate('1');
-
-		expect(
-			updateForgottenPasswordService.exec({
-				resetToken: resetToken.token,
-				password: 'Test@123',
-				confirmationPassword: 'Test#123',
-			})
-		).rejects.toThrow(InvalidPasswordError);
+		expect(updatePasswordSpy).toHaveBeenCalledTimes(1);
+		expect(updatePasswordSpy).toHaveBeenCalledWith({
+			userId: '1',
+			password: password,
+			confirmationPassword: password,
+		});
 	});
 });
