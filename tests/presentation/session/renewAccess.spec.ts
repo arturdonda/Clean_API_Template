@@ -1,10 +1,8 @@
 import { RenewAccessController } from '@presentation/controllers/session';
-import { makeCreateSession, makeRenewAccess } from '@tests/_factories/usecases';
+import { renewAccessService, createSessionService } from '@tests/_factories/usecases';
 import { mockUserRepository } from '@tests/_factories/adapters';
 
 describe('Renew Access Controller', () => {
-	const renewAccessService = makeRenewAccess(mockUserRepository);
-	const createSessionService = makeCreateSession();
 	const renewAccessController = new RenewAccessController(renewAccessService);
 
 	test('With required parameter', async () => {

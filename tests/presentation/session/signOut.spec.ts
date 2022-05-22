@@ -1,10 +1,8 @@
 import { SignOutController } from '@presentation/controllers/session';
-import { makeCreateSession, makeRevokeSession } from '@tests/_factories/usecases';
+import { revokeSessionService, createSessionService } from '@tests/_factories/usecases';
 import { mockUserRepository } from '@tests/_factories/adapters';
 
 describe('Sign Out Controller', () => {
-	const revokeSessionService = makeRevokeSession(mockUserRepository);
-	const createSessionService = makeCreateSession();
 	const signOutController = new SignOutController(revokeSessionService);
 
 	test('With required parameter', async () => {

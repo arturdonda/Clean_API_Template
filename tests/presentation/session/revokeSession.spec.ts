@@ -1,10 +1,8 @@
 import { RevokeSessionController } from '@presentation/controllers/session';
-import { makeCreateSession, makeRevokeSession } from '@tests/_factories/usecases';
+import { revokeSessionService, createSessionService } from '@tests/_factories/usecases';
 import { mockUserRepository } from '@tests/_factories/adapters';
 
 describe('Revoke Session Controller', () => {
-	const revokeSessionService = makeRevokeSession(mockUserRepository);
-	const createSessionService = makeCreateSession();
 	const revokeSessionController = new RevokeSessionController(revokeSessionService);
 
 	test('With required parameter', async () => {
