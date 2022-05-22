@@ -1,92 +1,128 @@
-import { makeSignIn, makeSignUp } from '@tests/_factories/usecases';
-import { InvalidPasswordError, UserAccountPendingActivation, UserNotFoundError } from '@application/errors';
-import { mockUserRepository, mockEmailService } from '@tests/_factories/adapters';
+import { User } from '@domain/entities';
+import { InvalidPasswordError, UserRegisteredError } from '@application/errors';
+import { signUpService } from '@tests/_factories/usecases';
+import { mockUserRepository, mockEmailService, mockHashService } from '@tests/_factories/adapters';
 
 describe('Sign Up', () => {
-	const signUpService = makeSignUp(mockUserRepository);
-	const signInService = makeSignIn(mockUserRepository);
+	const name = 'John Doe';
+	const email = 'john.doe@hotmail.com';
+	const password = 'John@123';
+	const passwordHash = mockHashService.hash(password);
 
-	test('Valid parameters', async () => {
-		const emailSpy = jest.spyOn(mockEmailService, 'sendAccountConfirmationEmail');
+	beforeAll(() => mockUserRepository.resetDatabase());
 
-		expect(
-			await signUpService.exec({
-				name: 'John Doe',
-				email: 'john.doe@hotmail.com',
-				password: 'Abcde#123',
-				confirmationPassword: 'Abcde#123',
-			})
-		).resolves;
+	afterAll(() => jest.restoreAllMocks());
 
-		expect(
-			signInService.exec({
-				email: 'john.doe@hotmail.com',
-				password: 'Abcde#123',
-				ipAddress: '0.0.0.0',
-			})
-		).rejects.toThrow(UserAccountPendingActivation);
-
-		expect(emailSpy).toHaveBeenCalledWith(expect.objectContaining({ name: 'John Doe', email: 'john.doe@hotmail.com' }));
-
-		emailSpy.mockRestore();
-	});
-
-	test('Invalid name', async () => {
-		expect(
-			signUpService.exec({
-				name: 'Doe',
-				email: 'john.doe@hotmail.com',
-				password: 'Abcde#123',
-				confirmationPassword: 'Abcde#123',
-			})
-		).rejects.toThrow("Campo 'Nome' inválido: deve conter pelo menos 3 caracteres.");
-	});
-
-	test('Invalid e-mail', async () => {
-		expect(
-			signUpService.exec({
-				name: 'John Doe',
-				email: 'john.doehotmail.com',
-				password: 'Abcde#123',
-				confirmationPassword: 'Abcde#123',
-			})
-		).rejects.toThrow("Campo 'E-mail' inválido: formato inválido.");
-	});
-
-	test('Registered e-mail', async () => {
-		const user = await mockUserRepository.getById('1');
-
-		if (!user) throw new UserNotFoundError();
+	it('should validate name', async () => {
+		const nameValidationSpy = jest.spyOn(User, 'validateName');
 
 		expect(
 			signUpService.exec({
-				name: 'John Doe',
-				email: user.email.toUpperCase(),
-				password: 'Abcde#123',
-				confirmationPassword: 'Abcde#123',
+				name: name,
+				email: email,
+				password: password,
+				confirmationPassword: password,
 			})
-		).rejects.toThrow('E-mail já cadastrado.');
+		);
+
+		expect(nameValidationSpy).toBeCalledTimes(1);
+		expect(nameValidationSpy).toBeCalledWith(name);
 	});
 
-	test('Invalid password', async () => {
+	it('should validate e-mail', async () => {
+		mockUserRepository.resetDatabase();
+
+		const emailValidationSpy = jest.spyOn(User, 'validateEmail');
+
 		expect(
 			signUpService.exec({
-				name: 'John Doe',
-				email: 'john.doe@hotmail.com',
-				password: 'abcde#123',
-				confirmationPassword: 'abcde#123',
+				name: name,
+				email: email,
+				password: password,
+				confirmationPassword: password,
 			})
-		).rejects.toThrow("Campo 'Senha' inválido: deve conter pelo menos 1 caractere maiúsculo (A-Z).");
+		);
+
+		expect(emailValidationSpy).toBeCalledTimes(1);
+		expect(emailValidationSpy).toBeCalledWith(email);
 	});
 
-	test('Unmatch passwords', async () => {
+	it('should validate password', async () => {
+		mockUserRepository.resetDatabase();
+
+		const passwordValidationSpy = jest.spyOn(User, 'validatePassword');
+
 		expect(
 			signUpService.exec({
-				name: 'John Doe',
-				email: 'john.doe@hotmail.com',
-				password: 'Abcde#123',
-				confirmationPassword: 'Abcd#123',
+				name: name,
+				email: email,
+				password: password,
+				confirmationPassword: password,
+			})
+		);
+
+		expect(passwordValidationSpy).toBeCalledTimes(1);
+		expect(passwordValidationSpy).toBeCalledWith(password);
+	});
+
+	it('should validate if password matches', async () => {
+		expect(
+			signUpService.exec({
+				name: name,
+				email: email,
+				password: password,
+				confirmationPassword: '123',
 			})
 		).rejects.toThrow(InvalidPasswordError);
+	});
+
+	it('should validate if user exists', async () => {
+		expect(
+			signUpService.exec({
+				name: name,
+				email: email,
+				password: password,
+				confirmationPassword: password,
+			})
+		).rejects.toThrow(UserRegisteredError);
+	});
+
+	it('should send account confirmation email', async () => {
+		mockUserRepository.resetDatabase();
+
+		const emailSpy = jest.spyOn(mockEmailService, 'sendAccountConfirmationEmail');
+
+		await signUpService.exec({
+			name: name,
+			email: email,
+			password: password,
+			confirmationPassword: password,
+		});
+
+		expect(emailSpy).toHaveBeenCalledTimes(1);
+		expect(emailSpy).toHaveBeenCalledWith({
+			name: name,
+			email: email,
+			confirmationCode: expect.any(String),
+		});
+	});
+
+	it('should return created user', async () => {
+		mockUserRepository.resetDatabase();
+
+		expect(
+			signUpService.exec({
+				name: name,
+				email: email,
+				password: password,
+				confirmationPassword: password,
+			})
+		).resolves.toEqual<User>(
+			expect.objectContaining({
+				name: name,
+				email: email,
+				password: passwordHash,
+			})
+		);
 	});
 });
