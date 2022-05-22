@@ -6,7 +6,7 @@ export class MockUserRepository implements IUserRepository {
 	private _users: User[];
 
 	constructor() {
-		this._users = userDatabase;
+		this.resetDatabase();
 	}
 
 	getAll = (): Promise<IUserRepository.User[]> => {
@@ -70,9 +70,13 @@ export class MockUserRepository implements IUserRepository {
 
 		return new Promise((resolve, reject) => resolve(user));
 	};
+
+	resetDatabase = () => {
+		this._users = getUsers();
+	};
 }
 
-const userDatabase: User[] = [
+const getUsers = (): User[] => [
 	new User({
 		id: '1',
 		confirmationCode: 'CCffe5c42644974f1c9102e93f35c77f64',
