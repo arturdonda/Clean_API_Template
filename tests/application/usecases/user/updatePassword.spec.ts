@@ -1,80 +1,94 @@
-import { makeSignIn, makeUpdatePassword } from '@tests/_factories/usecases';
+import { User } from '@domain/entities';
 import { InvalidPasswordError, UserNotFoundError } from '@application/errors';
-import { mockUserRepository, mockEmailService } from '@tests/_factories/adapters';
+import { updatePasswordService } from '@tests/_factories/usecases';
+import { mockUserRepository, mockEmailService, mockHashService } from '@tests/_factories/adapters';
 
 describe('Update Password', () => {
-	const updatePasswordService = makeUpdatePassword(mockUserRepository);
-	const signInService = makeSignIn(mockUserRepository);
+	const password = 'Test@123';
+	const passwordHash = mockHashService.hash(password);
 
-	test('Valid parameters', async () => {
-		const emailSpy = jest.spyOn(mockEmailService, 'sendPasswordChangeConfirmationEmail');
+	beforeAll(() => mockUserRepository.resetDatabase());
 
-		const user = await mockUserRepository.getById('1');
+	afterAll(() => jest.restoreAllMocks());
 
-		if (!user) throw new UserNotFoundError();
+	it('should validate id', async () => {
+		const validateIdSpy = jest.spyOn(User, 'validateId');
 
-		user.status = 'Active';
+		await updatePasswordService.exec({
+			userId: '1',
+			password: password,
+			confirmationPassword: password,
+		});
 
-		await mockUserRepository.update(user);
-
-		expect(
-			await updatePasswordService.exec({
-				userId: user.id,
-				password: 'Test@123',
-				confirmationPassword: 'Test@123',
-			})
-		).resolves;
-
-		expect(emailSpy).toHaveBeenCalledWith({ name: user.name, email: user.email });
-
-		expect(
-			signInService.exec({
-				email: user.email,
-				password: 'Test@123',
-				ipAddress: '0.0.0.0',
-			})
-		).resolves;
-
-		emailSpy.mockRestore();
+		expect(validateIdSpy).toBeCalledTimes(1);
+		expect(validateIdSpy).toBeCalledWith('1');
 	});
 
-	test('Invalid user', async () => {
+	it('should validate password', async () => {
+		const validatePasswordSpy = jest.spyOn(User, 'validatePassword');
+
+		await updatePasswordService.exec({
+			userId: '1',
+			password: password,
+			confirmationPassword: password,
+		});
+
+		expect(validatePasswordSpy).toHaveBeenCalledTimes(1);
+		expect(validatePasswordSpy).toHaveBeenCalledWith(password);
+	});
+
+	it('should validate if password matches', async () => {
 		expect(
 			updatePasswordService.exec({
-				userId: '',
-				password: 'Test@123',
-				confirmationPassword: 'Test@123',
+				userId: '1',
+				password: password,
+				confirmationPassword: password + '4',
 			})
-		).rejects.toThrow("Campo 'Id' inválido: não pode ser vazio.");
+		).rejects.toThrow(InvalidPasswordError);
 	});
 
-	test('Nonexistent user', async () => {
+	it('should validate user against database', async () => {
 		expect(
 			updatePasswordService.exec({
 				userId: '0',
-				password: 'Test@123',
-				confirmationPassword: 'Test@123',
+				password: password,
+				confirmationPassword: password,
 			})
 		).rejects.toThrow(UserNotFoundError);
 	});
 
-	test('Invalid password', async () => {
-		expect(
-			updatePasswordService.exec({
-				userId: '1',
-				password: 'TEST@123',
-				confirmationPassword: 'TEST#123',
-			})
-		).rejects.toThrow("Campo 'Senha' inválido: deve conter pelo menos 1 caractere minúsculo (a-z).");
+	it('should update hashed password', async () => {
+		const passwordHashSpy = jest.spyOn(mockHashService, 'hash');
+
+		await updatePasswordService.exec({
+			userId: '1',
+			password: password,
+			confirmationPassword: password,
+		});
+
+		expect(passwordHashSpy).toHaveBeenCalledTimes(1);
+		expect(passwordHashSpy).toHaveBeenCalledWith(password);
+
+		const user = await mockUserRepository.getById('1');
+
+		expect(user.password).toBe(passwordHash);
 	});
 
-	test('Unmatch passwords', async () => {
-		expect(
-			updatePasswordService.exec({
-				userId: '1',
-				password: 'Test@123',
-				confirmationPassword: 'Test#123',
-			})
-		).rejects.toThrow(InvalidPasswordError);
+	it('should send password change confirmation email', async () => {
+		const emailSpy = jest.spyOn(mockEmailService, 'sendPasswordChangeConfirmationEmail');
+
+		await updatePasswordService.exec({
+			userId: '1',
+			password: password,
+			confirmationPassword: password,
+		});
+
+		const user = await mockUserRepository.getById('1');
+
+		expect(emailSpy).toHaveBeenCalledTimes(1);
+		expect(emailSpy).toHaveBeenCalledWith({
+			name: user.name,
+			email: user.email,
+		});
 	});
 });
