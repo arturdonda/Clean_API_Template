@@ -1,67 +1,110 @@
-import { makeSignIn } from '@tests/_factories/usecases';
+import { User, Session } from '@domain/entities';
 import { InvalidPasswordError, UserAccountPendingActivation, UserNotFoundError } from '@application/errors';
-import { mockUserRepository } from '@tests/_factories/adapters';
+import { signInService } from '@tests/_factories/usecases';
+import { mockHashService, mockUserRepository } from '@tests/_factories/adapters';
 
 describe('Sign In', () => {
-	const signInService = makeSignIn(mockUserRepository);
+	let user: User;
+	let password: string;
+	const ipAddress = '0.0.0.0';
 
-	test('Account Peding Activation', async () => {
-		expect(
-			signInService.exec({
-				email: 'sueli.darosa@hotmail.com',
-				password: 'Sueli@123',
-				ipAddress: '0.0.0.0',
-			})
-		).rejects.toThrow(UserAccountPendingActivation);
-	});
+	beforeAll(async () => {
+		mockUserRepository.resetDatabase();
 
-	test('Valid parameters', async () => {
-		const user = await mockUserRepository.getByEmail('sueli.darosa@hotmail.com');
-
-		if (!user) throw new UserNotFoundError();
+		user = await mockUserRepository.getById('1');
 
 		user.status = 'Active';
 
 		mockUserRepository.update(user);
 
-		expect(
-			await signInService.exec({
-				email: 'sueli.darosa@hotmail.com',
-				password: 'Sueli@123',
-				ipAddress: '0.0.0.0',
-			})
-		).resolves;
-
-		expect(user.sessions.length).toBe(1);
+		password = mockHashService.hash(user.password);
 	});
 
-	test('Nonexistent e-mail', async () => {
+	afterAll(() => jest.restoreAllMocks());
+
+	it('should validate e-mail', async () => {
+		const validationSpy = jest.spyOn(User, 'validateEmail');
+
+		await signInService.exec({
+			email: user.email,
+			password: password,
+			ipAddress: ipAddress,
+		});
+
+		expect(validationSpy).toHaveBeenCalledTimes(1);
+		expect(validationSpy).toHaveBeenCalledWith(user.email);
+	});
+
+	it('should validate user against database', async () => {
 		expect(
 			signInService.exec({
-				email: 'sueli@hotmail.com',
-				password: 'Sueli@123',
-				ipAddress: '0.0.0.0',
+				email: 'a@b.com',
+				password: password,
+				ipAddress: ipAddress,
 			})
 		).rejects.toThrow(UserNotFoundError);
 	});
 
-	test('Invalid e-mail', async () => {
+	it('should validate if account is pending', async () => {
+		mockUserRepository.resetDatabase();
+
 		expect(
 			signInService.exec({
-				email: 'sueli.darosa@hotmailcom',
-				password: 'Sueli@123',
-				ipAddress: '0.0.0.0',
+				email: user.email,
+				password: password,
+				ipAddress: ipAddress,
 			})
-		).rejects.toThrow("Campo 'E-mail' inválido: formato inválido.");
+		).rejects.toThrow(UserAccountPendingActivation);
 	});
 
-	test('Invalid password', async () => {
+	it('should validate if password matches', async () => {
+		user.status = 'Active';
+
+		await mockUserRepository.update(user);
+
 		expect(
 			signInService.exec({
-				email: 'sueli.darosa@hotmail.com',
-				password: 'Sueli123',
-				ipAddress: '0.0.0.0',
+				email: user.email,
+				password: '123',
+				ipAddress: ipAddress,
 			})
 		).rejects.toThrow(InvalidPasswordError);
+	});
+
+	it('should create a session', async () => {
+		const addSessionSpy = jest.spyOn(user, 'addSession');
+
+		await signInService.exec({
+			email: 'sueli.darosa@hotmail.com',
+			password: 'Sueli@123',
+			ipAddress: ipAddress,
+		});
+
+		expect(addSessionSpy).toHaveBeenCalledTimes(1);
+		expect(addSessionSpy).toHaveBeenCalledWith(expect.any(Session));
+	});
+
+	it('should persist changes to database', async () => {
+		await signInService.exec({
+			email: user.email,
+			password: password,
+			ipAddress: ipAddress,
+		});
+
+		expect(user.sessions).not.toHaveLength(0);
+	});
+
+	it('should return user, session token and access token', async () => {
+		expect(
+			signInService.exec({
+				email: user.email,
+				password: password,
+				ipAddress: ipAddress,
+			})
+		).resolves.toEqual({
+			user: expect.any(User),
+			sessionToken: expect.any(String),
+			accessToken: expect.any(String),
+		});
 	});
 });
