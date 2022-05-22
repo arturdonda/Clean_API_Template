@@ -1,20 +1,29 @@
-import { Session } from '@domain/entities';
-import { makeGetActiveSessions } from '@tests/_factories/usecases';
+import { Session, User } from '@domain/entities';
 import { UserNotFoundError } from '@application/errors';
+import { getActiveSessionsService } from '@tests/_factories/usecases';
 import { mockUserRepository } from '@tests/_factories/adapters';
 
 describe('Get Active Sessions', () => {
-	const getActiveSessionsService = makeGetActiveSessions(mockUserRepository);
+	beforeAll(() => mockUserRepository.resetDatabase());
 
-	test('Valid Id', () => {
-		expect(getActiveSessionsService.exec({ userId: '1' })).resolves.toEqual<Session[]>([]);
+	afterAll(() => jest.restoreAllMocks());
+
+	it('should validate id', async () => {
+		const validationSpy = jest.spyOn(User, 'validateId');
+
+		await getActiveSessionsService.exec({ userId: '1' });
+
+		expect(validationSpy).toHaveBeenCalledTimes(1);
+		expect(validationSpy).toHaveBeenCalledWith('1');
 	});
 
-	test('Nonexistent Id', () => {
+	it('should validate user against database', async () => {
 		expect(getActiveSessionsService.exec({ userId: '0' })).rejects.toThrow(UserNotFoundError);
 	});
 
-	test('Invalid Id', () => {
-		expect(getActiveSessionsService.exec({ userId: '' })).rejects.toThrow("Campo 'Id' inválido: não pode ser vazio.");
+	it('should return active sessions', async () => {
+		const user = await mockUserRepository.getById('1');
+
+		expect(getActiveSessionsService.exec({ userId: user.id })).resolves.toEqual<Session[]>(user.sessions.filter(session => session.isActive));
 	});
 });
