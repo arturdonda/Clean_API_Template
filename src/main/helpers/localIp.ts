@@ -5,8 +5,10 @@ export const setLocalIp = (): Promise<string> => {
 		http.get('http://api.ipify.org/?format=json', res => {
 			let data: any = [];
 
+			/* istanbul ignore next */
 			res.on('data', chunck => data.push(chunck));
 
+			/* istanbul ignore next */
 			res.on('error', () => reject());
 
 			res.on('end', () => {

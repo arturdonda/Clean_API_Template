@@ -1,9 +1,10 @@
 import { configureApp } from '@main/config/express';
 import mongo from '@infra/adapters/db/mongoose';
-import request from 'supertest';
 import { setLocalIp } from '@main/helpers';
+import request from 'supertest';
 
 jest.mock('@main/helpers/localIp');
+
 const mongoSpy = jest.spyOn(mongo, 'connect');
 
 describe('Express configuration', () => {
