@@ -1,13 +1,23 @@
 import mongoose from 'mongoose';
 import { userModel } from './models';
 
+let Client: typeof mongoose = null;
+let Uri: string = null;
+
 export default {
-	client: null as unknown as typeof mongoose,
-	uri: null as unknown as string,
+	get client() {
+		return Client;
+	},
+	get uri() {
+		return Uri;
+	},
 	connect: (uri: string): Promise<void> =>
 		mongoose
 			.connect(uri)
-			.then(() => {
+			.then(client => {
+				Uri = uri;
+				Client = client;
+
 				console.log('[Database]: 📖 Connection established');
 
 				mongoose.connection.on('disconnected', () => console.log('[Database]: 📘 Connection terminated'));
