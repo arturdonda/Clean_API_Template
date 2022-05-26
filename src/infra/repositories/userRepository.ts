@@ -13,9 +13,12 @@ export class UserRepository implements IUserRepository {
 			.find()
 			.exec()
 			.then(users => users.map(user => makeUser(user)))
-			.catch(error => {
-				throw new DatabaseError(error);
-			});
+			.catch(
+				/* istanbul ignore next */
+				error => {
+					throw new DatabaseError(error);
+				}
+			);
 	};
 
 	getById = async (userId: string): Promise<IUserRepository.User | null> => {
@@ -25,9 +28,12 @@ export class UserRepository implements IUserRepository {
 			.findById(userId)
 			.exec()
 			.then(user => (user ? makeUser(user) : null))
-			.catch(error => {
-				throw new DatabaseError(error);
-			});
+			.catch(
+				/* istanbul ignore next */
+				error => {
+					throw new DatabaseError(error);
+				}
+			);
 	};
 
 	getByConfirmationCode = async (confirmationCode: string): Promise<IUserRepository.User | null> => {
@@ -37,9 +43,12 @@ export class UserRepository implements IUserRepository {
 			.findOne({ confirmationCode })
 			.exec()
 			.then(user => (user ? makeUser(user) : null))
-			.catch(error => {
-				throw new DatabaseError(error);
-			});
+			.catch(
+				/* istanbul ignore next */
+				error => {
+					throw new DatabaseError(error);
+				}
+			);
 	};
 
 	getByEmail = async (email: string): Promise<IUserRepository.User | null> => {
@@ -49,9 +58,12 @@ export class UserRepository implements IUserRepository {
 			.findOne({ email })
 			.exec()
 			.then(user => (user ? makeUser(user) : null))
-			.catch(error => {
-				throw new DatabaseError(error);
-			});
+			.catch(
+				/* istanbul ignore next */
+				error => {
+					throw new DatabaseError(error);
+				}
+			);
 	};
 
 	getByCpf = async (cpf: string): Promise<IUserRepository.User | null> => {
@@ -61,9 +73,12 @@ export class UserRepository implements IUserRepository {
 			.findOne({ cpf })
 			.exec()
 			.then(user => (user ? makeUser(user) : null))
-			.catch(error => {
-				throw new DatabaseError(error);
-			});
+			.catch(
+				/* istanbul ignore next */
+				error => {
+					throw new DatabaseError(error);
+				}
+			);
 	};
 
 	getByRg = async (rg: string): Promise<IUserRepository.User | null> => {
@@ -73,9 +88,12 @@ export class UserRepository implements IUserRepository {
 			.findOne({ rg })
 			.exec()
 			.then(user => (user ? makeUser(user) : null))
-			.catch(error => {
-				throw new DatabaseError(error);
-			});
+			.catch(
+				/* istanbul ignore next */
+				error => {
+					throw new DatabaseError(error);
+				}
+			);
 	};
 
 	create = async (user: IUserRepository.User): Promise<IUserRepository.User> => {
@@ -97,9 +115,12 @@ export class UserRepository implements IUserRepository {
 				status: user.status,
 			})
 			.then(user => makeUser(user))
-			.catch(error => {
-				throw new DatabaseError(error);
-			});
+			.catch(
+				/* istanbul ignore next */
+				error => {
+					throw new DatabaseError(error);
+				}
+			);
 	};
 
 	update = async (user: IUserRepository.User): Promise<IUserRepository.User | null> => {
@@ -156,8 +177,11 @@ export class UserRepository implements IUserRepository {
 			)
 			.exec()
 			.then(updatedUser => (updatedUser ? makeUser(updatedUser) : null))
-			.catch(error => {
-				throw new DatabaseError(error);
-			});
+			.catch(
+				/* istanbul ignore next */
+				error => {
+					throw new DatabaseError(error);
+				}
+			);
 	};
 }
