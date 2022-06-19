@@ -12,6 +12,7 @@ export class IpService implements IIpService {
 	lookup = async (ipAddress: string): Promise<IIpService.Result> => {
 		const result = await this._ipDataClient.lookup(ipAddress);
 
+		/* istanbul ignore next */
 		if (result.status === 400) throw new InvalidIpError(ipAddress);
 
 		return new Geolocation({
@@ -19,9 +20,9 @@ export class IpService implements IIpService {
 			countryName: result.country_name,
 			countryCode: result.country_code,
 			countryFlag: result.emoji_flag,
-			stateName: result.region ?? '',
-			stateCode: result.region_code ?? '',
-			city: result.city ?? '',
+			stateName: result.region,
+			stateCode: result.region_code,
+			city: result.city,
 			latitude: result.latitude,
 			longitude: result.longitude,
 		});
