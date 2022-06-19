@@ -21,20 +21,31 @@ export default {
 				console.log('[Database]: 📖 Connection established');
 
 				mongoose.connection.on('disconnected', () => console.log('[Database]: 📘 Connection terminated'));
-				mongoose.connection.on('error', error => {
-					console.error(error);
-					console.log('[Database]: ❌ An error ocurred. Check output above for more details.');
-				});
+				mongoose.connection.on(
+					'error',
+					/* istanbul ignore next */
+					error => {
+						console.error(error);
+						console.log('[Database]: ❌ An error ocurred. Check output above for more details.');
+					}
+				);
 
-				process.on('SIGINT', async () => {
-					await mongoose.connection.close();
-					process.exit(0);
-				});
+				process.on(
+					'SIGINT',
+					/* istanbul ignore next */
+					async () => {
+						await mongoose.connection.close();
+						process.exit(0);
+					}
+				);
 			})
-			.catch(error => {
-				console.error(error);
-				console.log(`[Database]: ❌ Connection Error`);
-			}),
+			.catch(
+				/* istanbul ignore next */
+				error => {
+					console.error(error);
+					console.log(`[Database]: ❌ Connection Error`);
+				}
+			),
 	disconnect: () => mongoose.connection.close(),
 	get collections() {
 		return {
